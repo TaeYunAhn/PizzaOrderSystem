@@ -1,13 +1,17 @@
 #pragma once
-#include "IngredientStore.h"
 #include <string>
 #include <vector>
 #include <iostream>
+#include <Windows.h>
+#include "FileSave.h"
+#include "IngredientStore.h"
 using namespace std;
 
 IngredientStore::IngredientStore()
 {
-
+    vector<ingredient> data;
+    if (FileSave::readIngredient(data ))
+        ingredientVector = data;
 }
 
 IngredientStore::~IngredientStore()
@@ -17,17 +21,14 @@ IngredientStore::~IngredientStore()
 
 void IngredientStore::ShowIngredientList()
 {
-    vector<ingredient> totalIng;
-    totalIng = GetIngredientList();
-    string name;
-    int price;
-    int stock;
+    const vector<ingredient>& totalIng = GetIngredientList();
+    
     cout << "----재료 리스트---- "<<endl;
     for ( int i = 0; i < totalIng.size(); i++ )
     {
 
         cout << i+1 <<"번 "<<endl;
-        cout << "이름 : " << totalIng[i].Name << endl;
+        cout << "이름 : " << totalIng[i].Name  << endl;
         cout << "가격 : " << totalIng[i].Price << endl;
         cout << "재고 : " << totalIng[i].Stock << endl<<endl;;
     }
@@ -35,108 +36,90 @@ void IngredientStore::ShowIngredientList()
     
 }
 
-vector<ingredient> IngredientStore::GetIngredientList()
+vector<ingredient>& IngredientStore::GetIngredientList()
 {
     return ingredientVector;
 
 }
 
-bool IngredientStore::addMenu(const string &name, const int &price, const int &stock)
+bool IngredientStore::writeComponent(string &name, int &price, int &stock)
 {
-    if (name.size() == 0 || name.size() >= 20 || !price || !stock )
-        return false;
-
-    ingredient Ingredient(name, price, stock);
-    ingredientVector.push_back(Ingredient);
+    cout << "재료 이름 : ";
+    cin >> name;
+    //재고 중복되는지 확인
+    //bool find = false;
+    //for (int i = 0 )
+    cout << "재료 가격 : ";
+    cin >> price;
+    cout << "재고 갯수 : ";
+    cin >> stock;
     return true;
 
+    //if (*name.empty() || *name.length() >= 20 || *price == 0 || stock==0 )
+    //{   
+    //    cout << "입력값이 잘못되었습니다. 입력값을 확인하세요"<<endl <<endl;
+    //    Sleep(500);
+    //    return false;
+    //}
+    //return true;
 }
 
-void IngredientStore::SelectMenu()
+
+void IngredientStore::addIngredient()
 {
-    while ( true )
+    while(true )
     {
-
-    
-    int sel = 0;
-    cout << "  < MENU >  " << endl;
-    cout << "1. 재료 추가" << endl;
-    cout << "2. 재료 수정" << endl;
-    cout << "3. 재료 삭제" << endl;
-    cout << "4. 재고 확인" << endl;
-    cout << "선택 : ";
-    cin >> sel;
-    cout << "\n";
-
-    switch ( sel )
-    {
-    case 1:
-    {
-        string name;
-        int price;
-        int stock;
-        bool res;
+        system("cls");
+        string name = "";
+        int price = 0;
+        int stock = 0;
 
         cout << "  < 재료 추가 >  " << endl;
-        cout << "재료 이름 : ";
-        cin >> name;
-        //재고 중복되는지 확인
-        //bool find = false;
-        //for (int i = 0 )
-        cout << "재료 가격 : ";
-        cin >> price;
-        cout << "재고 갯수 : ";
-        cin >> stock;
-        res = addMenu(name, price, stock);
-        if (res == true)
-            cout << "추가 완료 되었습니다."<<endl <<endl;
-        else if (res == false )
-            cout << "추가 실패했습니다. 입력값을 확인하세요"<<endl <<endl;
-    
+        const bool res = writeComponent(name, price, stock);
+        if (res == false )
+           continue;
+        ingredient Ingredient(name, price, stock);
+        ingredientVector.push_back(Ingredient);
+        //ingredientVector.emplace_back(name, price, stock);
+        FileSave::saveIngredient(ingredientVector);
+        cout << "추가 되었습니다."<<endl <<endl;
+        Sleep(500);
+        break;
     }
-    break;
+}
 
-    case 2:
+void IngredientStore::modifyIngredient()
+{
+    while (true )
     {
+        system("cls");
         string name;
         int price;
         int stock;
         int sel = 0;
+        bool res;
         cout << "  < 재료 수정 >  " << endl;
         ShowIngredientList();
         cout << "재료 번호 선택 : ";
         cin >> sel;
-        
-        cout << "재료 이름 : ";
-        cin >> name;
-        //다른 재료와 중복되는지 확인
-        //bool find = false;
-        //for (int i = 0 )
-        cout << "재료 가격 : ";
-        cin >> price;
-        cout << "재고 갯수 : ";
-        cin >> stock;
-        
-        if ( name.size() == 0 || name.size() >= 20 || !price || !stock )
-        {
-            cout << "입력값이 잘못되었습니다. 다시 확인해 주세요";
-            SelectMenu();
-            // 여기서 switch 2: 로 가고싶은데 어떻게 하면 될까요??
-        }
-        ingredientVector[sel - 1].Name = name;
-        ingredientVector[sel - 1].Price = price;
-        ingredientVector[sel - 1].Stock = stock;
+        res = writeComponent(&name, &price, &stock);
+        if (res = false )
+            continue;
+        int num = sel - 1;
+        ingredientVector[num].Name = name;
+        ingredientVector[num].Price = price;
+        ingredientVector[num].Stock = stock;
         cout << "수정되었습니다." << endl<<endl;
-   
-
+        Sleep(500);
     }
-    break;
+}
 
-    case 3:
+void IngredientStore::deleteIngredient()
+{
+    while (true )
     {
-        string name;
-        int price;
-        int stock;
+        
+        system("cls");
         int sel = 0;
         cout << "  < 재료 삭제 >  " << endl;
         ShowIngredientList();
@@ -145,26 +128,71 @@ void IngredientStore::SelectMenu()
         if ( sel > ingredientVector.size() + 1 )
         {
             cout << "없는 번호입니다. 번호를 확인해 주세요"<<endl;
-            // 스위치 3을 다시 호출
+            Sleep(500);
+            continue;
         }
         ingredientVector.erase(ingredientVector.begin() + sel - 1);
         //v.erase(v.begin() + i);
         cout << "삭제되었습니다."<<endl<<endl;
-
-
-       
+        Sleep(500);
     }
-    break;
+}
 
-    case 4:
+
+void IngredientStore::SelectMenu()
+{
+    while ( true )
     {
-        cout << "  < 재고 확인 >  " << endl;
-        ShowIngredientList();
-    }
-    break;
 
-    default:
+        system("cls");
+
+        int sel = 0;
+        cout << "  < MENU >  " << endl;
+        cout << "1. 재료 추가" << endl;
+        cout << "2. 재료 수정" << endl;
+        cout << "3. 재료 삭제" << endl;
+        cout << "4. 재고 확인" << endl;
+        cout << "선택 : ";
+        cin >> sel;
+        cout << "\n";
+
+        switch ( sel )
+        {
+        case 1:
+        {
+        {
+            addIngredient(); 
+        }
         break;
+
+        case 2:
+        {
+            modifyIngredient();
+        }
+        break;
+
+        case 3:
+        {
+            deleteIngredient();
+        }
+        break;
+
+        case 4:
+        {
+            string anykey;
+            system("cls");
+            cout << "  < 재고 확인 >  " << endl;
+            ShowIngredientList();
+            
+            cout << "메인 매뉴로 돌아가려면 아무키나 입력해주세요";
+            cin >> anykey;
+
+        }
+        break;
+
+        default:
+            break;
+        }
     }
-    }
+}
 }
