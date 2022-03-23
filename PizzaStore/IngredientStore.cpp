@@ -42,17 +42,17 @@ vector<ingredient>& IngredientStore::GetIngredientList()
 
 }
 
-bool IngredientStore::writeComponent(string &name, int &price, int &stock)
+bool IngredientStore::writeComponent(string &Name, int &Price, int &Stock)
 {
     cout << "재료 이름 : ";
-    cin >> name;
+    cin >> Name;
     //재고 중복되는지 확인
     //bool find = false;
     //for (int i = 0 )
     cout << "재료 가격 : ";
-    cin >> price;
+    cin >> Price;
     cout << "재고 갯수 : ";
-    cin >> stock;
+    cin >> Stock;
     return true;
 
     //if (*name.empty() || *name.length() >= 20 || *price == 0 || stock==0 )
@@ -70,15 +70,15 @@ void IngredientStore::addIngredient()
     while(true )
     {
         system("cls");
-        string name = "";
-        int price = 0;
-        int stock = 0;
+        string Name = "";
+        int Price = 0;
+        int Stock = 0;
 
         cout << "  < 재료 추가 >  " << endl;
-        const bool res = writeComponent(name, price, stock);
+        const bool res = writeComponent(Name, Price, Stock);
         if (res == false )
            continue;
-        ingredient Ingredient(name, price, stock);
+        ingredient Ingredient(Name, Price, Stock);
         ingredientVector.push_back(Ingredient);
         //ingredientVector.emplace_back(name, price, stock);
         FileSave::saveIngredient(ingredientVector);
@@ -102,8 +102,8 @@ void IngredientStore::modifyIngredient()
         ShowIngredientList();
         cout << "재료 번호 선택 : ";
         cin >> sel;
-        res = writeComponent(&name, &price, &stock);
-        if (res = false )
+        res = writeComponent(name, price, stock);
+        if (res == false )
             continue;
         int num = sel - 1;
         ingredientVector[num].Name = name;
@@ -134,7 +134,7 @@ void IngredientStore::deleteIngredient()
         ingredientVector.erase(ingredientVector.begin() + sel - 1);
         //v.erase(v.begin() + i);
         cout << "삭제되었습니다."<<endl<<endl;
-        Sleep(500);
+        
     }
 }
 
@@ -147,7 +147,7 @@ void IngredientStore::SelectMenu()
         system("cls");
 
         int sel = 0;
-        cout << "  < MENU >  " << endl;
+        cout << "  << 재료가게 >>  " << endl;
         cout << "1. 재료 추가" << endl;
         cout << "2. 재료 수정" << endl;
         cout << "3. 재료 삭제" << endl;

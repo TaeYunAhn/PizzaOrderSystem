@@ -1,6 +1,8 @@
 #include "LoginController.h"
 #include <string>
 #include <iostream>
+#include "PizzaStore.h"
+#include "IngredientStore.h"
 using namespace std;
 
 
@@ -101,34 +103,51 @@ void LoginController::PartnerLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
+        std::string pizzaID = "aa";
+        std::string pizzaPW = "aa";
+        string ingredientID = "bb";
+        string ingredientPW = "bb";
+        ParAcc pizzaLogin(pizzaID, pizzaPW);
+        ParAcc ingredientLogin(ingredientID, ingredientPW);
+        _ParAcc.push_back(pizzaLogin);
+        _ParAcc.push_back(ingredientLogin);
 
         int i = 0;
-        while (i < _ParAcc.size())
+        while ( i < _ParAcc.size() )
         {
-            if (_ParAcc[i].ID == id && _ParAcc[i].PW == pw)
+            if (_ParAcc[i].ID == pizzaID && _ParAcc[i].PW == pizzaPW )
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
-                break;
+                PizzaStore pizza;
+                pizza.MainUI();
+
+            }
+            else if (_ParAcc[i].ID == ingredientID && _ParAcc[i].PW == ingredientPW )
+            {
+                LoginAlarm(EN_LOGIN_SUCCESS);
+                IngredientStore ingredient;
+                ingredient.SelectMenu();
+
             }
 
-            else if (_ParAcc[i].ID == id && _ParAcc[i].PW != pw)
+            else if (_ParAcc[i].ID == pizzaID && _ParAcc[i].PW != pizzaPW | _ParAcc[i].ID == ingredientID && _ParAcc[i].PW != ingredientPW )
             {
                 LoginAlarm(EN_WRONG_PW);
                 break;
             }
 
-            else if (_ParAcc[i].ID != id)
+            else if (_ParAcc[i].ID != pizzaID || _ParAcc[i].ID != ingredientID)
             {
-                i++;
-                if (i == _ParAcc.size())
-                {
-                    LoginAlarm(EN_NOT_EXIST_ACC);
-                    break;
 
-                }
+                LoginAlarm(EN_NOT_EXIST_ACC);
+                break;
+
             }
-            break;
+            
+            i++;
         }
+            
+       
     }
     
 }

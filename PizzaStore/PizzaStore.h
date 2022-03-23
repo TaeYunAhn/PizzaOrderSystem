@@ -6,7 +6,7 @@
 struct PizzaMenu
 {
     PizzaMenu(const std::string &name, const std::string &Ing, int price, int sales) : 
-                Name(name), Price(price), Ingredients(Ing), Sales(sales) {}
+                Name(name),  Ingredients(Ing), Price(price), Sales(sales) {}
     ~PizzaMenu() {}
     std::string Name;
     std::string Ingredients;
@@ -28,8 +28,10 @@ private:
     void deleteMenu();
     void confirmSales();
     void tryAgain();
+    void ShowPizzaList();
+    std::vector<PizzaMenu> GetTotalPizza();
 
-    std::vector<PizzaMenu> _pizzaMenu;
+    std::vector<PizzaMenu> pizzaMenuVector;
     //std::map<string, int> ;
     //int totalSales;
 

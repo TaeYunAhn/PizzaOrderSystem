@@ -1,14 +1,19 @@
 #include "IngredientStore.h"
 #include "LoginController.h"
+#include "PizzaStore.h"
 
 int main()
 {
-    //LoginController login;
-    //login.MainUI();
+    LoginController login;
+    login.MainUI();
 
 
-    IngredientStore ingre;
-    ingre.SelectMenu();
+    //IngredientStore ingre;
+    //ingre.SelectMenu();
+
+    //PizzaStore a;
+    //a.MainUI();
+
 
 
     //PizzaStore p;
