@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 enum EN_LOGLEVEL
 {
 	enDebug,
@@ -9,6 +11,7 @@ enum EN_LOGLEVEL
 
 class CLogger
 {
+//// Singleton
 public:
 	static CLogger* getInstance()
 	{
@@ -18,13 +21,22 @@ public:
 		return instance;
 	}
 
-	void write(const EN_LOGLEVEL& level, char* args, ...);
+	void write(const EN_LOGLEVEL& level, const int& line, const char* func, const char* msg, ...);
 
 private:
-	CLogger() {}
+	CLogger();
+	~CLogger();
 	static CLogger* instance;
 
+
+//// General
+public:
+	void setLogLevel(const std::string& str);
+
+private:
+	EN_LOGLEVEL logLevel;
+	std::string fileDate;
+	FILE* fd;
+
+
 };
-
-
-
