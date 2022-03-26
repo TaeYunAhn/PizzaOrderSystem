@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <Windows.h>
+#include "Logger.h"
 using namespace std;
 
 
@@ -16,6 +17,13 @@ PizzaStore::~PizzaStore()
 {
 
 }
+
+PizzaStore::PizzaStore(IngredientStore *ingre)
+{
+     
+     ingreStore = ingre;
+}
+
 
 void PizzaStore::MainUI()
 {
@@ -40,12 +48,14 @@ void PizzaStore::MainUI()
             confirmSales();
         else if ( res == 5 )
         {
+            break;
             LoginController login;
             login.MainUI();
         }
 
         else
             tryAgain();
+        
     }
     
 }
@@ -72,6 +82,8 @@ void PizzaStore::addMenu()
         //파일 저장
 
         cout << "추가 되었습니다."<<endl <<endl;
+        CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "addMenu => name(%s) Ingre(%s), Price(%d)", Name.c_str(), Ingredients.c_str(), Price);
+
         Sleep(500);
         break;
     }
@@ -115,6 +127,7 @@ void PizzaStore::modifyMenu()
             pizzaMenuVector[num].Price = price;
             pizzaMenuVector[num].Sales = sales;
             cout << "수정되었습니다." << endl<<endl;
+            CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "addMenu => name(%s) Ingre(%s), Price(%d)", name.c_str(), ingredients.c_str(), price);
             //파일 쓰기
             Sleep(500);
             break;
@@ -136,9 +149,10 @@ void PizzaStore::deleteMenu()
         ShowPizzaList();
         cout << "재료 번호 선택 : ";
         cin >> sel;
-        if ( sel > 0 && sel < pizzaMenuVector.size() )
+        if ( sel > 0 && sel <= pizzaMenuVector.size() )
         {
             pizzaMenuVector.erase(pizzaMenuVector.begin() + sel - 1);
+            CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "delMenu => %d", sel);
             cout << "삭제되었습니다."<<endl<<endl;
             Sleep(500);
             break;
@@ -153,7 +167,7 @@ void PizzaStore::deleteMenu()
 
 void PizzaStore::confirmSales()
 {
-
+    //ingreStore->getIng();
     /*const EN_RESULT res = IngredientStore->getIng("고르곤졸라 치즈", 5);
     switch ( res )
     {

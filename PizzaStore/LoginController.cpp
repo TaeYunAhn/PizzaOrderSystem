@@ -3,6 +3,7 @@
 #include <iostream>
 #include "PizzaStore.h"
 #include "IngredientStore.h"
+#include "Logger.h"
 using namespace std;
 
 
@@ -20,7 +21,8 @@ LoginController::~LoginController()
 
 void LoginController::MainUI()
 {
-    while ( true )
+    bool bExit = false;
+    while ( !bExit )
     {
         int res;
         cout << "  << 로그인 선택 >>  "<<endl;
@@ -37,12 +39,15 @@ void LoginController::MainUI()
         else if (res == 3 )
             PartnerLogin();
         else
+            bExit = true;
             tryAgain();
     }
 }
 
 void LoginController::GeneralLogin()
 {
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
+
     while ( true )
     {
         string id, pw;
@@ -94,8 +99,21 @@ void LoginController::GeneralLogin()
 
 void LoginController::PartnerLogin()
 {
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PartnerLogin Start");
+    std::string pizzaID = "aa";
+    std::string pizzaPW = "aa";
+    string ingredientID = "bb";
+    string ingredientPW = "bb";
+    ParAcc pizzaLogin(pizzaID, pizzaPW);
+    ParAcc ingredientLogin(ingredientID, ingredientPW);
+    _ParAcc.push_back(pizzaLogin);
+    _ParAcc.push_back(ingredientLogin);
 
-    while ( true )
+    // 로그인 성공시 
+    IngredientStore ingredient;
+    PizzaStore pizza(&ingredient);
+
+    //while ( true )
     {
         string id, pw;
         cout << "  << 파트너 로그인 >>  "<<endl;
@@ -103,48 +121,37 @@ void LoginController::PartnerLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
-        std::string pizzaID = "aa";
-        std::string pizzaPW = "aa";
-        string ingredientID = "bb";
-        string ingredientPW = "bb";
-        ParAcc pizzaLogin(pizzaID, pizzaPW);
-        ParAcc ingredientLogin(ingredientID, ingredientPW);
-        _ParAcc.push_back(pizzaLogin);
-        _ParAcc.push_back(ingredientLogin);
+        
 
-        int i = 0;
-        while ( i < _ParAcc.size() )
+        for( const ParAcc& acc : _ParAcc ) // For Each, 범위 기반 for
         {
-            if (_ParAcc[i].ID == pizzaID && _ParAcc[i].PW == pizzaPW )
+            if (acc.ID == pizzaID && acc.PW == pizzaPW )
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
-                PizzaStore pizza;
+
                 pizza.MainUI();
 
             }
-            else if (_ParAcc[i].ID == ingredientID && _ParAcc[i].PW == ingredientPW )
+            else if (acc.ID == ingredientID && acc.PW == ingredientPW )
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
-                IngredientStore ingredient;
-                ingredient.SelectMenu();
+                //ingredient.SelectMenu();
 
             }
 
-            else if (_ParAcc[i].ID == pizzaID && _ParAcc[i].PW != pizzaPW | _ParAcc[i].ID == ingredientID && _ParAcc[i].PW != ingredientPW )
+            else if (acc.ID == pizzaID && acc.PW != pizzaPW | acc.ID == ingredientID && acc.PW != ingredientPW )
             {
                 LoginAlarm(EN_WRONG_PW);
                 break;
             }
 
-            else if (_ParAcc[i].ID != pizzaID || _ParAcc[i].ID != ingredientID)
+            else if (acc.ID != pizzaID || acc.ID != ingredientID)
             {
 
                 LoginAlarm(EN_NOT_EXIST_ACC);
                 break;
 
             }
-            
-            i++;
         }
             
        

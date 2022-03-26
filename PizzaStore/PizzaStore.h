@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "IngredientStore.h"
 
 
 struct PizzaMenu
@@ -19,6 +20,7 @@ class PizzaStore
 {
 public:
     PizzaStore();
+    PizzaStore(IngredientStore*);
     ~PizzaStore();
     void MainUI();
 
@@ -31,6 +33,7 @@ private:
     void ShowPizzaList();
     std::vector<PizzaMenu> GetTotalPizza();
 
+    IngredientStore *ingreStore;
     std::vector<PizzaMenu> pizzaMenuVector;
     //std::map<string, int> ;
     //int totalSales;
