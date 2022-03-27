@@ -22,7 +22,7 @@ public:
     PizzaStore();
     PizzaStore(IngredientStore*);
     ~PizzaStore();
-    void MainUI();
+    bool MainUI();
 
 private:
     void addMenu();

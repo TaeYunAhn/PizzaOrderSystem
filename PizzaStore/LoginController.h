@@ -12,6 +12,12 @@ enum EN_Alarm
     EN_WRONG_PW,
 };
 
+enum EN_Login_Success
+{
+    EN_PIZZA_STORE_LOGIN_SUCCESS,
+    EN_INGREDIENT_STORE_LOGIN_SUCCESS,
+};
+
 struct GenAcc
 {
     GenAcc() {}
@@ -35,13 +41,14 @@ class LoginController
 public:
     LoginController();
     ~LoginController();
-    void MainUI();
+    EN_Login_Success MainUI();
 
 private:
 
     void GeneralLogin();
     void Signup();
-    void PartnerLogin();
+    EN_Login_Success PartnerLogin();
+
     void tryAgain();
     void LoginAlarm(EN_Alarm error);
     

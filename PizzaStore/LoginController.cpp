@@ -19,7 +19,7 @@ LoginController::~LoginController()
     
 }
 
-void LoginController::MainUI()
+EN_Login_Success LoginController::MainUI()
 {
     bool bExit = false;
     while ( !bExit )
@@ -28,18 +28,34 @@ void LoginController::MainUI()
         cout << "  << 로그인 선택 >>  "<<endl;
         cout << "1. 로그인"<<endl;
         cout << "2. 회원가입"<<endl;
-        cout << "3. 파트너 로그인"<<endl;
+        cout << "3. 파트너 로그인" << endl;
+        cout << "4. 프로그램 종료"<<endl;
         cout << "선택 : ";
         cin >> res;
 
-        if (res == 1 )
+        if (res == 1)
             GeneralLogin();
-        else if (res == 2 )
+        else if (res == 2)
             Signup();
-        else if (res == 3 )
-            PartnerLogin();
-        else
+        else if (res == 3)
+        {
+            int en_num;
+            en_num = PartnerLogin();
+            if (en_num == EN_PIZZA_STORE_LOGIN_SUCCESS)
+                return EN_PIZZA_STORE_LOGIN_SUCCESS;
+
+            else if (en_num == EN_INGREDIENT_STORE_LOGIN_SUCCESS)
+                return EN_INGREDIENT_STORE_LOGIN_SUCCESS;
+        }
+
+        else if (res == 4)
+        {
             bExit = true;
+            break;
+
+        }
+            
+        else
             tryAgain();
     }
 }
@@ -97,21 +113,13 @@ void LoginController::GeneralLogin()
     }
 }
 
-void LoginController::PartnerLogin()
+EN_Login_Success LoginController::PartnerLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PartnerLogin Start");
-    std::string pizzaID = "aa";
-    std::string pizzaPW = "aa";
-    string ingredientID = "bb";
-    string ingredientPW = "bb";
-    ParAcc pizzaLogin(pizzaID, pizzaPW);
-    ParAcc ingredientLogin(ingredientID, ingredientPW);
-    _ParAcc.push_back(pizzaLogin);
-    _ParAcc.push_back(ingredientLogin);
+    
 
-    // 로그인 성공시 
-    IngredientStore ingredient;
-    PizzaStore pizza(&ingredient);
+
+    
 
     //while ( true )
     {
@@ -123,36 +131,37 @@ void LoginController::PartnerLogin()
         cin >> pw;
         
 
-        for( const ParAcc& acc : _ParAcc ) // For Each, 범위 기반 for
-        {
-            if (acc.ID == pizzaID && acc.PW == pizzaPW )
+        //for( const ParAcc& acc : _ParAcc ) // For Each, 범위 기반 for
+        //{
+            if (id == "aa" && pw == "aa" )
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
-
-                pizza.MainUI();
+                return EN_PIZZA_STORE_LOGIN_SUCCESS;
+               
 
             }
-            else if (acc.ID == ingredientID && acc.PW == ingredientPW )
+            else if (id == "bb" && pw == "bb" )
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
-                //ingredient.SelectMenu();
+                return EN_INGREDIENT_STORE_LOGIN_SUCCESS;
+                
 
             }
 
-            else if (acc.ID == pizzaID && acc.PW != pizzaPW | acc.ID == ingredientID && acc.PW != ingredientPW )
+            else if (id == "aa" && pw != "aa" || id == "bb" && pw != "bb" )
             {
                 LoginAlarm(EN_WRONG_PW);
-                break;
+                //break;
             }
 
-            else if (acc.ID != pizzaID || acc.ID != ingredientID)
+            else if (id != "aa" || id != "bb")
             {
 
                 LoginAlarm(EN_NOT_EXIST_ACC);
-                break;
+                //break;
 
             }
-        }
+        //}
             
        
     }

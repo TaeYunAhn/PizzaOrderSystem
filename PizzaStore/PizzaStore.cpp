@@ -25,7 +25,7 @@ PizzaStore::PizzaStore(IngredientStore *ingre)
 }
 
 
-void PizzaStore::MainUI()
+bool PizzaStore::MainUI()
 {
     while ( true )
     {
@@ -38,20 +38,16 @@ void PizzaStore::MainUI()
         cout << "5. 이전 메뉴"<<endl;
         cout << "선택 : ";
         cin >> res;
-        if (res == 1 )
+        if (res == 1)
             addMenu();
-        else if (res == 2 )
+        else if (res == 2)
             modifyMenu();
-        else if (res == 3 )
+        else if (res == 3)
             deleteMenu();
-        else if (res == 4 )
+        else if (res == 4)
             confirmSales();
-        else if ( res == 5 )
-        {
-            break;
-            LoginController login;
-            login.MainUI();
-        }
+        else if (res == 5)
+            return true;
 
         else
             tryAgain();
@@ -183,7 +179,7 @@ void PizzaStore::confirmSales()
 
 void PizzaStore::tryAgain()
 {
-
+    cout << "다시 시도해 주세요";
 }
 
 

@@ -139,7 +139,7 @@ void IngredientStore::deleteIngredient()
 }
 
 
-void IngredientStore::SelectMenu()
+bool IngredientStore::SelectMenu()
 {
     while ( true )
     {
@@ -152,6 +152,7 @@ void IngredientStore::SelectMenu()
         cout << "2. 재료 수정" << endl;
         cout << "3. 재료 삭제" << endl;
         cout << "4. 재고 확인" << endl;
+        cout << "5. 이전 메뉴" << endl;
         cout << "선택 : ";
         cin >> sel;
         cout << "\n";
@@ -190,9 +191,16 @@ void IngredientStore::SelectMenu()
         }
         break;
 
+        case 5:
+        {
+            return true;
+        }
+        break;
+        
         default:
             break;
         }
+        
     }
 }
 }
