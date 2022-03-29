@@ -188,7 +188,7 @@ void LoginController::Signup()
                 continue;
             }
         }
-        GenAcc genAcc(id, pw);
+        Acc genAcc(id, pw);
         _GenAcc.push_back(genAcc);
         //FileSave::saveAcc(_GenAcc);
         LoginAlarm(EN_SIGNUP_SUCCESS);

@@ -2,18 +2,27 @@
 #include <vector>
 #include <string>
 #include "IngredientStore.h"
+#include <map>
+
+
+enum EN_PizzaMenu
+{
+    en_Hawaiian = 1,
+    en_Cheese,
+    en_combi,
+    en_Bulgogi,
+    en_Potato,
+};
 
 
 struct PizzaMenu
 {
-    PizzaMenu(const std::string &name, const std::string &Ing, int price, int sales) : 
-                Name(name),  Ingredients(Ing), Price(price), Sales(sales) {}
+    PizzaMenu(const std::string &name, const std::string &Ing, int price) : 
+                Name(name), Ingredients(Ing), Price(price) {}
     ~PizzaMenu() {}
     std::string Name;
     std::string Ingredients;
     int Price;
-    int Sales;
-    
 };
 
 class PizzaStore
@@ -33,8 +42,13 @@ private:
     void ShowPizzaList();
     std::vector<PizzaMenu> GetTotalPizza();
 
+    bool ProcessOrder(EN_PizzaMenu num);
+
+    
+
     IngredientStore *ingreStore;
     std::vector<PizzaMenu> pizzaMenuVector;
+    std::map<std::string, int> pizzaSalesMap;
     //std::map<string, int> ;
     //int totalSales;
 

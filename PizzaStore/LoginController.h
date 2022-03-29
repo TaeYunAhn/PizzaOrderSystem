@@ -18,23 +18,15 @@ enum EN_Login_Success
     EN_INGREDIENT_STORE_LOGIN_SUCCESS,
 };
 
-struct GenAcc
+struct Acc
 {
-    GenAcc() {}
-    GenAcc(std::string _ID, std::string _PW) : ID(_ID), PW(_PW) {}
-    ~GenAcc() {}
+    Acc() {}
+    Acc(std::string _ID, std::string _PW) : ID(_ID), PW(_PW) {}
+    ~Acc() {}
     std::string ID;
     std::string PW;
 };
 
-struct ParAcc
-{
-    ParAcc() {}
-    ParAcc(std::string _ID, std::string _PW) : ID(_ID), PW(_PW) {}
-    ~ParAcc() {}
-    std::string ID;
-    std::string PW;
-};
 
 class LoginController
 {
@@ -52,8 +44,8 @@ private:
     void tryAgain();
     void LoginAlarm(EN_Alarm error);
     
-    std::vector<GenAcc> _GenAcc;
-    std::vector<ParAcc> _ParAcc;
+    std::vector<Acc> _GenAcc;
+    std::vector<Acc> _ParAcc;
 
 };
 

@@ -25,9 +25,10 @@ public:
     ~IngredientStore();
 
     bool SelectMenu();
+    std::vector<ingredient>& GetIngredientList();
+
 
 private:
-    std::vector<ingredient>& GetIngredientList();
     void addIngredient();
     void ShowIngredientList();
     bool writeComponent(std::string &name, int &price, int &stock);
