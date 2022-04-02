@@ -41,8 +41,11 @@ private:
     void tryAgain();
     void ShowPizzaList();
     std::vector<PizzaMenu> GetTotalPizza();
+    void noStock();
 
     bool ProcessOrder(EN_PizzaMenu num);
+
+    int Money = 100000;
 
     
 

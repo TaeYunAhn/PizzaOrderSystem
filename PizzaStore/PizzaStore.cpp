@@ -10,7 +10,8 @@ using namespace std;
 
 PizzaStore::PizzaStore()
 {
-
+    // 파일에 돈 얼마 가지고 있는지 저장해두고 피자 클래스 할당 하면 읽어옴
+    
 }
 
 PizzaStore::~PizzaStore()
@@ -58,31 +59,31 @@ bool PizzaStore::MainUI()
 
 void PizzaStore::addMenu()
 {
-    while ( true )
-    {
-        string Name;
-        string Ingredients;
-        int Price;
-        int Sales = 0;
-        cout << "  <<메뉴 추가>>  "<<endl;
-        cout << "1. 이름 :";
-        cin >> Name;
-        cout << "2. 재료 :";
-        cin >> Ingredients;
-        cout << "3. 가격 :";
-        cin >> Price;
-        cout << endl;
+    //while ( true )
+    //{
+    //    string Name;
+    //    string Ingredients;
+    //    int Price;
+    //    int Sales = 0;
+    //    cout << "  <<메뉴 추가>>  "<<endl;
+    //    cout << "1. 이름 :";
+    //    cin >> Name;
+    //    cout << "2. 재료 :";
+    //    cin >> Ingredients;
+    //    cout << "3. 가격 :";
+    //    cin >> Price;
+    //    cout << endl;
 
-        PizzaMenu pizza(Name, Ingredients, Price);
-        pizzaMenuVector.push_back(pizza);
-        //파일 저장
+    //    PizzaMenu pizza(Name, Ingredients, Price);
+    //    pizzaMenuVector.push_back(pizza);
+    //    //파일 저장
 
-        cout << "추가 되었습니다."<<endl <<endl;
-        CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "addMenu => name(%s) Ingre(%s), Price(%d)", Name.c_str(), Ingredients.c_str(), Price);
+    //    cout << "추가 되었습니다."<<endl <<endl;
+    //    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "addMenu => name(%s) Ingre(%s), Price(%d)", Name.c_str(), Ingredients.c_str(), Price);
 
-        Sleep(500);
-        break;
-    }
+    //    Sleep(500);
+    //    break;
+    //}
     
     
 
@@ -92,53 +93,53 @@ void PizzaStore::addMenu()
 
 void PizzaStore::modifyMenu()
 {
-    while ( true )
-    {
-        EN_PizzaMenu name;
-        string ingredients;
-        int price;
-        int sales = 0;
-        unsigned int sel;
-        cout << "  <<메뉴 수정>>  "<<endl;
-        ShowPizzaList();
-        cout << "재료 번호 선택 : ";
-        cin >> sel;
-        if ( sel > 0 && sel - 1 < pizzaMenuVector.size() )
-        {
-            cout << "피자 이름 : ";
-            cin >> name;
-            //재고 중복되는지 확인
-            //bool find = false;
-            //for (int i = 0 )
-            cout << "재료 리스트 : ";
-            cin >> ingredients;
-            cout << "피자 가격 : ";
-            cin >> price;
-            //cout << "판매 갯수 : ";
-            //cin >> sales;
+    //while ( true )
+    //{
+    //    EN_PizzaMenu name;
+    //    string ingredients;
+    //    int price;
+    //    int sales = 0;
+    //    unsigned int sel;
+    //    cout << "  <<메뉴 수정>>  "<<endl;
+    //    ShowPizzaList();
+    //    cout << "재료 번호 선택 : ";
+    //    cin >> sel;
+    //    if ( sel > 0 && sel - 1 < pizzaMenuVector.size() )
+    //    {
+    //        cout << "피자 이름 : ";
+    //        cin >> name;
+    //        //재고 중복되는지 확인
+    //        //bool find = false;
+    //        //for (int i = 0 )
+    //        cout << "재료 리스트 : ";
+    //        cin >> ingredients;
+    //        cout << "피자 가격 : ";
+    //        cin >> price;
+    //        //cout << "판매 갯수 : ";
+    //        //cin >> sales;
 
-            int num = sel - 1;
-            pizzaMenuVector[num].Name = name;
-            pizzaMenuVector[num].Ingredients = ingredients;
-            pizzaMenuVector[num].Price = price;
-            //pizzaMenuVector[num].Sales = sales;
-            cout << "수정되었습니다." << endl<<endl;
-            CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "addMenu => name(%s) Ingre(%s), Price(%d)", name.c_str(), ingredients.c_str(), price);
-            //파일 쓰기
-            Sleep(500);
-            break;
-        }
-        else
-        {
-            cout << "잘못 입력하였습니다." << endl;
-            continue;
-        }
-    }
+    //        int num = sel - 1;
+    //        pizzaMenuVector[num].Name = name;
+    //        pizzaMenuVector[num].Ingredients = ingredients;
+    //        pizzaMenuVector[num].Price = price;
+    //        //pizzaMenuVector[num].Sales = sales;
+    //        cout << "수정되었습니다." << endl<<endl;
+    //        CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "addMenu => name(%s) Ingre(%s), Price(%d)", name.c_str(), ingredients.c_str(), price);
+    //        //파일 쓰기
+    //        Sleep(500);
+    //        break;
+    //    }
+    //    else
+    //    {
+    //        cout << "잘못 입력하였습니다." << endl;
+    //        continue;
+    //    }
+    //}
 }
 
 void PizzaStore::deleteMenu()
 {
-    while ( true )
+    /*while ( true )
     {
         unsigned int sel;
         cout << "  <<메뉴 삭제>>  "<<endl;
@@ -158,7 +159,7 @@ void PizzaStore::deleteMenu()
             cout << "잘못 입력하였습니다." << endl;
             continue;
         }
-    }
+    }*/
 }
 
 void PizzaStore::confirmSales()
@@ -185,7 +186,7 @@ void PizzaStore::tryAgain()
 
 void PizzaStore::ShowPizzaList()
 {
-    const vector<PizzaMenu>& PizzaList = GetTotalPizza();
+   /* const vector<PizzaMenu>& PizzaList = GetTotalPizza();
 
     cout << "----피자 리스트---- "<<endl;
     for ( int i = 0; i < PizzaList.size(); i++ )
@@ -195,7 +196,7 @@ void PizzaStore::ShowPizzaList()
         cout << "이름 : " << PizzaList[i].Name  << endl;
         cout << "재료 : " << PizzaList[i].Ingredients << endl;
         cout << "가격 : " << PizzaList[i].Price << endl;
-        }
+        }*/
 }
 
 
@@ -208,7 +209,9 @@ vector<PizzaMenu> PizzaStore::GetTotalPizza()
 bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
 {
     bool order = false;
-    pizzaMenuVector;
+    //pizzaMenuVector; // 이제 이건 필요 없음
+    ingreStore; // 여기서 가져와서 하나씩 대조해 보고 재료 있는지 여부 확인
+
     //const vector<PizzaMenu>& PizzaList = GetTotalPizza();
     /*for (int i = 0; ingreStore->GetIngredientList().size(); i++)
     {
@@ -221,7 +224,34 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
     {
     case en_Hawaiian:
     {
+        // 필요한 재료 여기에 쓰고,
+        // 필요한 재료를 ingre 에서 찾고
+        // 모두 확인되면 그때 컨펌 해줘
+        string dough, tomato, cheese, pineapple, pork;
+        vector<string>HawaiianIngre;
+        HawaiianIngre.push_back(dough);
+        HawaiianIngre.push_back(tomato);
+        HawaiianIngre.push_back(cheese);
+        HawaiianIngre.push_back(pineapple);
+        HawaiianIngre.push_back(pork);
+
+        // 이거 데이터를 한번에(한줄에) 넣을 수 있는 방법이 없을까요..
         
+        
+        for (int i = 0; ingreStore->GetIngredientList().size(); i++)
+        {
+            for (int r = 0; HawaiianIngre.size(); r++)
+            {
+                if (ingreStore->GetIngredientList()[i].Name == HawaiianIngre[r])
+                {
+                    if (ingreStore->GetIngredientList()[i].Stock <= 0)
+                        noStock();
+                    ingreStore->GetIngredientList()[i].Stock--;
+                    Money -= ingreStore->GetIngredientList()[i].Price;
+                }
+            }  
+        }
+        order = true;
     }
         break;
     case en_Cheese:
@@ -238,63 +268,55 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
     // 피자가게 메뉴는 5개로 제한, 각 메뉴의 재료와 가격은 정해져있음, -> 상속 
 }
 
-
-
-class Pizza {
-private:
-    string name;
-    vector<string>ingredient;
-    int price;
-public:
-    Pizza(string _name, vector<string> _ingredient, int _price) : name(_name), ingredient(_ingredient), price(_price) {}
-    void getup()
-    {
-        cout << "기상!" << endl;
-    }
-    void sleep()
-    {
-        cout << "취침!" << endl;
-    }
-    void eat()
-    {
-        cout << "식사!" << endl;
-    }
-    void study()
-    {
-        cout << "공부!" << endl;
-    }
-    void showInfo()
-    {
-        cout << "이름: " << name << endl;
-        cout << "재료: " << ingredient << endl;
-        cout << "가격: " << price << endl;
-    }
-};
-
-class Student : public Hawaiian {
-private:
-    char school[30];
-public:
-    Student(int _age, char* _name, char* _hobby, char* _school) : Hawaiian(_age, _name, _hobby)
-    {
-        strcpy(school, _school);
-    }
-    void schoolInfo()
-    {
-        showInfo();
-        cout << "소속 학교: " << school << endl;
-    }
-};
-
-int main()
+void PizzaStore::noStock()
 {
-    Student stu(18, "김철수", "프로그래밍", "자바고등학교");
-
-    stu.schoolInfo();
-    stu.getup();
-    stu.eat();
-    stu.study();
-    stu.sleep();
-
-    return 0;
+    cout << "재료 부족으로 인해 피자를 주문 할 수 없습니다." << endl;
 }
+
+
+//대충 이런식으로?
+//class Pizza //: public Hawaiian {
+//{
+//private:
+//    string name;
+//    string ingredient;
+//    int price;
+//public:
+//    Pizza(string _name, string _ingredient, int _price) : name(_name), ingredient(_ingredient), price(_price) {}
+//    //Pizza(string _name, string _ingredient, int _price) : Hawaiian(_name, _ingredient, _price) {}
+//    void showInfo()
+//    {
+//        cout << "이름: " << name << endl;
+//        cout << "재료: " << ingredient << endl;
+//        cout << "가격: " << price << endl;
+//    }
+//
+//};
+
+//class Student : public Hawaiian {
+//private:
+//    char school[30];
+//public:
+//    Student(int _age, char* _name, char* _hobby, char* _school) : Hawaiian(_age, _name, _hobby)
+//    {
+//        strcpy(school, _school);
+//    }
+//    void schoolInfo()
+//    {
+//        showInfo();
+//        cout << "소속 학교: " << school << endl;
+//    }
+//};
+//
+//int main()
+//{
+//    Student stu(18, "김철수", "프로그래밍", "자바고등학교");
+//
+//    stu.schoolInfo();
+//    stu.getup();
+//    stu.eat();
+//    stu.study();
+//    stu.sleep();
+//
+//    return 0;
+//}
