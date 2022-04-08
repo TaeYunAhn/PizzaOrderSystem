@@ -26,7 +26,7 @@ public:
 
     bool SelectMenu();
     std::vector<ingredient>& GetIngredientList();
-
+    
 
 private:
     void addIngredient();
@@ -37,5 +37,6 @@ private:
 
 private:
     std::vector<ingredient> ingredientVector;
+    //std::map<string, int> stocks;
 };
 

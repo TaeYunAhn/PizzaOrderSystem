@@ -19,26 +19,42 @@ LoginController::~LoginController()
     
 }
 
-EN_Login_Success LoginController::MainUI()
+
+
+EN_LOGIN_TYPE LoginController::MainUI()
 {
     bool bExit = false;
     while ( !bExit )
     {
         int res;
         cout << "  << 로그인 선택 >>  "<<endl;
-        cout << "1. 로그인"<<endl;
+        cout << "1. 손님 로그인"<<endl;
         cout << "2. 회원가입"<<endl;
-        cout << "3. 파트너 로그인" << endl;
-        cout << "4. 프로그램 종료"<<endl;
+        cout << "3. 피자가게 로그인" << endl;
+        cout << "4. 재료가게 로그인" << endl;
+        cout << "5. 프로그램 종료" << endl;
         cout << "선택 : ";
         cin >> res;
 
-        if (res == 1)
+        switch (res)
+        {
+        case EN_LOGIN:  return GeneralLogin(); 
+        case EN_SIGNUP: return Signup(); 
+        case EN_PIZZA_LOGIN: return PizzaLogin();
+        case EN_INGRE_LOGIN: return IngreLogin();
+        case EN_SHUTDOWN: return ShutDown();
+
+        default:
+            break;
+        }
+
+        if (res == EN_LOGIN)
             GeneralLogin();
         else if (res == 2)
             Signup();
         else if (res == 3)
         {
+
             int en_num;
             en_num = PartnerLogin();
             if (en_num == EN_PIZZA_STORE_LOGIN_SUCCESS)
@@ -72,6 +88,16 @@ void LoginController::GeneralLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
+
+        for (const Acc& acc : _GenAcc)
+        {
+            if (acc.ID == id && acc.PW == pw)
+            {
+                LoginAlarm(EN_LOGIN_SUCCESS);
+                //손님 UI 로 이동
+                break;
+            }
+        }
 
         int i = 0;
         while (i < _GenAcc.size())
@@ -113,7 +139,7 @@ void LoginController::GeneralLogin()
     }
 }
 
-EN_Login_Success LoginController::PartnerLogin()
+EN_LOGIN_TYPE LoginController::PartnerLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PartnerLogin Start");
     

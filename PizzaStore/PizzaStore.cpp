@@ -11,6 +11,8 @@ using namespace std;
 PizzaStore::PizzaStore()
 {
     // 파일에 돈 얼마 가지고 있는지 저장해두고 피자 클래스 할당 하면 읽어옴
+
+    //pushbackMenu();
     
 }
 
@@ -23,6 +25,11 @@ PizzaStore::PizzaStore(IngredientStore *ingre)
 {
      
      ingreStore = ingre;
+}
+
+void PizzaStore::pushbackMenu()
+{
+
 }
 
 
@@ -186,7 +193,7 @@ void PizzaStore::tryAgain()
 
 void PizzaStore::ShowPizzaList()
 {
-   /* const vector<PizzaMenu>& PizzaList = GetTotalPizza();
+    const vector<PizzaMenu>& PizzaList = GetTotalPizza();
 
     cout << "----피자 리스트---- "<<endl;
     for ( int i = 0; i < PizzaList.size(); i++ )
@@ -196,7 +203,7 @@ void PizzaStore::ShowPizzaList()
         cout << "이름 : " << PizzaList[i].Name  << endl;
         cout << "재료 : " << PizzaList[i].Ingredients << endl;
         cout << "가격 : " << PizzaList[i].Price << endl;
-        }*/
+        }
 }
 
 
@@ -220,6 +227,42 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
     }*/
     // 비긴 부터 for 문 돌면서 재료 찾고, 
     //ingredientVector.erase(ingredientVector.begin() + sel - 1);
+
+    string dough, tomato, cheese, pineapple, pork, olive, beef, potato, bacon;
+
+    Pizza pizza = Factory::MakePizza(num);
+    bool bIng = true;
+    for (const string& in : pizza.getAllIngredients())
+    {
+        if (!ingreStore->GetIngredient(in))
+        {
+            bIng = false;
+            break;
+        }
+    }
+
+    if (!bIng)
+    {
+        // error 재료가 없습니다
+        //return
+    }
+
+    // 매출 업 
+    myMoney += pizza.getPrice();
+    
+    
+
+    PizzaMenu Cheese(en_Cheese, 13000, dough, tomato, cheese);
+    pizzaMenuVector.push_back(Cheese);
+
+    PizzaMenu Combi(en_Combi, 13000, dough, tomato, cheese, pork, olive);
+    pizzaMenuVector.push_back(Combi);
+
+    PizzaMenu Bulgogi(en_Bulgogi, 13000, dough, tomato, cheese, olive, beef);
+    pizzaMenuVector.push_back(Bulgogi);
+
+    PizzaMenu Potato(en_Potato, 13000, dough, tomato, cheese, potato, bacon);
+    pizzaMenuVector.push_back(Potato);
     switch (num)
     {
     case en_Hawaiian:
@@ -227,42 +270,124 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
         // 필요한 재료 여기에 쓰고,
         // 필요한 재료를 ingre 에서 찾고
         // 모두 확인되면 그때 컨펌 해줘
-        string dough, tomato, cheese, pineapple, pork;
-        vector<string>HawaiianIngre;
-        HawaiianIngre.push_back(dough);
-        HawaiianIngre.push_back(tomato);
-        HawaiianIngre.push_back(cheese);
-        HawaiianIngre.push_back(pineapple);
-        HawaiianIngre.push_back(pork);
-
-        // 이거 데이터를 한번에(한줄에) 넣을 수 있는 방법이 없을까요..
-        
-        
         for (int i = 0; ingreStore->GetIngredientList().size(); i++)
         {
-            for (int r = 0; HawaiianIngre.size(); r++)
+            //현재 가변인자 때문에 Hawaiian.Ingredients[j] 여기가 비어있음..
+            for (int j = 0; Hawaiian.Ingredients[j]; j++)
             {
-                if (ingreStore->GetIngredientList()[i].Name == HawaiianIngre[r])
+                if (ingreStore->GetIngredientList()[i].Name == Hawaiian.Ingredients[j])
                 {
                     if (ingreStore->GetIngredientList()[i].Stock <= 0)
                         noStock();
                     ingreStore->GetIngredientList()[i].Stock--;
-                    Money -= ingreStore->GetIngredientList()[i].Price;
+                    //Money -= ingreStore->GetIngredientList()[i].Price;
                 }
             }  
         }
+
+        bool bIng = true;
+        for (const string& in : hawaiian.getAllIngredients())
+        {
+            if (!ingreStore->GetIngredient(in))
+            {
+                bIng = false;
+                break;
+            }
+        }
+
+        if (!bIng)
+        {
+            // error 재료가 없습니다
+            //return
+        }
+
+        // 매출 업 
+        myMoney += hawaiianPizza.getPrice();
+
         order = true;
     }
         break;
     case en_Cheese:
+    {
+        for (int i = 0; ingreStore->GetIngredientList().size(); i++)
+        {
+            //현재 가변인자 때문에 Hawaiian.Ingredients[j] 여기가 비어있음..
+            for (int j = 0; Cheese.Ingredients[j]; j++)
+            {
+                if (ingreStore->GetIngredientList()[i].Name == Cheese.Ingredients[j])
+                {
+                    if (ingreStore->GetIngredientList()[i].Stock <= 0)
+                        noStock();
+                    ingreStore->GetIngredientList()[i].Stock--;
+                    //Money -= ingreStore->GetIngredientList()[i].Price;
+                }
+            }
+        }
+        order = true;
+    }
+        
         break;
-    case en_combi:
+    case en_Combi:
+    {
+        for (int i = 0; ingreStore->GetIngredientList().size(); i++)
+        {
+            //현재 가변인자 때문에 Hawaiian.Ingredients[j] 여기가 비어있음..
+            for (int j = 0; Combi.Ingredients[j]; j++)
+            {
+                if (ingreStore->GetIngredientList()[i].Name == Combi.Ingredients[j])
+                {
+                    if (ingreStore->GetIngredientList()[i].Stock <= 0)
+                        noStock();
+                    ingreStore->GetIngredientList()[i].Stock--;
+                    //Money -= ingreStore->GetIngredientList()[i].Price;
+                }
+            }
+        }
+    }
+        
+        order = true;
         break;
     case en_Bulgogi:
+    {
+        for (int i = 0; ingreStore->GetIngredientList().size(); i++)
+        {
+            //현재 가변인자 때문에 Hawaiian.Ingredients[j] 여기가 비어있음..
+            for (int j = 0; Bulgogi.Ingredients[j]; j++)
+            {
+                if (ingreStore->GetIngredientList()[i].Name == Bulgogi.Ingredients[j])
+                {
+                    if (ingreStore->GetIngredientList()[i].Stock <= 0)
+                        noStock();
+                    ingreStore->GetIngredientList()[i].Stock--;
+                    //Money -= ingreStore->GetIngredientList()[i].Price;
+                }
+            }
+        }
+        order = true;
+    }
         break;
     case en_Potato:
+    {
+        for (int i = 0; ingreStore->GetIngredientList().size(); i++)
+        {
+            //현재 가변인자 때문에 Hawaiian.Ingredients[j] 여기가 비어있음..
+            for (int j = 0; Potato.Ingredients[j]; j++)
+            {
+                if (ingreStore->GetIngredientList()[i].Name == Potato.Ingredients[j])
+                {
+                    if (ingreStore->GetIngredientList()[i].Stock <= 0)
+                        noStock();
+                    ingreStore->GetIngredientList()[i].Stock--;
+                    //Money -= ingreStore->GetIngredientList()[i].Price;
+                }
+            }
+
+        }
+        order = true;
+    }
         break;
     default:
+        tryAgain();
         break;
     }
     // 피자가게 메뉴는 5개로 제한, 각 메뉴의 재료와 가격은 정해져있음, -> 상속 
@@ -270,7 +395,12 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
 
 void PizzaStore::noStock()
 {
-    cout << "재료 부족으로 인해 피자를 주문 할 수 없습니다." << endl;
+    cout << "재료 부족으로 피자를 주문 할 수 없습니다." << endl;
+}
+
+bool PizzaStore::accountIngredient(string PizzaName)
+{
+
 }
 
 

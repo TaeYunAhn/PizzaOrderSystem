@@ -2,28 +2,14 @@
 #include "LoginController.h"
 #include "Logger.h"
 #include "PizzaStore.h"
+#include "MainController.h"
 
 int main()
 {
+
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Main Start");
-    while (true)
-    {
-        int res;
-        LoginController login;
-        res = login.MainUI();
-
-        if (res == EN_PIZZA_STORE_LOGIN_SUCCESS || res == EN_INGREDIENT_STORE_LOGIN_SUCCESS)
-        {
-            IngredientStore ingredient;
-            PizzaStore pizza(&ingredient);
-            if (res == EN_PIZZA_STORE_LOGIN_SUCCESS)
-                pizza.MainUI();
-            else if (res == EN_INGREDIENT_STORE_LOGIN_SUCCESS)
-                ingredient.SelectMenu();
-        }
-
-        
-    }
+    MainController m;
+    m.run();
     
     
 
