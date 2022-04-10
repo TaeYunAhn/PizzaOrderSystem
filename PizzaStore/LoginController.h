@@ -22,10 +22,12 @@ enum EN_Login_Result
 
 enum EN_LOGIN_TYPE
 {
+    EN_PIZZA_STORE_SUC,
+    EN_INGREDIENT_SUC,
     EN_CUSTOMER_SUC,
-    EN_CUSTOMER_SUC,
-    EN_CUSTOMER_SUC,
-    EN_FAIL,
+    EN_PW_FAIL,
+    EN_NO_EXIST_ACC,
+    EN_SHUTDOWN,
 };
 
 enum EN_LOGIN_MAIN_SEL
@@ -52,13 +54,16 @@ class LoginController
 public:
     LoginController();
     ~LoginController();
-    EN_LOGIN_TYPE MainUI();
-    EN_LOGIN_TYPE login();
+    //EN_LOGIN_TYPE MainUI();
+    EN_LOGIN_TYPE Login();
 private:
 
-    void GeneralLogin();
-    void Signup();
+    EN_LOGIN_TYPE GeneralLogin();
+    EN_LOGIN_TYPE Signup();
     //EN_Login_Success PartnerLogin();
+    EN_LOGIN_TYPE PizzaLogin();
+    EN_LOGIN_TYPE IngreLogin();
+    EN_LOGIN_TYPE ShutDown();
 
     void tryAgain();
     void LoginAlarm(EN_Alarm error);

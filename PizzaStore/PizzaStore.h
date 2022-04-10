@@ -17,14 +17,12 @@ enum EN_PizzaMenu
 
 
 
-class Pizza
+class PizzaMenu //선생님은 Pizza 로 바꾸셨었음.. 왜지?
 {
     PizzaMenu(const EN_PizzaMenu& name, int price, const std::vector<std::string>& ingredients) :
-        Name(name),  Price(price), Ingredients(ingredients) {}
+        Name(name), Price(price), Ingredients(ingredients) {}
 
-    //PizzaMenu(const EN_PizzaMenu &name,  int price, const std::string ...) {} // :
-    //     // 이부분도 가변인자를 쓰게되면 문제가 되는데 문법적 오류를 어떻게 수정해야 할까요??
-    //    //Name(name),  Price(price), Ingredients(...) {}
+    
 
     ~PizzaMenu() {}
     
@@ -37,12 +35,12 @@ private:
 };
 
 
-class HawaiianPizza : public Pizza
+class HawaiianPizza : public PizzaMenu
 {
     HawaiianPizza()
     {
         std::vector<std::string> ingredients = { "dough", "cheese" };
-        Pizza(en_Hawaiian, 13000, ingredients);
+        PizzaMenu(en_Hawaiian, 13000, ingredients);
     }
 
 };

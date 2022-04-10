@@ -15,58 +15,45 @@ MainController::~MainController()
 
 }
 
+
+//EN_PIZZA_STORE_SUC,
+//EN_INGREDIENT_SUC,
+//EN_CUSTOMER_SUC,
+//EN_FAIL,
+
 bool MainController::run()
 {
     LoginController loginController;
-    int res = loginController.login();
+    int res = loginController.Login();
 
     switch (res)
     {
-    case EN_PIZZA_STORE_LOGIN_SUCCESS:
+    case EN_PIZZA_STORE_SUC:
     {
         IngredientStore ingredient;
         PizzaStore pizza(&ingredient);
         pizza.MainUI();
     }
-    case EN_INGREDIENT_STORE_LOGIN_SUCCESS:
+    case EN_INGREDIENT_SUC:
     {
         IngredientStore ingredient;
         ingredient.SelectMenu();
     }
-    case EN_CUSTOMER_LOGIN_SUCCESS:
+    case EN_CUSTOMER_SUC:
     {
         IngredientStore ingredient;
         PizzaStore pizza(&ingredient);
         Customer customer(pizza);
         customer.start();
     }
+    case EN_SHUTDOWN: return false;
     break;
     default:
         // error
         break;
     }
 
-    IngredientStore ingredient;
-    PizzaStore pizza(&ingredient);
-
-    if (res == EN_PIZZA_STORE_LOGIN_SUCCESS || res == EN_INGREDIENT_STORE_LOGIN_SUCCESS)
-    {
-        IngredientStore ingredient;
-        PizzaStore pizza(&ingredient);
-        if (res == EN_PIZZA_STORE_LOGIN_SUCCESS)
-            pizza.MainUI();
-        else if (res == EN_INGREDIENT_STORE_LOGIN_SUCCESS)
-            ingredient.SelectMenu();
-    }
-    else if (res == EN_CUSTOMER_LOGIN_SUCCESS)
-    {
-
-        Customer c();
-    }
-    else
-    {
-
-    }
+    
 }
 
 

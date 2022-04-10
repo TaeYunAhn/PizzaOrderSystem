@@ -21,7 +21,7 @@ LoginController::~LoginController()
 
 
 
-EN_LOGIN_TYPE LoginController::MainUI()
+EN_LOGIN_TYPE LoginController::Login()
 {
     bool bExit = false;
     while ( !bExit )
@@ -38,8 +38,12 @@ EN_LOGIN_TYPE LoginController::MainUI()
 
         switch (res)
         {
-        case EN_LOGIN:  return GeneralLogin(); 
-        case EN_SIGNUP: return Signup(); 
+        case EN_LOGIN:  return GeneralLogin();
+        case EN_SIGNUP:
+        {
+            Signup();
+            break;
+        }
         case EN_PIZZA_LOGIN: return PizzaLogin();
         case EN_INGRE_LOGIN: return IngreLogin();
         case EN_SHUTDOWN: return ShutDown();
@@ -47,7 +51,7 @@ EN_LOGIN_TYPE LoginController::MainUI()
         default:
             break;
         }
-
+        /*
         if (res == EN_LOGIN)
             GeneralLogin();
         else if (res == 2)
@@ -72,11 +76,19 @@ EN_LOGIN_TYPE LoginController::MainUI()
         }
             
         else
-            tryAgain();
+            tryAgain();*/
     }
 }
 
-void LoginController::GeneralLogin()
+
+
+
+//EN_PIZZA_STORE_SUC,
+//EN_INGREDIENT_SUC,
+//EN_CUSTOMER_SUC,
+//EN_FAIL,
+
+EN_LOGIN_TYPE LoginController::GeneralLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
 
@@ -94,51 +106,34 @@ void LoginController::GeneralLogin()
             if (acc.ID == id && acc.PW == pw)
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
-                //손님 UI 로 이동
-                break;
+                
+                return EN_PIZZA_STORE_SUC;
+                //여기서 ENUM을 리턴하면 메인 컨트롤러에선 어떤 아이디가 로그인 됐는지 어떻게 알 수 있을까요??
+                //메인 플로우에 아이디를 알려줘야 할텐데.. 
             }
-        }
-
-        int i = 0;
-        while (i < _GenAcc.size())
-        {
-
-
-
-            if (_GenAcc[i].ID == id && _GenAcc[i].PW == pw)
-            {
-                LoginAlarm(EN_LOGIN_SUCCESS);
-                //손님 UI 로 이동
-                break;
-            }
-
-            else if (_GenAcc[i].ID == id && _GenAcc[i].PW != pw)
+            else if (acc.ID == id && acc.PW != pw)
             {
                 LoginAlarm(EN_WRONG_PW);
-                break;
+                return EN_PW_FAIL;
             }
-
-            else if (_GenAcc[i].ID != id)
+            else
             {
-                i++;
-                if (i == _GenAcc.size())
-                {
-                    LoginAlarm(EN_NOT_EXIST_ACC);
-                    break;
-
-                }
+                LoginAlarm(EN_NOT_EXIST_ACC);
+                return EN_NO_EXIST_ACC;
             }
-            break;
+        }
+        break;
             
             //if (res == EN_LOGIN_SUCCESS)
             //{
             //    //cout << "LOGIN_SUCCESS" << endl;
             //    MainController::MailStart(ID);
             //}
-        }
+        
     }
 }
 
+/*
 EN_LOGIN_TYPE LoginController::PartnerLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PartnerLogin Start");
@@ -192,9 +187,10 @@ EN_LOGIN_TYPE LoginController::PartnerLogin()
        
     }
     
-}
+    
+} */
 
-void LoginController::Signup()
+EN_LOGIN_TYPE LoginController::Signup()
 {
     while ( true )
     {
