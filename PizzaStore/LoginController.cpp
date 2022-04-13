@@ -22,7 +22,6 @@ LoginController::~LoginController()
 
 EN_LOGIN_TYPE LoginController::Login(string& __id)
 {
-    
     system("CLS");
     while ( true )
     {
@@ -35,43 +34,25 @@ EN_LOGIN_TYPE LoginController::Login(string& __id)
         cout << "5. 프로그램 종료" << endl;
         cout << "선택 : ";
         cin >> res;
-        
+
         switch (res)
         {
         case EN_LOGIN:  
-        {
-
-            std::string id = __id;
-            EN_LOGIN_TYPE CustomerRet = CustomerLogin(id);
-            __id = id;
-            return CustomerRet;
-        }
+            return CustomerLogin(__id);
         case EN_SIGNUP:
-        {
             Signup();
-            continue;
-            //return GeneralLogin();
-        }
+            break;
         case EN_PIZZA_LOGIN: 
             return PizzaLogin();
         case EN_INGRE_LOGIN: 
             return IngreLogin();
         case EN_SHUT_DOWN: 
-        {
-            break;
-            
-        }
+            return ShutDown();
         default:
             break;
         }
-        
     }
-    return ShutDown();
 }
-
-
-
-
 
 EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
 {
@@ -88,6 +69,9 @@ EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
         cin >> id;
         cout << "PW : ";
         cin >> pw;
+
+        if (_GenAcc.empty())
+            return EN_SHUTDOWN;
 
         for (const Acc& acc : _GenAcc)
         {
@@ -126,10 +110,6 @@ EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
             }
             
         }
-        
-            
-            
-        
     }
     return ShutDown();
 }
@@ -137,8 +117,6 @@ EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
 EN_LOGIN_TYPE LoginController::PizzaLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PizzaStoreLogin Start");
-
-
 
     system("CLS");
 
@@ -150,8 +128,6 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
-
-
        
         if (id == "aa" && pw == "aa")
         {
@@ -159,11 +135,7 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
             Sleep(500);
             system("CLS");
             return EN_PIZZA_STORE_SUC;
-
-
         }
-        
-
         else if (id == "aa" && pw != "aa")
         {
             LoginAlarm(EN_WRONG_PW);
@@ -172,7 +144,6 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
             return EN_PW_FAIL;
            
         }
-
         else if (id != "aa")
         {
 
@@ -180,14 +151,10 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
             Sleep(500);
             system("CLS");
             return EN_NO_EXIST_ACC;
-            
-
         }
-       
-
-
     }
 }
+
 EN_LOGIN_TYPE LoginController::IngreLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "IngreLogin Start");

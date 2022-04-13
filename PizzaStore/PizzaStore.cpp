@@ -204,6 +204,10 @@ void PizzaStore::ShowPizzaList()
         cout << "재료 : " << PizzaList[i].Ingredients << endl;
         cout << "가격 : " << PizzaList[i].Price << endl;
     }*/
+
+
+
+    Pizza* pizza = new Hawaiian();
 }
 
 
@@ -215,6 +219,15 @@ vector<EN_PizzaMenu> PizzaStore::GetTotalPizza()
 
 bool PizzaStore::ProcessOrder(EN_PizzaMenu menu)
 {
+    if (menu == en_Hawaiian)
+    {
+        Hawaiian h;
+        h.showInfo();
+    }
+
+    // 상속을 써야하는 이유는 패턴 프로그래밍이 들어가는 경우 부터(다형성)
+    // 재료가게에 피자 or 피자 타입을 넘겨줘서 재료를 가져온다. 이 때 다형성 써보자
+    // 그 이후 팩토리 or 다른 패턴을 써서 다형성 활용
     return true;
 
     //bool order = false;

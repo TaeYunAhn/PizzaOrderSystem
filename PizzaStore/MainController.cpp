@@ -1,14 +1,22 @@
 #include "MainController.h"
-#include "LoginController.h"
-#include "IngredientStore.h"
-#include "PizzaStore.h"
-#include "Customer.h"
 
 
+//class A {
+//public:
+//    A(int a) {}
+//};
+//
+//class B : public A
+//{
+//    B() : A(3)
+//    {
+//        //A(3);
+//    }
+//};
+// C++ 클래스 이니셜라이져 & ㅊ++ 상속 생성자 & 디폴트 생성자
 
 MainController::MainController()
 {
-
 }
 
 MainController::~MainController()
@@ -19,35 +27,31 @@ MainController::~MainController()
 
 bool MainController::run()
 {
+    std::string id;
+    LoginController loginController;
+    IngredientStore ingredient;
+    PizzaStore Pizza(&ingredient);
+
     while (true)
     {
-        std::string id;
-        LoginController loginController;
         EN_LOGIN_TYPE res = loginController.Login(id);
-
         switch (res)
         {
         case EN_PIZZA_STORE_SUC:
         {
             system("cls");
-            IngredientStore ingredient;
-            PizzaStore pizza(&ingredient);
-            pizza.RunPizzaStore();
+            Pizza.RunPizzaStore();
             continue;
         }
         case EN_INGREDIENT_SUC:
         {
             system("cls");
-            IngredientStore ingredient;
             ingredient.RunIngredientStore();
             continue;
         }
         case EN_CUSTOMER_SUC:
         {   
-            
             system("cls");
-            IngredientStore ingredient;
-            PizzaStore Pizza(&ingredient);
             Customer customer(&Pizza);
             customer.RunCustomer(id);
             continue;

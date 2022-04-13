@@ -8,12 +8,11 @@ public:
     Customer(PizzaStore* Pizza);
     ~Customer();
 
-    PizzaStore *PiStore;
     
     bool RunCustomer(std::string& __id);
 
 private:
-
+    PizzaStore* PiStore;
     
 };
 

@@ -78,7 +78,7 @@ bool FileSave::saveIngredient(const std::vector<ingredient>& ingredientVector)
     {
         sprintf(num1, "%s,%d,%d\n", ingredientVector[i].Name.c_str(), ingredientVector[i].Price, ingredientVector[i].Stock);
         //fputs((ingredientVector[i].Name + "," + itoa(ingredientVector[i].Price, num1, 10)+ "," + itoa(ingredientVector[i].Stock, num2, 10) + "\n").c_str(), fd);
-        fputs(num1, stdin);
+        fputs(num1, fd);
     }
     
     fclose(fd);
