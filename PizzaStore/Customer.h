@@ -9,9 +9,10 @@ public:
     ~Customer();
 
     PizzaStore *PiStore;
+    
+    bool RunCustomer(std::string& __id);
 
 private:
-    bool MainUI();
 
     
 };

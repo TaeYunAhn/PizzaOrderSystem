@@ -139,7 +139,7 @@ void IngredientStore::deleteIngredient()
 }
 
 
-bool IngredientStore::SelectMenu()
+bool IngredientStore::RunIngredientStore()
 {
     while ( true )
     {
@@ -162,18 +162,21 @@ bool IngredientStore::SelectMenu()
         case 1:
         {
         {
+                system("cls");
             addIngredient(); 
         }
         break;
 
         case 2:
         {
+            system("cls");
             modifyIngredient();
         }
         break;
 
         case 3:
         {
+            system("cls");
             deleteIngredient();
         }
         break;

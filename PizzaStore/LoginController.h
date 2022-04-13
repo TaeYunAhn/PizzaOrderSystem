@@ -25,6 +25,7 @@ enum EN_LOGIN_TYPE
     EN_PIZZA_STORE_SUC,
     EN_INGREDIENT_SUC,
     EN_CUSTOMER_SUC,
+    EN_SIGNUP_SUC,
     EN_PW_FAIL,
     EN_NO_EXIST_ACC,
     EN_SHUTDOWN,
@@ -36,7 +37,7 @@ enum EN_LOGIN_MAIN_SEL
     EN_SIGNUP,
     EN_PIZZA_LOGIN,
     EN_INGRE_LOGIN,
-    EN_SHUTDOWN,
+    EN_SHUT_DOWN,
 };
 
 struct Acc
@@ -55,21 +56,22 @@ public:
     LoginController();
     ~LoginController();
     //EN_LOGIN_TYPE MainUI();
-    EN_LOGIN_TYPE Login();
-private:
-
-    EN_LOGIN_TYPE GeneralLogin();
-    EN_LOGIN_TYPE Signup();
-    //EN_Login_Success PartnerLogin();
+    EN_LOGIN_TYPE Login(std::string& __id);
     EN_LOGIN_TYPE PizzaLogin();
     EN_LOGIN_TYPE IngreLogin();
     EN_LOGIN_TYPE ShutDown();
+private:
+
+    EN_LOGIN_TYPE CustomerLogin(std::string& id);
+    EN_LOGIN_TYPE Signup();
+    //EN_Login_Success PartnerLogin();
+    
 
     void tryAgain();
     void LoginAlarm(EN_Alarm error);
+    bool retry();
     
     std::vector<Acc> _GenAcc;
-    std::vector<Acc> _ParAcc;
-
+    std::vector<Acc> AccountList;
 };
 

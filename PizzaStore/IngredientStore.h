@@ -24,7 +24,7 @@ public:
     IngredientStore();
     ~IngredientStore();
 
-    bool SelectMenu();
+    bool RunIngredientStore();
     std::vector<ingredient>& GetIngredientList();
     
 

@@ -140,18 +140,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Customer.h" />
     <ClInclude Include="FileSave.h" />
     <ClInclude Include="IngredientStore.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoginController.h" />
+    <ClInclude Include="MainController.h" />
     <ClInclude Include="PizzaStore.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Customer.cpp" />
     <ClCompile Include="FileSave.cpp" />
     <ClCompile Include="IngredientStore.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="LoginController.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainController.cpp" />
     <ClCompile Include="PizzaStore.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

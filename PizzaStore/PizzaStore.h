@@ -3,6 +3,7 @@
 #include <string>
 #include "IngredientStore.h"
 #include <map>
+#include <iostream>
 
 
 
@@ -17,25 +18,47 @@ enum EN_PizzaMenu
 
 
 
-class PizzaMenu //선생님은 Pizza 로 바꾸셨었음.. 왜지?
-{
-    PizzaMenu(const EN_PizzaMenu& name, int price, const std::vector<std::string>& ingredients) :
-        Name(name), Price(price), Ingredients(ingredients) {}
+//class Pizza 
+//{
+//public:
+//    Pizza(const EN_PizzaMenu& name, int price, const std::vector<std::string>& ingredients) :
+//        Name(name), Price(price), Ingredients(ingredients) {}
+//
+//    
+//
+//    ~Pizza() {}
+//    
+//    std::vector<std::string> getAllIngredients();
+//    void showInfo()
+//    {
+//        std::cout << "이름: " << Name << std::endl;
+//        std::cout << "재료: " << Ingredients << std::endl;
+//        std::cout << "가격: " << Price << std::endl;
+//    }
+//
+//
+//
+//private:
+//    EN_PizzaMenu Name;
+//    std::vector<std::string> Ingredients;
+//    int Price;
+//};
 
-    
+//class Hawaiian : public Pizza
+//{
+//private:
+//    string name;
+//    string ingredient;
+//    int price;
+//public:
+//    Hawaiian(std::string _name, std::string _ingredient, int _price) : name(_name), ingredient(_ingredient), price(_price) {}
+//    //Pizza(string _name, string _ingredient, int _price) : Hawaiian(_name, _ingredient, _price) {}
+//    
+//
+//};
 
-    ~PizzaMenu() {}
-    
-    std::vector<std::string> getAllIngredients();
 
-private:
-    EN_PizzaMenu Name;
-    std::vector<std::string> Ingredients;
-    int Price;
-};
-
-
-class HawaiianPizza : public PizzaMenu
+/*class HawaiianPizza : public PizzaMenu
 {
     HawaiianPizza()
     {
@@ -43,7 +66,7 @@ class HawaiianPizza : public PizzaMenu
         PizzaMenu(en_Hawaiian, 13000, ingredients);
     }
 
-};
+};*/
 
 class PizzaStore
 {
@@ -51,10 +74,10 @@ public:
     PizzaStore();
     PizzaStore(IngredientStore*);
     ~PizzaStore();
-    bool MainUI();
+    bool RunPizzaStore();
     void tryAgain();
     void ShowPizzaList();
-    bool ProcessOrder(EN_PizzaMenu num);
+    bool ProcessOrder(EN_PizzaMenu menu);
 
 private:
     void addMenu();
@@ -65,7 +88,7 @@ private:
     bool accountIngredient(std::string PizzaName);
     
     
-    std::vector<PizzaMenu> GetTotalPizza();
+    std::vector<EN_PizzaMenu> GetTotalPizza();
     void noStock();
 
    
@@ -75,7 +98,7 @@ private:
     
 
     IngredientStore *ingreStore;
-    std::vector<PizzaMenu> pizzaMenuVector;
+    std::vector<EN_PizzaMenu> pizzaMenuVector;
     //std::map<EN_PizzaMenu, std::vector<std::string>> pizzaIngreMap;
     //std::vector<PizzaMenu> pizzaIngreVecotr;
 

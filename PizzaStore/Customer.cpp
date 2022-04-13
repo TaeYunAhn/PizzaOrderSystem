@@ -20,20 +20,21 @@ Customer::~Customer()
 }
 
 
-bool Customer::MainUI()
+bool Customer::RunCustomer(string &__id)
 {
     while (true)
     {
         int res = 0;
-        cout << "  << 메뉴 >>  " << endl;
-        cout << "1. 주문 하기" << endl;
+        cout << "  << " << __id << "의" << " 메뉴 >> " << endl;
+        cout << "1. 주문" << endl;
         cout << "2. 주문 이력 확인" << endl;
-        cout << "3. 프로그램 종료" << endl;
+        cout << "3. 로그아웃" << endl;
         
         cout << "선택 : ";
         cin >> res;
         if (res == 1)
         {
+            system("cls");
             int sel;
             cout << "  <<메뉴 선택>>  " << endl;
             PiStore->ShowPizzaList();
@@ -46,13 +47,15 @@ bool Customer::MainUI()
         }
         else if (res == 2)
         {
+            system("cls");
 
         }
-        else if (res == 5)
-            return true;
+        else if (res == 3)
+            break;
 
         else
             PiStore->tryAgain();
 
     }
+    return false;
 }

@@ -4,6 +4,7 @@
 #include "PizzaStore.h"
 #include "IngredientStore.h"
 #include "Logger.h"
+#include <Windows.h>
 using namespace std;
 
 
@@ -19,12 +20,11 @@ LoginController::~LoginController()
     
 }
 
-
-
-EN_LOGIN_TYPE LoginController::Login()
+EN_LOGIN_TYPE LoginController::Login(string& __id)
 {
-    bool bExit = false;
-    while ( !bExit )
+    
+    system("CLS");
+    while ( true )
     {
         int res;
         cout << "  << 로그인 선택 >>  "<<endl;
@@ -35,63 +35,51 @@ EN_LOGIN_TYPE LoginController::Login()
         cout << "5. 프로그램 종료" << endl;
         cout << "선택 : ";
         cin >> res;
-
+        
         switch (res)
         {
-        case EN_LOGIN:  return GeneralLogin();
+        case EN_LOGIN:  
+        {
+
+            std::string id = __id;
+            EN_LOGIN_TYPE CustomerRet = CustomerLogin(id);
+            __id = id;
+            return CustomerRet;
+        }
         case EN_SIGNUP:
         {
             Signup();
-            break;
+            continue;
+            //return GeneralLogin();
         }
-        case EN_PIZZA_LOGIN: return PizzaLogin();
-        case EN_INGRE_LOGIN: return IngreLogin();
-        case EN_SHUTDOWN: return ShutDown();
-
+        case EN_PIZZA_LOGIN: 
+            return PizzaLogin();
+        case EN_INGRE_LOGIN: 
+            return IngreLogin();
+        case EN_SHUT_DOWN: 
+        {
+            break;
+            
+        }
         default:
             break;
         }
-        /*
-        if (res == EN_LOGIN)
-            GeneralLogin();
-        else if (res == 2)
-            Signup();
-        else if (res == 3)
-        {
-
-            int en_num;
-            en_num = PartnerLogin();
-            if (en_num == EN_PIZZA_STORE_LOGIN_SUCCESS)
-                return EN_PIZZA_STORE_LOGIN_SUCCESS;
-
-            else if (en_num == EN_INGREDIENT_STORE_LOGIN_SUCCESS)
-                return EN_INGREDIENT_STORE_LOGIN_SUCCESS;
-        }
-
-        else if (res == 4)
-        {
-            bExit = true;
-            break;
-
-        }
-            
-        else
-            tryAgain();*/
+        
     }
+    return ShutDown();
 }
 
 
 
 
-//EN_PIZZA_STORE_SUC,
-//EN_INGREDIENT_SUC,
-//EN_CUSTOMER_SUC,
-//EN_FAIL,
 
-EN_LOGIN_TYPE LoginController::GeneralLogin()
+EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
+    system("CLS");
 
+    //일단 범위기반 for 문을 돌기 위해 _GenAcc에 쓰레기 값을 넣어줘야 할까요.
+    
     while ( true )
     {
         string id, pw;
@@ -106,92 +94,160 @@ EN_LOGIN_TYPE LoginController::GeneralLogin()
             if (acc.ID == id && acc.PW == pw)
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
+                __id = id;
+                Sleep(500);
+                return EN_CUSTOMER_SUC;
                 
-                return EN_PIZZA_STORE_SUC;
-                //여기서 ENUM을 리턴하면 메인 컨트롤러에선 어떤 아이디가 로그인 됐는지 어떻게 알 수 있을까요??
-                //메인 플로우에 아이디를 알려줘야 할텐데.. 
             }
             else if (acc.ID == id && acc.PW != pw)
             {
                 LoginAlarm(EN_WRONG_PW);
-                return EN_PW_FAIL;
+                Sleep(500);
+                system("CLS");
+                
+                bool ret = retry();
+                if (ret == true)
+                    continue;
+                else
+                    return EN_PW_FAIL;
+                
+                
             }
-            else
+            else if (acc.ID != id)
             {
                 LoginAlarm(EN_NOT_EXIST_ACC);
-                return EN_NO_EXIST_ACC;
+                //Sleep(500);
+                //system("CLS");
+                bool ret = retry();
+                if (ret == true)
+                    continue;
+                else
+                    return EN_PW_FAIL;
             }
-        }
-        break;
             
-            //if (res == EN_LOGIN_SUCCESS)
-            //{
-            //    //cout << "LOGIN_SUCCESS" << endl;
-            //    MainController::MailStart(ID);
-            //}
+        }
+        
+            
+            
         
     }
+    return ShutDown();
 }
 
-/*
-EN_LOGIN_TYPE LoginController::PartnerLogin()
+EN_LOGIN_TYPE LoginController::PizzaLogin()
 {
-    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PartnerLogin Start");
-    
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PizzaStoreLogin Start");
 
 
-    
 
-    //while ( true )
+    system("CLS");
+
+    while ( true )
     {
         string id, pw;
-        cout << "  << 파트너 로그인 >>  "<<endl;
+        cout << "  << PizzaStore Login >>  " << endl;
         cout << "ID : ";
         cin >> id;
         cout << "PW : ";
         cin >> pw;
+
+
+       
+        if (id == "aa" && pw == "aa")
+        {
+            LoginAlarm(EN_LOGIN_SUCCESS);
+            Sleep(500);
+            system("CLS");
+            return EN_PIZZA_STORE_SUC;
+
+
+        }
         
 
-        //for( const ParAcc& acc : _ParAcc ) // For Each, 범위 기반 for
-        //{
-            if (id == "aa" && pw == "aa" )
-            {
-                LoginAlarm(EN_LOGIN_SUCCESS);
-                return EN_PIZZA_STORE_LOGIN_SUCCESS;
-               
+        else if (id == "aa" && pw != "aa")
+        {
+            LoginAlarm(EN_WRONG_PW);
+            Sleep(500);
+            system("CLS");
+            return EN_PW_FAIL;
+           
+        }
 
-            }
-            else if (id == "bb" && pw == "bb" )
-            {
-                LoginAlarm(EN_LOGIN_SUCCESS);
-                return EN_INGREDIENT_STORE_LOGIN_SUCCESS;
-                
+        else if (id != "aa")
+        {
 
-            }
-
-            else if (id == "aa" && pw != "aa" || id == "bb" && pw != "bb" )
-            {
-                LoginAlarm(EN_WRONG_PW);
-                //break;
-            }
-
-            else if (id != "aa" || id != "bb")
-            {
-
-                LoginAlarm(EN_NOT_EXIST_ACC);
-                //break;
-
-            }
-        //}
+            LoginAlarm(EN_NOT_EXIST_ACC);
+            Sleep(500);
+            system("CLS");
+            return EN_NO_EXIST_ACC;
             
+
+        }
        
+
+
     }
+}
+EN_LOGIN_TYPE LoginController::IngreLogin()
+{
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "IngreLogin Start");
+
+
+
     
-    
-} */
+    system("CLS");
+
+    while ( true )
+    {
+        string id, pw;
+        cout << "  << Ingredient Store Login >>  " << endl;
+        cout << "ID : ";
+        cin >> id;
+        cout << "PW : ";
+        cin >> pw;
+
+
+        
+        if (id == "bb" && pw == "bb")
+        {
+            LoginAlarm(EN_LOGIN_SUCCESS);
+            Sleep(500);
+            system("CLS");
+            return EN_INGREDIENT_SUC;
+
+
+        }
+
+        else if (id == "bb" && pw != "bb")
+        {
+            LoginAlarm(EN_WRONG_PW);
+            Sleep(500);
+            system("CLS");
+            return EN_PW_FAIL;
+            
+        }
+
+        else if (id != "bb")
+        {
+
+            LoginAlarm(EN_NOT_EXIST_ACC);
+            Sleep(500);
+            system("CLS");
+            return EN_NO_EXIST_ACC;
+            
+
+        }
+        
+
+
+    }
+}
+
+
 
 EN_LOGIN_TYPE LoginController::Signup()
 {
+    system("CLS");
     while ( true )
     {
         string id, pw;
@@ -214,7 +270,10 @@ EN_LOGIN_TYPE LoginController::Signup()
         _GenAcc.push_back(genAcc);
         //FileSave::saveAcc(_GenAcc);
         LoginAlarm(EN_SIGNUP_SUCCESS);
-        break;
+        return EN_SIGNUP_SUC;
+        Sleep(500);
+        system("CLS");
+        //break;
     }
 }
 
@@ -251,9 +310,34 @@ void LoginController::LoginAlarm(EN_Alarm error)
         cout << "ERROR" << endl
             << endl;
     }
+
 }
 
 void LoginController::tryAgain()
 {
 
+}
+
+bool LoginController::retry()
+{
+    while (true)
+    {
+        string answer;
+        cout << "잘못된 ID 또는 PW 입니다." << endl;
+        cout << "다시 시도하시겠습니까? [y/n]" << endl;
+        cin >> answer;
+        if (answer == "y")
+            return true;
+        else if (answer == "n")
+            return false;
+        else
+            continue;
+    }
+    
+
+}
+
+EN_LOGIN_TYPE LoginController::ShutDown()
+{
+    return EN_SHUTDOWN;
 }

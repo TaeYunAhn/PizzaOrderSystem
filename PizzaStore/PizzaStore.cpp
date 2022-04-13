@@ -33,7 +33,7 @@ void PizzaStore::pushbackMenu()
 }
 
 
-bool PizzaStore::MainUI()
+bool PizzaStore::RunPizzaStore()
 {
     while ( true )
     {
@@ -192,32 +192,78 @@ void PizzaStore::tryAgain()
 
 
 void PizzaStore::ShowPizzaList()
-{
-    const vector<PizzaMenu>& PizzaList = GetTotalPizza();
+{/*
+    const vector<EN_PizzaMenu>& PizzaList = GetTotalPizza();
 
     cout << "----피자 리스트---- "<<endl;
     for ( int i = 0; i < PizzaList.size(); i++ )
     {
 
         cout << i+1 <<"번 "<<endl;
-        cout << "이름 : " << PizzaList[i].Name  << endl;
+        cout << "이름 : " <<  
         cout << "재료 : " << PizzaList[i].Ingredients << endl;
         cout << "가격 : " << PizzaList[i].Price << endl;
-        }
+    }*/
 }
 
 
 
-vector<PizzaMenu> PizzaStore::GetTotalPizza()
+vector<EN_PizzaMenu> PizzaStore::GetTotalPizza()
 {
     return pizzaMenuVector;
 }
 
-bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
+bool PizzaStore::ProcessOrder(EN_PizzaMenu menu)
 {
-    bool order = false;
-    //pizzaMenuVector; // 이제 이건 필요 없음
-    ingreStore; // 여기서 가져와서 하나씩 대조해 보고 재료 있는지 여부 확인
+    return true;
+
+    //bool order = false;
+    ////pizzaMenuVector; // 이제 이건 필요 없음
+    //ingreStore; // 여기서 가져와서 하나씩 대조해 보고 재료 있는지 여부 확인
+    //return true;
+    //
+    //std::vector<std::string> hawaiianIng = { "...", "..." };
+    //Pizza* p = new Hawaiian("Hawaiian", hawaiianIng, 17000);
+    //
+    //P->showInfo();
+    //
+    //p = new Bulgogi();
+    //P->showInfo();
+    //
+    ////Pizza p1 = getPizzaInstance(num);
+    //Pizza p1 = Factory::getPizzaInstance(num);
+    //auto res = ingreStore->GetIngredient(p1);
+    //if (!res)
+    //{
+    //    // error 
+    //    return false;
+    //}
+    //
+    ////  success
+    //return true;
+    //
+    //if (num == en_Hawaiian)
+    //{
+    //    Hawaiian h("Hawaiian", hawaiianIng, 17000);
+    //    p1 = (Pizza)h;
+    //}
+    //else if (num == = )
+    //{
+    //
+    //}
+    //else if (num == = )
+    //{
+    //
+    //}
+    //else if (num == = )
+    //{
+    //
+    //}
+
+
+
+
+    //ingreStore->GetIngredient(p1);
 
     //const vector<PizzaMenu>& PizzaList = GetTotalPizza();
     /*for (int i = 0; ingreStore->GetIngredientList().size(); i++)
@@ -227,7 +273,7 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
     }*/
     // 비긴 부터 for 문 돌면서 재료 찾고, 
     //ingredientVector.erase(ingredientVector.begin() + sel - 1);
-
+/*
     string dough, tomato, cheese, pineapple, pork, olive, beef, potato, bacon;
 
     Pizza pizza = Factory::MakePizza(num);
@@ -246,12 +292,12 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
         // error 재료가 없습니다
         //return
     }
-
+*/
     // 매출 업 
-    myMoney += pizza.getPrice();
+    //myMoney += pizza.getPrice();
     
     
-
+/*
     PizzaMenu Cheese(en_Cheese, 13000, dough, tomato, cheese);
     pizzaMenuVector.push_back(Cheese);
 
@@ -263,6 +309,8 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
 
     PizzaMenu Potato(en_Potato, 13000, dough, tomato, cheese, potato, bacon);
     pizzaMenuVector.push_back(Potato);
+    */
+    /*
     switch (num)
     {
     case en_Hawaiian:
@@ -284,8 +332,10 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
                 }
             }  
         }
+        */
 
-        bool bIng = true;
+        // 상속 사용하는 부분
+        /*bool bIng = true;
         for (const string& in : hawaiian.getAllIngredients())
         {
             if (!ingreStore->GetIngredient(in))
@@ -299,11 +349,11 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
         {
             // error 재료가 없습니다
             //return
-        }
+        }*/
 
         // 매출 업 
-        myMoney += hawaiianPizza.getPrice();
-
+        //myMoney += hawaiianPizza.getPrice();
+/*
         order = true;
     }
         break;
@@ -391,6 +441,7 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu num)
         break;
     }
     // 피자가게 메뉴는 5개로 제한, 각 메뉴의 재료와 가격은 정해져있음, -> 상속 
+    */
 }
 
 void PizzaStore::noStock()
@@ -400,19 +451,19 @@ void PizzaStore::noStock()
 
 bool PizzaStore::accountIngredient(string PizzaName)
 {
-
+    return true;
 }
 
 
 //대충 이런식으로?
-//class Pizza //: public Hawaiian {
+//class Hawaiian : public Pizza
 //{
 //private:
 //    string name;
 //    string ingredient;
 //    int price;
 //public:
-//    Pizza(string _name, string _ingredient, int _price) : name(_name), ingredient(_ingredient), price(_price) {}
+//    Hawaiian(string _name, string _ingredient, int _price) : name(_name), ingredient(_ingredient), price(_price) { Pizza()}
 //    //Pizza(string _name, string _ingredient, int _price) : Hawaiian(_name, _ingredient, _price) {}
 //    void showInfo()
 //    {
