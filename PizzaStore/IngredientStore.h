@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
+#include "PizzaDef.h"
 
 enum EN_RESULT
 {
@@ -11,11 +13,10 @@ enum EN_RESULT
 
 struct ingredient
 {
-    ingredient(const std::string &name, int price, int stock) : Name(name), Price(price), Stock(stock) {}
+    ingredient(const std::string &name, int price, int stock) : Name(name), Price(price) {}
     ~ingredient() {}
     std::string Name;
     int Price;
-    int Stock;
 };
 
 class IngredientStore
@@ -26,6 +27,7 @@ public:
 
     bool RunIngredientStore();
     std::vector<ingredient>& GetIngredientList();
+    bool checkIngredients(vector<string> ingredients, int cost);
     
 
 private:
@@ -37,6 +39,7 @@ private:
 
 private:
     std::vector<ingredient> ingredientVector;
+    std::map<ingredient, int> ingredientMap;
     //std::map<string, int> stocks;
 };
 

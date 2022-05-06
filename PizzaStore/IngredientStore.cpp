@@ -19,6 +19,15 @@ IngredientStore::~IngredientStore()
 
 }
 
+bool IngredientStore::checkIngredients(vector<string> ingredients, int cost)
+{
+    for (int i = 0; i < ingredients.size(); ++i)
+    {
+        vector<string>::iterator itr = ingredientMap[ingredients[i]].find();
+    }
+    
+}
+
 void IngredientStore::ShowIngredientList()
 {
     const vector<ingredient>& totalIng = GetIngredientList();
