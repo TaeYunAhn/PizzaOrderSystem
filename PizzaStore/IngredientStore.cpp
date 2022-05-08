@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <map>
 #include <Windows.h>
 #include "FileSave.h"
 #include "IngredientStore.h"
@@ -12,6 +13,8 @@ IngredientStore::IngredientStore()
     vector<ingredient> data;
     if (FileSave::readIngredient(data ))
         ingredientVector = data;
+
+    addIngredientStock();
 }
 
 IngredientStore::~IngredientStore()
@@ -19,13 +22,44 @@ IngredientStore::~IngredientStore()
 
 }
 
-bool IngredientStore::checkIngredients(vector<string> ingredients, int cost)
+void IngredientStore::addIngredientStock()
 {
-    for (int i = 0; i < ingredients.size(); ++i)
+    ingredientStockMap["dough"] = 10;
+    ingredientStockMap["tomato"] = 10;
+    ingredientStockMap["cheese"] = 10;
+    ingredientStockMap["pineapple"] = 3;
+    ingredientStockMap["pork"] = 5;
+    ingredientStockMap["bulgogi"] = 10;
+    ingredientStockMap["onion"] = 10;
+    ingredientStockMap["mozzallela"] = 10;
+    ingredientStockMap["olive oil"] = 10;
+    ingredientStockMap["ham"] = 10;
+    ingredientStockMap["salami"] = 10;
+    ingredientStockMap["potato"] = 10;
+    ingredientStockMap["pasli"] = 10;
+}
+
+
+
+
+
+EN_STOCK_CHECK IngredientStore::checkIngredients(vector<string> ingredients, int cost)
+{
+   
+    for (int i = ingredientStockMap.begin(); i != ingredientStockMap.end(); i++)
     {
-        vector<string>::iterator itr = ingredientMap[ingredients[i]].find();
+        int stock = ingredientStockMap[ingredients];
+        if (stock <= 0)
+        {
+            return en_NotEnough;
+        }
+        else
+        {
+            stock--;
+            return en_Confirm;
+        }   
     }
-    
+    return en_WrongIngreName;
 }
 
 void IngredientStore::ShowIngredientList()
@@ -39,7 +73,7 @@ void IngredientStore::ShowIngredientList()
         cout << i+1 <<"번 "<<endl;
         cout << "이름 : " << totalIng[i].Name  << endl;
         cout << "가격 : " << totalIng[i].Price << endl;
-        cout << "재고 : " << totalIng[i].Stock << endl<<endl;;
+        cout << "재고 : " << ingredientStockMap[totalIng[i].Name] << endl<<endl;;
     }
     
     
@@ -53,16 +87,16 @@ vector<ingredient>& IngredientStore::GetIngredientList()
 
 bool IngredientStore::writeComponent(string &Name, int &Price, int &Stock)
 {
-    cout << "재료 이름 : ";
-    cin >> Name;
-    //재고 중복되는지 확인
-    //bool find = false;
-    //for (int i = 0 )
-    cout << "재료 가격 : ";
-    cin >> Price;
-    cout << "재고 갯수 : ";
-    cin >> Stock;
-    return true;
+    //cout << "재료 이름 : ";
+    //cin >> Name;
+    ////재고 중복되는지 확인
+    ////bool find = false;
+    ////for (int i = 0 )
+    //cout << "재료 가격 : ";
+    //cin >> Price;
+    //cout << "재고 갯수 : ";
+    //cin >> Stock;
+    //return true;
 
     //if (*name.empty() || *name.length() >= 20 || *price == 0 || stock==0 )
     //{   
@@ -70,7 +104,7 @@ bool IngredientStore::writeComponent(string &Name, int &Price, int &Stock)
     //    Sleep(500);
     //    return false;
     //}
-    //return true;
+    return true;
 }
 
 

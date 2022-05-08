@@ -259,6 +259,9 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
 
     int cost = 0;
     Pizza* pizza = makePizza(menu);
+    //일단 메뉴를 넘겨 줘.
+    // 메뉴(key)에 맞는 ingre(val) 확인해
+    // check 함수에서 하나씩 stock 확인
     if (!ingreStore->checkIngredients(pizza->getIngredients(), cost))
     {
         return false;
