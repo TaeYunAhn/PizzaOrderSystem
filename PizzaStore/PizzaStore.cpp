@@ -251,6 +251,9 @@ EN_PizzaMenu PizzaStore::getingreList(EN_PizzaMenu menu)
 
 bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
 {
+    CLogger* logger = CLogger::getInstance();
+    logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);
+
     // 피자를 만들고 해당 피자의 재료 리스트를 재료가게에 넘겨줌 
 
     // 재료가게에서 재료 가져오기
@@ -259,16 +262,38 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
 
     int cost = 0;
     Pizza* pizza = makePizza(menu);
+
+
     //일단 메뉴를 넘겨 줘.
     // 메뉴(key)에 맞는 ingre(val) 확인해
     // check 함수에서 하나씩 stock 확인
-    if (!ingreStore->checkIngredients(pizza->getIngredients(), cost))
+
+    for (const auto& i : pizza->getIngredients())
+    {
+        int partialCost = 0;
+        if (!ingreStore->checkIngredients(i, partialCost))
+        {
+            logger->write(enError, __LINE__, __FUNCTION__, "Failed to check Ingredients(%s)", i.c_str());
+            return false;
+        }
+
+        logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s, partialCost: %d", (int)menu, i.c_str(), partialCost);
+
+        cost += partialCost;
+    }
+    
+    logger->write(enInfo, __LINE__, __FUNCTION__, "Total cost: %d", cost);
+
+    /*if (!ingreStore->checkIngredients(pizza->getIngredients(), cost))
     {
         return false;
-    }
+    }*/
 
     Money -= cost;
     Money += pizza->getPrice();
+
+    logger->write(enInfo, __LINE__, __FUNCTION__, "Money: %d", Money);
+
 
     auto itr = pizzaSalesMap.find(menu);
     if (itr == pizzaSalesMap.end())
@@ -280,6 +305,9 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
     {
        itr->second += pizza->getPrice();
     }
+
+    logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza Sales(%d, %d)", (int)menu, pizzaSalesMap[menu]);
+
 
     //if (pizzaSalesMap.count(menu) == 0)
     //{
@@ -293,6 +321,7 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
 
     // out 대신 auto p 같은걸로 받아서 예외처리 한번 더? 
     //Money += out->getPrice();
+    logger->write(enInfo, __LINE__, __FUNCTION__, "END");
     return true;
 
     // 상속을 써야하는 이유는 패턴 프로그래밍이 들어가는 경우 부터(다형성)
@@ -305,7 +334,7 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
 
 void PizzaStore::noStock()
 {
-    cout << "재료 부족으로 피자를 주문 할 수 없습니다." << endl;
+    //cout << "재료 부족으로 피자를 주문 할 수 없습니다." << endl;
 }
 
 bool PizzaStore::accountIngredient(string PizzaName)

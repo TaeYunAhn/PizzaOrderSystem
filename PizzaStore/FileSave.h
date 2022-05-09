@@ -5,8 +5,8 @@
 class FileSave
 {
 public:
-    static bool readIngredient(std::vector<ingredient>& ingredientVector);
-    static bool saveIngredient(const std::vector<ingredient>& ingredientVector);
+    static bool readIngredient(std::map<Ingredient, int>& ingredientStockMap);
+    static bool saveIngredient(const std::map<Ingredient, int>& ingredientStockMap);
 
 };
 

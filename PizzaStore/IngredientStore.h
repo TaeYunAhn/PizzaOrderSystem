@@ -18,12 +18,13 @@ enum EN_STOCK_CHECK
     en_WrongIngreName,
 };
 
-struct ingredient
+struct Ingredient
 {
-    ingredient(const std::string &name, int price) : Name(name), Price(price) {}
-    ~ingredient() {}
-    std::string Name;
-    int Price;
+    Ingredient() {}
+    Ingredient(const std::string &n, int p) : name(n), price(p) {}
+    ~Ingredient() {}
+    std::string name;
+    int price;
 };
 
 class IngredientStore
@@ -33,8 +34,7 @@ public:
     ~IngredientStore();
 
     bool RunIngredientStore();
-    std::vector<ingredient>& GetIngredientList();
-    EN_STOCK_CHECK checkIngredients(vector<string> ingredients, int cost);
+    EN_STOCK_CHECK checkIngredients(std::string ingredients, int cost);
     
 
 private:
@@ -46,8 +46,8 @@ private:
     void addIngredientStock();
 
 private:
-    std::vector<ingredient> ingredientVector;
-    std::map<ingredient, int> ingredientStockMap;
+    //std::vector<Ingredient> ingredientVector;
+    std::map<Ingredient, int> ingredientStockMap;
     //std::map<string, int> stocks;
 };
 
