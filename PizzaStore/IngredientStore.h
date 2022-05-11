@@ -34,7 +34,7 @@ public:
     ~IngredientStore();
 
     bool RunIngredientStore();
-    EN_STOCK_CHECK checkIngredients(std::string ingredients, int cost);
+    EN_STOCK_CHECK checkIngredients(std::string ingredients, int &cost);
     
 
 private:
@@ -46,7 +46,7 @@ private:
     void addIngredientStock();
 
 private:
-    //std::vector<Ingredient> ingredientVector;
+    std::vector<Ingredient> ingredientVector;
     std::map<Ingredient, int> ingredientStockMap;
     //std::map<string, int> stocks;
 };

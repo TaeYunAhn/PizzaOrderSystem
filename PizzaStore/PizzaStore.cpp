@@ -40,8 +40,7 @@ bool PizzaStore::RunPizzaStore()
         cout << "1. 메뉴 생성"<<endl;
         cout << "2. 메뉴 수정"<<endl;
         cout << "3. 메뉴 삭제"<<endl;
-        cout << "4. 매출 확인"<<endl;
-        cout << "5. 이전 메뉴"<<endl;
+        cout << "4. 이전 메뉴"<<endl;
         cout << "선택 : ";
         cin >> res;
         if (res == 1)
@@ -51,8 +50,6 @@ bool PizzaStore::RunPizzaStore()
         else if (res == 3)
             deleteMenu();
         else if (res == 4)
-            confirmSales();
-        else if (res == 5)
             return true;
 
         else
@@ -167,21 +164,7 @@ void PizzaStore::deleteMenu()
     }*/
 }
 
-void PizzaStore::confirmSales()
-{
-    //ingreStore->getIng();
-    /*const EN_RESULT res = IngredientStore->getIng("고르곤졸라 치즈", 5);
-    switch ( res )
-    {
-    default:
-        break;
-    }
 
-    if ( !IngredientStore->getIng("고르곤졸라 치즈", 5) )
-    {
-        "재료가 없습니다.(고르곤졸라)";
-    }*/
-}
 
 void PizzaStore::tryAgain()
 {
@@ -254,19 +237,8 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
     CLogger* logger = CLogger::getInstance();
     logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);
 
-    // 피자를 만들고 해당 피자의 재료 리스트를 재료가게에 넘겨줌 
-
-    // 재료가게에서 재료 가져오기
-    // 피자만들기
-    // 매출up 및 피자 반환
-
     int cost = 0;
     Pizza* pizza = makePizza(menu);
-
-
-    //일단 메뉴를 넘겨 줘.
-    // 메뉴(key)에 맞는 ingre(val) 확인해
-    // check 함수에서 하나씩 stock 확인
 
     for (const auto& i : pizza->getIngredients())
     {
@@ -298,7 +270,6 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
     auto itr = pizzaSalesMap.find(menu);
     if (itr == pizzaSalesMap.end())
     {
-        //pizzaSalesMap[menu] = pizza->getPrice();
         pizzaSalesMap.insert(make_pair(menu, pizza->getPrice()));
     }
     else
@@ -309,18 +280,13 @@ bool PizzaStore::ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/ )
     logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza Sales(%d, %d)", (int)menu, pizzaSalesMap[menu]);
 
 
-    //if (pizzaSalesMap.count(menu) == 0)
-    //{
-    //    //error
-    //    return false;
-    //}
+   
 
     pizzaSalesMap[menu] += pizza->getPrice();
 
     //pizzaSalesMap.insert(make_pair(menu, pizza->getPrice()));
 
-    // out 대신 auto p 같은걸로 받아서 예외처리 한번 더? 
-    //Money += out->getPrice();
+    
     logger->write(enInfo, __LINE__, __FUNCTION__, "END");
     return true;
 

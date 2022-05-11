@@ -91,20 +91,19 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
 
 void IngredientStore::ShowIngredientList()
 {
-    const vector<Ingredient>& totalIng = GetIngredientList();
-
     cout << "----재료 리스트---- " << endl;
-    for (int i = 0; i < totalIng.size(); i++)
+    for (map<Ingredient, int>::iterator itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
     {
 
-        cout << i + 1 << "번 " << endl;
-        cout << "이름 : " << totalIng[i].name << endl;
-        cout << "가격 : " << totalIng[i].price << endl;
-        cout << "재고 : " << ingredientStockMap[totalIng[i].name] << endl << endl;;
+        cout << "이름 : " << itr->first.name << endl;
+        cout << "가격 : " << itr->first.price << endl;
+        cout << "재고 : " << itr->second << endl;
     }
 
 
 }
+
+
 
 bool IngredientStore::writeComponent(string& Name, int& Price, int& Stock)
 {
@@ -142,10 +141,10 @@ void IngredientStore::addIngredient()
         const bool res = writeComponent(Name, Price, Stock);
         if (res == false)
             continue;
-        Ingredient Ingredient(Name, Price, Stock);
+        Ingredient Ingredient(Name, Price);
         ingredientVector.push_back(Ingredient);
         //ingredientVector.emplace_back(name, price, stock);
-        FileSave::saveIngredient(ingredientVector);
+        FileSave::saveIngredient(ingredientStockMap);
         cout << "추가 되었습니다." << endl << endl;
         Sleep(500);
         break;
@@ -170,8 +169,8 @@ void IngredientStore::modifyIngredient()
         if (res == false)
             continue;
         int num = sel - 1;
-        ingredientVector[num].Name = name;
-        ingredientVector[num].Price = price;
+        //ingredientVector[num].Name = name;
+        //ingredientVector[num].Price = price;
         //ingredientVector[num].Stock = stock;
         cout << "수정되었습니다." << endl << endl;
         Sleep(500);

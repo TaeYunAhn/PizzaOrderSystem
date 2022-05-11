@@ -25,7 +25,6 @@ private:
     void addMenu();
     void modifyMenu();
     void deleteMenu();
-    void confirmSales();
     void pushbackMenu();
     bool accountIngredient(std::string PizzaName);
 
