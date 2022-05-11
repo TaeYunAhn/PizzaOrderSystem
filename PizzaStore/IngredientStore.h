@@ -49,5 +49,6 @@ private:
 
 private:
     std::map<Ingredient, int> ingredientStockMap;
+    //std::map<std::string, std::pair<Ingredient, int>> ingredientStockMap;
 };
 

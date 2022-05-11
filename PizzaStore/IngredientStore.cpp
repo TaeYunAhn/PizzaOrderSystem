@@ -70,6 +70,7 @@ void IngredientStore::addIngredient()
 		return;
 	}
 
+    ingredientStockMap[ingredient] = stock;
     FileSave::saveIngredient(ingredientStockMap);
     cout << "추가 되었습니다." << endl << endl;
     Sleep(500);
@@ -97,7 +98,8 @@ void IngredientStore::modifyIngredient()
 		return;
 	}
 
-	FileSave::saveIngredient(ingredientStockMap);
+    ingredientStockMap[ingredient] = stock;
+    FileSave::saveIngredient(ingredientStockMap);
 	cout << "수정 되었습니다." << endl << endl;
 	Sleep(500);
 }

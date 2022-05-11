@@ -49,17 +49,17 @@ void Customer::runCustomer(const string &customer)
 void Customer::doOrder()
 {
 	system("cls");
-	string name;
+	int sel;
 	cout << "  <<메뉴 선택>>  " << endl;
 	PiStore->ShowPizzaList();
-	cout << "피자 이름 : ";
-	cin >> name;
-	const enPizzaMenu pizzaNum = getPizzaNum(name);
+	cout << "피자 선택 : ";
+	cin >> sel;
+	/*const enPizzaMenu pizzaNum = getPizzaNum(name);
 	if (pizzaNum == PIZZA_TOTAL)
 	{
 		cout << "잘못된 입력입니다." << endl;
 		return;
-	}
+	}*/
 
-	PiStore->ProcessOrder(pizzaNum);
+	PiStore->ProcessOrder((enPizzaMenu)sel);
 }

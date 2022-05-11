@@ -59,7 +59,7 @@ void PizzaStore::runPizzaStore()
 
 void PizzaStore::ShowPizzaList()
 {
-    array<string, PIZZA_TOTAL> pizzaName = { "", "cheese", "combi", "hawaiian", "potato", "bulgogi" };
+    array<string, PIZZA_TOTAL> pizzaName = { "", "hawaiian", "cheese", "combi", "bulgogi", "potato" };
     for (int i = 1; i < PIZZA_TOTAL; i++)
     {
         cout << i << ". " << pizzaName[i]<< endl;
@@ -86,7 +86,7 @@ bool PizzaStore::ProcessOrder(enPizzaMenu menu/*, Pizza* out*/ )
 {
     CLogger* logger = CLogger::getInstance();
     logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);
-
+    
     int cost = 0;
     Pizza* pizza = makePizza(menu);
 
@@ -107,7 +107,7 @@ bool PizzaStore::ProcessOrder(enPizzaMenu menu/*, Pizza* out*/ )
 
 	if (balance < cost)
 	{
-		logger->write(enError, __LINE__, __FUNCTION__, "no money(balance = %d, cost = %d)", balance, cost);
+		logger->write(enError, __LINE__, __FUNCTION__, "not enough money(balance = %d, cost = %d)", balance, cost);
 		return false;
 	}
 
