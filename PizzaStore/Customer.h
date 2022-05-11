@@ -1,5 +1,5 @@
 #pragma once
-#include "PizzaStore.h"
+class PizzaStore;
 class Customer
 {
 public:
@@ -8,9 +8,8 @@ public:
     Customer(PizzaStore* Pizza);
     ~Customer();
 
-    
-    bool RunCustomer(std::string& __id);
-
+    void runCustomer(const std::string& customer);
+	void doOrder();
 private:
     PizzaStore* PiStore;
     

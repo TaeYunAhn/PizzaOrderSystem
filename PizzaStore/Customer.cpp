@@ -1,12 +1,10 @@
-#include "Customer.h"
 #include <iostream>
-
-
+#include "PizzaStore.h"
+#include "Customer.h"
 using namespace std;
 
 Customer::Customer()
 {
-
 }
 
 Customer::Customer(PizzaStore* Pizza)
@@ -16,46 +14,52 @@ Customer::Customer(PizzaStore* Pizza)
 
 Customer::~Customer()
 {
-
 }
 
-
-bool Customer::RunCustomer(string &__id)
+void Customer::runCustomer(const string &customer)
 {
     while (true)
     {
-        int res = 0;
-        cout << "  << " << __id << "의" << " 메뉴 >> " << endl;
+		system("cls");
+		int res = 0;
+        cout << "  << " << customer << "의" << " 메뉴 >> " << endl;
         cout << "1. 주문" << endl;
         cout << "2. 주문 이력 확인" << endl;
         cout << "3. 로그아웃" << endl;
         
         cout << "선택 : ";
         cin >> res;
-        if (res == 1)
-        {
-            system("cls");
-            int sel;
-            cout << "  <<메뉴 선택>>  " << endl;
-            PiStore->ShowPizzaList();
-            cout << "피자 번호 : ";
-            cin >> sel;
-            //여기 너무 더러운것 같습니다. 더 좋은 방법 있을까요?
-            
-            PiStore->ProcessOrder((EN_PizzaMenu)sel);
-            
-        }
-        else if (res == 2)
-        {
-            system("cls");
 
-        }
-        else if (res == 3)
-            break;
-
-        else
-            PiStore->tryAgain();
-
+		switch (res)
+		{
+		case 1:
+			doOrder();
+			break;
+		case 2:
+			// ?
+			break;
+		case 3:
+			return;
+		default:
+			break;
+		}
     }
-    return false;
+}
+
+void Customer::doOrder()
+{
+	system("cls");
+	string name;
+	cout << "  <<메뉴 선택>>  " << endl;
+	PiStore->ShowPizzaList();
+	cout << "피자 이름 : ";
+	cin >> name;
+	const enPizzaMenu pizzaNum = getPizzaNum(name);
+	if (pizzaNum == PIZZA_TOTAL)
+	{
+		cout << "잘못된 입력입니다." << endl;
+		return;
+	}
+
+	PiStore->ProcessOrder(pizzaNum);
 }

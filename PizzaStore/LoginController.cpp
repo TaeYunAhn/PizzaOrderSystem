@@ -20,12 +20,12 @@ LoginController::~LoginController()
     
 }
 
-EN_LOGIN_TYPE LoginController::Login(string& __id)
+EN_LOGIN_TYPE LoginController::login(string& __id)
 {
-    system("CLS");
     while ( true )
     {
-        int res;
+		system("CLS");
+		int res;
         cout << "  << 로그인 선택 >>  "<<endl;
         cout << "1. 손님 로그인"<<endl;
         cout << "2. 회원가입"<<endl;
@@ -57,13 +57,13 @@ EN_LOGIN_TYPE LoginController::Login(string& __id)
 EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
-    system("CLS");
 
     //일단 범위기반 for 문을 돌기 위해 _GenAcc에 쓰레기 값을 넣어줘야 할까요.
     
     while ( true )
     {
-        string id, pw;
+		system("CLS");
+		string id, pw;
         cout << "  << 로그인 >>  "<<endl;
         cout << "ID : ";
         cin >> id;
@@ -158,9 +158,6 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
 EN_LOGIN_TYPE LoginController::IngreLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "IngreLogin Start");
-
-
-
     
     system("CLS");
 
@@ -172,8 +169,6 @@ EN_LOGIN_TYPE LoginController::IngreLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
-
-
         
         if (id == "bb" && pw == "bb")
         {
@@ -181,8 +176,6 @@ EN_LOGIN_TYPE LoginController::IngreLogin()
             Sleep(500);
             system("CLS");
             return EN_INGREDIENT_SUC;
-
-
         }
 
         else if (id == "bb" && pw != "bb")
@@ -191,97 +184,59 @@ EN_LOGIN_TYPE LoginController::IngreLogin()
             Sleep(500);
             system("CLS");
             return EN_PW_FAIL;
-            
         }
 
         else if (id != "bb")
         {
-
             LoginAlarm(EN_NOT_EXIST_ACC);
             Sleep(500);
             system("CLS");
             return EN_NO_EXIST_ACC;
-            
-
         }
-        
-
-
     }
 }
 
-
-
-EN_LOGIN_TYPE LoginController::Signup()
+bool LoginController::Signup()
 {
-    system("CLS");
-    while ( true )
+	system("CLS");
+	string id, pw;
+    cout << "  << 회원가입 >>  "<<endl;
+    cout << "ID : ";
+    cin >> id;
+
+    cout << "PW : ";
+    cin >> pw;
+
+    for (int i = 0; i < _GenAcc.size(); i++)
     {
-        string id, pw;
-        cout << "  << 회원가입 >>  "<<endl;
-        cout << "ID : ";
-        cin >> id;
-
-        cout << "PW : ";
-        cin >> pw;
-
-        for (int i = 0; i < _GenAcc.size(); i++)
+        if (_GenAcc[i].ID == id)
         {
-            if (_GenAcc[i].ID == id)
-            {
-                LoginAlarm(EN_EXIST_ALREADY);
-                continue;
-            }
+            LoginAlarm(EN_EXIST_ALREADY);
+			Sleep(500);
+			return false;
         }
-        Acc genAcc(id, pw);
-        _GenAcc.push_back(genAcc);
-        //FileSave::saveAcc(_GenAcc);
-        LoginAlarm(EN_SIGNUP_SUCCESS);
-        return EN_SIGNUP_SUC;
-        Sleep(500);
-        system("CLS");
-        //break;
     }
+    Acc genAcc(id, pw);
+    _GenAcc.push_back(genAcc);
+    LoginAlarm(EN_SIGNUP_SUCCESS);
+	Sleep(500);
+    return true;
 }
 
 void LoginController::LoginAlarm(EN_Alarm error)
 {
     if (error == EN_NOT_EXIST_ACC)
-    {
-        cout << "NOT_EXIST_ACC" << endl
-            << endl;
-    }
+        cout << "NOT_EXIST_ACC" << endl << endl;
     else if (error == EN_LOGIN_SUCCESS)
-    {
-        cout << "LOGIN_SUCCESS" << endl
-            << endl;
-    }
-
+        cout << "LOGIN_SUCCESS" << endl << endl;
     else if (error == EN_WRONG_PW)
-    {
-        cout << "WRONG_PW" << endl
-            << endl;
-    }
+        cout << "WRONG_PW" << endl << endl;
     else if (error == EN_EXIST_ALREADY)
-    {
-        cout << "EXIST_ALREADY" << endl
-            << endl;
-    }
-    else if (error == EN_SIGNUP_SUCCESS)
-    {
-        cout << "SIGNUP_SUCCESS" << endl
-            << endl;
-    }
+        cout << "EXIST_ALREADY" << endl << endl;
+	else if (error == EN_SIGNUP_SUCCESS)
+		cout << "SIGNUP_SUCCESS" << endl << endl;
     else
-    {
-        cout << "ERROR" << endl
-            << endl;
-    }
-
-}
-
-void LoginController::tryAgain()
-{
+        cout << "ERROR" << endl << endl;
 
 }
 

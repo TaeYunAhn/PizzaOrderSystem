@@ -12,9 +12,8 @@ IngredientStore::IngredientStore()
 {
     if (!FileSave::readIngredient(ingredientStockMap))
     {
+		cout << "재료 정보를 가져오는데 실패했습니다." << endl;
     }
-
-    addIngredientStock();
 }
 
 IngredientStore::~IngredientStore()
@@ -22,191 +21,112 @@ IngredientStore::~IngredientStore()
 
 }
 
-void IngredientStore::addIngredientStock()
-{
-    /*ingredientStockMap["dough"] = 10;
-    ingredientStockMap["tomato"] = 10;
-    ingredientStockMap["cheese"] = 10;
-    ingredientStockMap["pineapple"] = 3;
-    ingredientStockMap["pork"] = 5;
-    ingredientStockMap["bulgogi"] = 10;
-    ingredientStockMap["onion"] = 10;
-    ingredientStockMap["mozzallela"] = 10;
-    ingredientStockMap["olive oil"] = 10;
-    ingredientStockMap["ham"] = 10;
-    ingredientStockMap["salami"] = 10;
-    ingredientStockMap["potato"] = 10;
-    ingredientStockMap["pasli"] = 10;*/
-}
-
 EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
 {
-    /* map<Ingredient, int>::iterator itr = std::find_if(ingredientStockMap.begin(), ingredientStockMap.end(), [&ingredients] (const pair<Ingredient, int>& e) {
-         return e.first.name == ingredients;
-     });
-
-     if (itr == ingredientStockMap.end())
-         return en_WrongIngreName;
-     else
-     {
-         if (itr->second <= 0)
-             return en_NotEnough;
-
-         itr->second--;
-         return en_Confirm;
-     }*/
-
-     // find 
-    for (map<Ingredient, int>::iterator itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    for (auto& pairElem : ingredientStockMap)
     {
-        //if 문 
-        if (itr->first.name == ingredients)
+        if (pairElem.first.name == ingredients)
         {
-            int& stock = itr->second;
+            int& stock = pairElem.second;
             if (stock <= 0)
-            {
-                return en_NotEnough;
-            }
+                return NOT_ENOUGH;
             else
             {
                 stock--;
-                cost = itr->first.price;
-                return en_Confirm;
+                cost = pairElem.first.price;
+                return CONFIRM;
             }
         }
-
-        /*int stock = ingredientStockMap[ingredients];
-        if (stock <= 0)
-        {
-            return en_NotEnough;
-        }
-        else
-        {
-            stock--;
-            return en_Confirm;
-        }   */
     }
-    return en_WrongIngreName;
+    return WRONG_NAME;
 }
 
 void IngredientStore::ShowIngredientList()
 {
     cout << "----재료 리스트---- " << endl;
     for (map<Ingredient, int>::iterator itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
-    {
-
-        cout << "이름 : " << itr->first.name << endl;
-        cout << "가격 : " << itr->first.price << endl;
-        cout << "재고 : " << itr->second << endl;
-    }
-
-
+        cout << "이름 : " << itr->first.name << ", " << "가격 : " << itr->first.price << ", " << "재고 : " << itr->second << endl;
 }
-
-
-
-bool IngredientStore::writeComponent(string& Name, int& Price, int& Stock)
-{
-    //cout << "재료 이름 : ";
-    //cin >> Name;
-    ////재고 중복되는지 확인
-    ////bool find = false;
-    ////for (int i = 0 )
-    //cout << "재료 가격 : ";
-    //cin >> Price;
-    //cout << "재고 갯수 : ";
-    //cin >> Stock;
-    //return true;
-
-    //if (*name.empty() || *name.length() >= 20 || *price == 0 || stock==0 )
-    //{   
-    //    cout << "입력값이 잘못되었습니다. 입력값을 확인하세요"<<endl <<endl;
-    //    Sleep(500);
-    //    return false;
-    //}
-    return true;
-}
-
 
 void IngredientStore::addIngredient()
 {
-    while (true)
-    {
-        system("cls");
-        string Name = "";
-        int Price = 0;
-        int Stock = 0;
+    system("cls");
+	cout << "  < 재료 추가 >  " << endl;
+    string name;
+    int price = 0;
+    int stock = 0;
+	cout << "재료 이름 : ";
+	cin >> name;
+	cout << "재료 가격 : ";
+	cin >> price;
+	cout << "재고 갯수 : ";
+	cin >> stock;
 
-        cout << "  < 재료 추가 >  " << endl;
-        const bool res = writeComponent(Name, Price, Stock);
-        if (res == false)
-            continue;
-        Ingredient Ingredient(Name, Price);
-        ingredientVector.push_back(Ingredient);
-        //ingredientVector.emplace_back(name, price, stock);
-        FileSave::saveIngredient(ingredientStockMap);
-        cout << "추가 되었습니다." << endl << endl;
-        Sleep(500);
-        break;
-    }
+	Ingredient ingredient(name, price);
+	if (ingredientStockMap.count(ingredient) > 0)
+	{
+		cout << "[ERROR] 이미 있는 재료입니다.(" + name + ")" << endl;
+		Sleep(500);
+		return;
+	}
+
+    FileSave::saveIngredient(ingredientStockMap);
+    cout << "추가 되었습니다." << endl << endl;
+    Sleep(500);
 }
 
 void IngredientStore::modifyIngredient()
 {
-    while (true)
-    {
-        system("cls");
-        string name;
-        int price;
-        int stock;
-        int sel = 0;
-        bool res;
-        cout << "  < 재료 수정 >  " << endl;
-        ShowIngredientList();
-        cout << "재료 번호 선택 : ";
-        cin >> sel;
-        res = writeComponent(name, price, stock);
-        if (res == false)
-            continue;
-        int num = sel - 1;
-        //ingredientVector[num].Name = name;
-        //ingredientVector[num].Price = price;
-        //ingredientVector[num].Stock = stock;
-        cout << "수정되었습니다." << endl << endl;
-        Sleep(500);
-    }
+	system("cls");
+	cout << "  < 재료 수정 >  " << endl;
+	string name;
+	int price = 0;
+	int stock = 0;
+	cout << "재료 이름 : ";
+	cin >> name;
+	cout << "재료 가격 : ";
+	cin >> price;
+	cout << "재고 갯수 : ";
+	cin >> stock;
+
+	Ingredient ingredient(name, price);
+	if (ingredientStockMap.count(ingredient) == 0)
+	{
+		cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
+		Sleep(500);
+		return;
+	}
+
+	FileSave::saveIngredient(ingredientStockMap);
+	cout << "수정 되었습니다." << endl << endl;
+	Sleep(500);
 }
 
 void IngredientStore::deleteIngredient()
 {
-    while (true)
-    {
+    system("cls");
+    cout << "  < 재료 삭제 >  " << endl;
+	string name;
+    cout << "재료 이름을 입력하세요 : ";
+    cin >> name;
+	if (ingredientStockMap.count(Ingredient(name, 0)) == 0)
+	{
+		cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
+		Sleep(500);
+		return;
+	}
 
-        system("cls");
-        int sel = 0;
-        cout << "  < 재료 삭제 >  " << endl;
-        ShowIngredientList();
-        cout << "재료 번호 선택 : ";
-        cin >> sel;
-        if (sel > ingredientVector.size() + 1)
-        {
-            cout << "없는 번호입니다. 번호를 확인해 주세요" << endl;
-            Sleep(500);
-            continue;
-        }
-        ingredientVector.erase(ingredientVector.begin() + sel - 1);
-        //v.erase(v.begin() + i);
-        cout << "삭제되었습니다." << endl << endl;
 
-    }
+    ingredientStockMap.erase(Ingredient(name, 0));
+    cout << "삭제되었습니다." << endl << endl;
+	Sleep(500);
 }
 
 
-bool IngredientStore::RunIngredientStore()
+bool IngredientStore::runIngredientStore()
 {
     while (true)
     {
-
         system("cls");
 
         int sel = 0;

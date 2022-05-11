@@ -8,42 +8,22 @@
 #include "PizzaDef.h"
 
 class Pizza;
-
 class PizzaStore
 {
 public: 
     PizzaStore();
     PizzaStore(IngredientStore*);
     ~PizzaStore();
-    bool RunPizzaStore();
-    void tryAgain();
+
+    void runPizzaStore();
     void ShowPizzaList();
-    bool ProcessOrder(EN_PizzaMenu menu/*, Pizza* out*/);
-    EN_PizzaMenu getingreList(EN_PizzaMenu menu);
+    bool ProcessOrder(enPizzaMenu menu/*, Pizza* out*/);
 
 private:
-    void addMenu();
-    void modifyMenu();
-    void deleteMenu();
-    void pushbackMenu();
-    bool accountIngredient(std::string PizzaName);
-
-    Pizza* makePizza(EN_PizzaMenu menu);
-    
-    std::vector<EN_PizzaMenu> GetTotalPizza();
-    void noStock();
-
-    int Money = 100000;
+    Pizza* makePizza(enPizzaMenu menu);
+    int balance = 100000;
 
     IngredientStore *ingreStore;
-    //std::vector<EN_PizzaMenu> pizzaMenuVector;
-    //std::map<EN_PizzaMenu, std::vector<std::string>> pizzaIngreMap;
-    //std::vector<PizzaMenu> pizzaIngreVecotr;
-
-    std::map<EN_PizzaMenu, int> pizzaSalesMap;
-    //std::array<std::vector<std::string>, en_TotalNum - 1> ingreList;
-    //std::map<string, int>;
-    //int totalSales;
-
+    std::map<enPizzaMenu, int> pizzaSalesMap;
 };
 

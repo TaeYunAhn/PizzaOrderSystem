@@ -7,7 +7,7 @@
 class Pizza
 {
 public:
-    Pizza(const EN_PizzaMenu& type, int price) :
+    Pizza(const enPizzaMenu& type, int price) :
         Type(type), Price(price) 
     {
         Ingredients.push_back("dough");
@@ -36,7 +36,7 @@ public:
     // virtual 키워드, 가상 함수, 순수 가상 함수, 추상 클래스, 다형성
 
 protected:
-    EN_PizzaMenu Type;
+    enPizzaMenu Type;
     std::vector<std::string> Ingredients;
     int Price;
 };
@@ -44,7 +44,7 @@ protected:
 class HawaiianPizza : public Pizza
 {
 public:
-    HawaiianPizza() : Pizza(en_Hawaiian, 16000)
+    HawaiianPizza() : Pizza(HAWAIIAN_PIZZA, 16000)
     {
         addIngredients();
     }
@@ -53,15 +53,13 @@ public:
     {
         Ingredients.push_back("pineapple");
         Ingredients.push_back("pork");
-        //Ingredients.push_back("");
-        //Ingredients.assign(s.begin(), s.end());
     }
 };
 
 class BulgogiPizza : public Pizza
 {
 public:
-    BulgogiPizza() : Pizza(en_Bulgogi, 20000)
+    BulgogiPizza() : Pizza(BULGOGI_PIZZA, 20000)
     {
         addIngredients();
     }
@@ -77,7 +75,7 @@ public:
 class CheesePizza : public Pizza
 {
 public:
-    CheesePizza() : Pizza(en_Cheese, 20000)
+    CheesePizza() : Pizza(CHEESE_PIZZA, 15000)
     {
         addIngredients();
     }
@@ -92,7 +90,7 @@ public:
 class CombiPizza : public Pizza
 {
 public:
-    CombiPizza() : Pizza(en_Combi, 20000)
+    CombiPizza() : Pizza(COMBINATION_PIZZA, 22000)
     {
         addIngredients();
     }
@@ -107,7 +105,7 @@ public:
 class PotatoPizza : public Pizza
 {
 public:
-    PotatoPizza() : Pizza(en_Potato, 20000)
+    PotatoPizza() : Pizza(POTATO_PIZZA, 18000)
     {
         addIngredients();
     }

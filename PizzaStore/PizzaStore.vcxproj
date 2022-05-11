@@ -146,6 +146,8 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LoginController.h" />
     <ClInclude Include="MainController.h" />
+    <ClInclude Include="Pizza.h" />
+    <ClInclude Include="PizzaDef.h" />
     <ClInclude Include="PizzaStore.h" />
   </ItemGroup>
   <ItemGroup>

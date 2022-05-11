@@ -2,20 +2,19 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "PizzaDef.h"
 
 enum EN_RESULT
 {
-    enSuccess,
-    enNoIng,
-    enNoStock,
+    SUCCESS,
+    NO_INGREDIENT,
+    NO_STOCK,
 };
 
 enum EN_STOCK_CHECK
 {
-    en_NotEnough,
-    en_Confirm,
-    en_WrongIngreName,
+    NOT_ENOUGH,
+    CONFIRM,
+    WRONG_NAME,
 };
 
 struct Ingredient
@@ -38,21 +37,17 @@ public:
     IngredientStore();
     ~IngredientStore();
 
-    bool RunIngredientStore();
+    bool runIngredientStore();
     EN_STOCK_CHECK checkIngredients(std::string ingredients, int &cost);
     
 
 private:
     void addIngredient();
     void ShowIngredientList();
-    bool writeComponent(std::string &name, int &price, int &stock);
     void modifyIngredient();
     void deleteIngredient();
-    void addIngredientStock();
 
 private:
-    std::vector<Ingredient> ingredientVector;
     std::map<Ingredient, int> ingredientStockMap;
-    //std::map<string, int> stocks;
 };
 

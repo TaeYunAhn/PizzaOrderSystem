@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 
-
 enum EN_Alarm
 {
     EN_SIGNUP_SUCCESS,
@@ -14,7 +13,6 @@ enum EN_Alarm
 
 enum EN_Login_Result
 {
-
     EN_PIZZA_STORE_LOGIN_SUCCESS,
     EN_INGREDIENT_STORE_LOGIN_SUCCESS,
     EN_CUSTOMER_LOGIN_SUCCESS,
@@ -55,19 +53,16 @@ class LoginController
 public:
     LoginController();
     ~LoginController();
-    //EN_LOGIN_TYPE MainUI();
-    EN_LOGIN_TYPE Login(std::string& __id);
+    EN_LOGIN_TYPE login(std::string& __id);
     EN_LOGIN_TYPE PizzaLogin();
     EN_LOGIN_TYPE IngreLogin();
     EN_LOGIN_TYPE ShutDown();
 private:
 
     EN_LOGIN_TYPE CustomerLogin(std::string& id);
-    EN_LOGIN_TYPE Signup();
-    //EN_Login_Success PartnerLogin();
+    bool Signup();
     
 
-    void tryAgain();
     void LoginAlarm(EN_Alarm error);
     bool retry();
     
