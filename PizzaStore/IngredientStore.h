@@ -25,6 +25,11 @@ struct Ingredient
     ~Ingredient() {}
     std::string name;
     int price;
+
+    bool operator<(const Ingredient& rhs) const
+    {
+        return name < rhs.name;
+    }
 };
 
 class IngredientStore
