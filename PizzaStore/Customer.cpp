@@ -1,6 +1,7 @@
 #include <iostream>
 #include "PizzaStore.h"
 #include "Customer.h"
+
 using namespace std;
 
 Customer::Customer()
@@ -15,6 +16,7 @@ Customer::Customer(PizzaStore* Pizza)
 Customer::~Customer()
 {
 }
+
 
 void Customer::runCustomer(const string &customer)
 {
@@ -36,8 +38,18 @@ void Customer::runCustomer(const string &customer)
 			doOrder();
 			break;
 		case 2:
-			// ?
+		{
+			for (map<enPizzaMenu, int>::iterator itr = pizzaCount.begin(); itr != pizzaCount.end(); itr++)
+			{
+				cout << "피자 종류 : " << getPizzaName(itr->first) << endl;
+				cout << "주문 횟수 : " << itr->second << "번" << endl
+					<< endl;
+			}
+			bool ret = goBack();
+			if (ret == true)
+				continue;
 			break;
+		}
 		case 3:
 			return;
 		default:
@@ -45,6 +57,40 @@ void Customer::runCustomer(const string &customer)
 		}
     }
 }
+
+
+string Customer::getPizzaName(enPizzaMenu res) 
+{
+	switch (res)
+	{
+	case HAWAIIAN_PIZZA: return "HAWAIIAN PIZZA";	
+	case CHEESE_PIZZA: return "CHEESE PIZZA";	
+	case COMBINATION_PIZZA: return "COMBINATION PIZZA";	
+	case BULGOGI_PIZZA: return "BULGOGI PIZZA";	
+	case POTATO_PIZZA:return "POTATO PIZZA";
+	case PIZZA_TOTAL: return "";	
+	default: break;
+	}
+}
+
+
+bool Customer::goBack()
+{
+	while (true)
+	{
+		string answer;
+
+		cout << "이전 메뉴로 돌아가시겠습니까? [y/n]" << endl;
+		cin >> answer;
+		if (answer == "y")
+			return true;
+		else if (answer == "n")
+			return false;
+		else
+			continue;
+	}
+}
+
 
 void Customer::doOrder()
 {
@@ -62,4 +108,5 @@ void Customer::doOrder()
 	}*/
 
 	PiStore->ProcessOrder((enPizzaMenu)sel);
+	++pizzaCount[(enPizzaMenu)sel];
 }

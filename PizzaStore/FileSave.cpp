@@ -60,6 +60,102 @@ bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMa
     return true;
 }
 
+bool FileSave::readLoginData(std::vector<Acc>& GenAcc)
+{
+    GenAcc.clear();
+    FILE* fd = fopen("LoginController.csv", "r");
+
+    if (!fd)
+        return false;
+
+    char line[512];
+    char* pLine;
+    while (!feof(fd))
+    {
+        pLine = fgets(line, 512, fd);
+        if (!pLine)
+            continue;
+
+        Acc acc;
+        char* ptr = strtok(pLine, ",");
+        acc.ID = ptr;
+
+        ptr = strtok(NULL, ",");
+        if (!ptr)  continue;
+        else acc.PW = ptr;
+    }
+    fclose(fd);
+    return true;
+}
+
+bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
+{
+    FILE* fd = fopen("LoginController.csv", "w");
+
+    if (!fd)
+        return false;
+
+    char num1[256];
+    memset(num1, 0, sizeof(num1));
+
+    for (Acc m : GenAcc)
+    {
+        sprintf(num1, "%s,%s\n", m.ID.c_str(), m.PW.c_str());
+        fputs(num1, fd);
+    }
+
+    fclose(fd);
+    return true;
+}
+
+bool FileSave::readManagerLoginData(std::vector<Acc>& ManagerAcc)
+{
+    ManagerAcc.clear();
+    FILE* fd = fopen("ManagerLoginController.csv", "r");
+
+    if (!fd)
+        return false;
+
+    char line[512];
+    char* pLine;
+    while (!feof(fd))
+    {
+        pLine = fgets(line, 512, fd);
+        if (!pLine)
+            continue;
+
+        Acc acc;
+        char* ptr = strtok(pLine, ",");
+        acc.ID = ptr;
+
+        ptr = strtok(NULL, ",");
+        if (!ptr)  continue;
+        else acc.PW = ptr;
+    }
+    fclose(fd);
+    return true;
+}
+
+bool FileSave::saveManagerLoginData(const std::vector<Acc>& ManagerAcc)
+{
+    FILE* fd = fopen("ManagerLoginController.csv", "w");
+
+    if (!fd)
+        return false;
+
+    char num1[256];
+    memset(num1, 0, sizeof(num1));
+
+    for (Acc m : ManagerAcc)
+    {
+        sprintf(num1, "%s,%s\n", m.ID.c_str(), m.PW.c_str());
+        fputs(num1, fd);
+    }
+
+    fclose(fd);
+    return true;
+}
+
 
 
 

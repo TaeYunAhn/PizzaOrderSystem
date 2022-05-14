@@ -4,15 +4,19 @@
 #include "PizzaStore.h"
 #include "IngredientStore.h"
 #include "Logger.h"
+#include "FileSave.h"
 #include <Windows.h>
 using namespace std;
 
 
 LoginController::LoginController()
 {
-    //vector<Acc> data;
-    //if (FileSaving::readAcc(data))
-    //    emailAccounts = data;
+    vector<Acc> data;
+    if (FileSave::readLoginData(data))
+        _GenAcc = data;
+    vector<Acc> Managerdata;
+    if (FileSave::readManagerLoginData(Managerdata))
+        _ManagerAcc = Managerdata;
 }
 
 LoginController::~LoginController()
@@ -47,7 +51,7 @@ EN_LOGIN_TYPE LoginController::login(string& __id)
         case EN_INGRE_LOGIN: 
             return IngreLogin();
         case EN_SHUT_DOWN: 
-            return ShutDown();
+            return EN_SHUTDOWN;
         default:
             break;
         }
@@ -94,8 +98,6 @@ EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
                     continue;
                 else
                     return EN_PW_FAIL;
-                
-                
             }
             else if (acc.ID != id)
             {
@@ -111,7 +113,7 @@ EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
             
         }
     }
-    return ShutDown();
+    return EN_SHUTDOWN;;
 }
 
 EN_LOGIN_TYPE LoginController::PizzaLogin()
@@ -128,30 +130,31 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
-       
-        if (id == "aa" && pw == "aa")
-        {
-            LoginAlarm(EN_LOGIN_SUCCESS);
-            Sleep(500);
-            system("CLS");
-            return EN_PIZZA_STORE_SUC;
-        }
-        else if (id == "aa" && pw != "aa")
-        {
-            LoginAlarm(EN_WRONG_PW);
-            Sleep(500);
-            system("CLS");
-            return EN_PW_FAIL;
-           
-        }
-        else if (id != "aa")
-        {
 
-            LoginAlarm(EN_NOT_EXIST_ACC);
-            Sleep(500);
-            system("CLS");
-            return EN_NO_EXIST_ACC;
-        }
+        for (const Acc& managerAcc : _ManagerAcc)
+        {
+            if (managerAcc.ID == id && managerAcc.PW == pw)
+            {
+                LoginAlarm(EN_LOGIN_SUCCESS);
+                Sleep(500);
+                system("CLS");
+                return EN_PIZZA_STORE_SUC;
+            }
+            else if (managerAcc.ID == id && managerAcc.PW != pw)
+            {
+                LoginAlarm(EN_WRONG_PW);
+                Sleep(500);
+                system("CLS");
+                return EN_PW_FAIL;
+            }
+            else
+            {
+                LoginAlarm(EN_NOT_EXIST_ACC);
+                Sleep(500);
+                system("CLS");
+                return EN_NO_EXIST_ACC;
+            }
+        }   
     }
 }
 
@@ -169,30 +172,35 @@ EN_LOGIN_TYPE LoginController::IngreLogin()
         cin >> id;
         cout << "PW : ";
         cin >> pw;
+
+        for (const Acc& managerAcc : _ManagerAcc)
+        {
+            if (id == managerAcc.ID && pw == managerAcc.PW)
+            {
+                LoginAlarm(EN_LOGIN_SUCCESS);
+                Sleep(500);
+                system("CLS");
+                return EN_INGREDIENT_SUC;
+            }
+
+            else if (id == managerAcc.ID && pw != managerAcc.PW)
+            {
+                LoginAlarm(EN_WRONG_PW);
+                Sleep(500);
+                system("CLS");
+                return EN_PW_FAIL;
+            }
+
+            else
+            {
+                LoginAlarm(EN_NOT_EXIST_ACC);
+                Sleep(500);
+                system("CLS");
+                return EN_NO_EXIST_ACC;
+            }
+        }
         
-        if (id == "bb" && pw == "bb")
-        {
-            LoginAlarm(EN_LOGIN_SUCCESS);
-            Sleep(500);
-            system("CLS");
-            return EN_INGREDIENT_SUC;
-        }
-
-        else if (id == "bb" && pw != "bb")
-        {
-            LoginAlarm(EN_WRONG_PW);
-            Sleep(500);
-            system("CLS");
-            return EN_PW_FAIL;
-        }
-
-        else if (id != "bb")
-        {
-            LoginAlarm(EN_NOT_EXIST_ACC);
-            Sleep(500);
-            system("CLS");
-            return EN_NO_EXIST_ACC;
-        }
+        
     }
 }
 
@@ -219,6 +227,7 @@ bool LoginController::Signup()
     Acc genAcc(id, pw);
     _GenAcc.push_back(genAcc);
     LoginAlarm(EN_SIGNUP_SUCCESS);
+    FileSave::saveLoginData(_GenAcc);
 	Sleep(500);
     return true;
 }
@@ -257,9 +266,4 @@ bool LoginController::retry()
     }
     
 
-}
-
-EN_LOGIN_TYPE LoginController::ShutDown()
-{
-    return EN_SHUTDOWN;
 }

@@ -11,6 +11,7 @@ enum EN_Alarm
     EN_WRONG_PW,
 };
 
+
 enum EN_Login_Result
 {
     EN_PIZZA_STORE_LOGIN_SUCCESS,
@@ -56,7 +57,7 @@ public:
     EN_LOGIN_TYPE login(std::string& __id);
     EN_LOGIN_TYPE PizzaLogin();
     EN_LOGIN_TYPE IngreLogin();
-    EN_LOGIN_TYPE ShutDown();
+   
 private:
 
     EN_LOGIN_TYPE CustomerLogin(std::string& id);
@@ -67,6 +68,7 @@ private:
     bool retry();
     
     std::vector<Acc> _GenAcc;
+    std::vector<Acc> _ManagerAcc;
     std::vector<Acc> AccountList;
 };
 
