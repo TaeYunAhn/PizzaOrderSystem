@@ -11,12 +11,7 @@ using namespace std;
 
 LoginController::LoginController()
 {
-    vector<Acc> data;
-    if (FileSave::readLoginData(data))
-        _GenAcc = data;
-    vector<Acc> Managerdata;
-    if (FileSave::readManagerLoginData(Managerdata))
-        _ManagerAcc = Managerdata;
+    FileSave::readLoginData(accounts);
 }
 
 LoginController::~LoginController()
@@ -24,7 +19,7 @@ LoginController::~LoginController()
     
 }
 
-EN_LOGIN_TYPE LoginController::login(string& __id)
+EN_LOGIN_RESULT LoginController::login(string& __id)
 {
     while ( true )
     {
@@ -58,7 +53,7 @@ EN_LOGIN_TYPE LoginController::login(string& __id)
     }
 }
 
-EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
+EN_LOGIN_RESULT LoginController::CustomerLogin(std::string& __id)
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
 
@@ -74,49 +69,50 @@ EN_LOGIN_TYPE LoginController::CustomerLogin(std::string& __id)
         cout << "PW : ";
         cin >> pw;
 
-        if (_GenAcc.empty())
+        if (accounts.empty())
             return EN_SHUTDOWN;
 
-        for (const Acc& acc : _GenAcc)
+        for (int i = 0; i != accounts.size(); i++)
         {
-            if (acc.ID == id && acc.PW == pw)
+            if (accounts[i].type != CUSTOMER)
+                continue;
+
+            if (accounts[i].ID == id && accounts[i].PW == pw)
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
                 __id = id;
                 Sleep(500);
                 return EN_CUSTOMER_SUC;
-                
             }
-            else if (acc.ID == id && acc.PW != pw)
+            else if (accounts[i].ID == id && accounts[i].PW != pw)
             {
                 LoginAlarm(EN_WRONG_PW);
                 Sleep(500);
                 system("CLS");
                 
+                //TODO: fix 
                 bool ret = retry();
                 if (ret == true)
                     continue;
                 else
                     return EN_PW_FAIL;
             }
-            else if (acc.ID != id)
-            {
-                LoginAlarm(EN_NOT_EXIST_ACC);
-                //Sleep(500);
-                //system("CLS");
-                bool ret = retry();
-                if (ret == true)
-                    continue;
-                else
-                    return EN_PW_FAIL;
-            }
-            
         }
+
+        LoginAlarm(EN_NOT_EXIST_ACC);
+        //Sleep(500);
+        //system("CLS");
+        bool ret = retry();
+        if (ret == true)
+            continue;
+        else
+            return EN_PW_FAIL;
+
     }
     return EN_SHUTDOWN;;
 }
 
-EN_LOGIN_TYPE LoginController::PizzaLogin()
+EN_LOGIN_RESULT LoginController::PizzaLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PizzaStoreLogin Start");
 
@@ -131,34 +127,41 @@ EN_LOGIN_TYPE LoginController::PizzaLogin()
         cout << "PW : ";
         cin >> pw;
 
-        for (const Acc& managerAcc : _ManagerAcc)
+        for (int i = 0; i != accounts.size(); i++)
         {
-            if (managerAcc.ID == id && managerAcc.PW == pw)
+            const Acc& account = accounts[i];
+
+            if (accounts[i].type != PIZZA)
+                continue;
+
+            if (account.ID == id && account.PW == pw)
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
                 Sleep(500);
                 system("CLS");
                 return EN_PIZZA_STORE_SUC;
             }
-            else if (managerAcc.ID == id && managerAcc.PW != pw)
+            else if (account.ID == id && account.PW != pw)
             {
                 LoginAlarm(EN_WRONG_PW);
                 Sleep(500);
                 system("CLS");
                 return EN_PW_FAIL;
             }
-            else
-            {
-                LoginAlarm(EN_NOT_EXIST_ACC);
-                Sleep(500);
-                system("CLS");
-                return EN_NO_EXIST_ACC;
-            }
-        }   
+        }  
+
+        LoginAlarm(EN_NOT_EXIST_ACC);
+        //Sleep(500);
+        //system("CLS");
+        bool ret = retry();
+        if (ret == true)
+            continue;
+        else
+            return EN_PW_FAIL;
     }
 }
 
-EN_LOGIN_TYPE LoginController::IngreLogin()
+EN_LOGIN_RESULT LoginController::IngreLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "IngreLogin Start");
     
@@ -173,9 +176,14 @@ EN_LOGIN_TYPE LoginController::IngreLogin()
         cout << "PW : ";
         cin >> pw;
 
-        for (const Acc& managerAcc : _ManagerAcc)
+        for (int i = 0; i != accounts.size(); i++)
         {
-            if (id == managerAcc.ID && pw == managerAcc.PW)
+            const auto& account = accounts[i];
+
+            if (accounts[i].type != PIZZA)
+                continue;
+
+            if (id == account.ID && pw == account.PW)
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
                 Sleep(500);
@@ -183,24 +191,23 @@ EN_LOGIN_TYPE LoginController::IngreLogin()
                 return EN_INGREDIENT_SUC;
             }
 
-            else if (id == managerAcc.ID && pw != managerAcc.PW)
+            else if (id == account.ID && pw != account.PW)
             {
                 LoginAlarm(EN_WRONG_PW);
                 Sleep(500);
                 system("CLS");
                 return EN_PW_FAIL;
             }
-
-            else
-            {
-                LoginAlarm(EN_NOT_EXIST_ACC);
-                Sleep(500);
-                system("CLS");
-                return EN_NO_EXIST_ACC;
-            }
         }
-        
-        
+
+        LoginAlarm(EN_NOT_EXIST_ACC);
+        //Sleep(500);
+        //system("CLS");
+        bool ret = retry();
+        if (ret == true)
+            continue;
+        else
+            return EN_PW_FAIL;
     }
 }
 
@@ -215,19 +222,20 @@ bool LoginController::Signup()
     cout << "PW : ";
     cin >> pw;
 
-    for (int i = 0; i < _GenAcc.size(); i++)
+    for (int i = 0; i != accounts.size(); i++)
     {
-        if (_GenAcc[i].ID == id)
+        if (accounts[i].ID == id && accounts[i].type == CUSTOMER)
         {
             LoginAlarm(EN_EXIST_ALREADY);
 			Sleep(500);
 			return false;
         }
     }
-    Acc genAcc(id, pw);
-    _GenAcc.push_back(genAcc);
+
+    Acc acc(id, pw, CUSTOMER);
+    accounts.push_back(acc);
     LoginAlarm(EN_SIGNUP_SUCCESS);
-    FileSave::saveLoginData(_GenAcc);
+    FileSave::saveLoginData(accounts);
 	Sleep(500);
     return true;
 }

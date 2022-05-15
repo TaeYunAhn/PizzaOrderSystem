@@ -17,7 +17,7 @@ bool MainController::run()
 
     while (true)
     {
-        EN_LOGIN_TYPE res = loginController.login(id);
+        EN_LOGIN_RESULT res = loginController.login(id);
         switch (res)
         {
         case EN_PIZZA_STORE_SUC:

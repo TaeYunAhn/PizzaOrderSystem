@@ -9,6 +9,7 @@ enum EN_Alarm
     EN_EXIST_ALREADY,
     EN_NOT_EXIST_ACC,
     EN_WRONG_PW,
+    
 };
 
 
@@ -19,7 +20,7 @@ enum EN_Login_Result
     EN_CUSTOMER_LOGIN_SUCCESS,
 };
 
-enum EN_LOGIN_TYPE
+enum EN_LOGIN_RESULT
 {
     EN_PIZZA_STORE_SUC,
     EN_INGREDIENT_SUC,
@@ -39,13 +40,21 @@ enum EN_LOGIN_MAIN_SEL
     EN_SHUT_DOWN,
 };
 
+enum EN_LOGIN_TYPE
+{
+    CUSTOMER,
+    PIZZA,
+    INGREDIENT
+};
+
 struct Acc
 {
     Acc() {}
-    Acc(std::string _ID, std::string _PW) : ID(_ID), PW(_PW) {}
+    Acc(std::string _ID, std::string _PW, EN_LOGIN_TYPE t) : ID(_ID), PW(_PW), type(t) {}
     ~Acc() {}
     std::string ID;
     std::string PW;
+    EN_LOGIN_TYPE type;
 };
 
 
@@ -54,21 +63,22 @@ class LoginController
 public:
     LoginController();
     ~LoginController();
-    EN_LOGIN_TYPE login(std::string& __id);
-    EN_LOGIN_TYPE PizzaLogin();
-    EN_LOGIN_TYPE IngreLogin();
+    EN_LOGIN_RESULT login(std::string& __id);
+    EN_LOGIN_RESULT PizzaLogin();
+    EN_LOGIN_RESULT IngreLogin();
    
 private:
 
-    EN_LOGIN_TYPE CustomerLogin(std::string& id);
+    EN_LOGIN_RESULT CustomerLogin(std::string& id);
     bool Signup();
     
 
     void LoginAlarm(EN_Alarm error);
     bool retry();
     
-    std::vector<Acc> _GenAcc;
-    std::vector<Acc> _ManagerAcc;
-    std::vector<Acc> AccountList;
+    //std::vector<Acc> _GenAcc;
+    //std::vector<Acc> _ManagerAcc;
+    std::vector<Acc> accounts;
+
 };
 

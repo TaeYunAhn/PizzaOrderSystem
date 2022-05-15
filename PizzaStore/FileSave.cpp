@@ -83,6 +83,13 @@ bool FileSave::readLoginData(std::vector<Acc>& GenAcc)
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
         else acc.PW = ptr;
+
+        ptr = strtok(NULL, ",");
+        if (!ptr)  continue;
+        else acc.type = (EN_LOGIN_TYPE)atoi(ptr);
+
+        if (!acc.ID.empty() && !acc.PW.empty())
+            GenAcc.push_back(acc);
     }
     fclose(fd);
     return true;
@@ -100,7 +107,7 @@ bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
 
     for (Acc m : GenAcc)
     {
-        sprintf(num1, "%s,%s\n", m.ID.c_str(), m.PW.c_str());
+        sprintf(num1, "%s,%s,%d", m.ID.c_str(), m.PW.c_str(), m.type);
         fputs(num1, fd);
     }
 
@@ -131,6 +138,9 @@ bool FileSave::readManagerLoginData(std::vector<Acc>& ManagerAcc)
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
         else acc.PW = ptr;
+        if (!acc.ID.empty() && !acc.PW.empty())
+            ManagerAcc.push_back(acc);
+
     }
     fclose(fd);
     return true;
@@ -148,7 +158,7 @@ bool FileSave::saveManagerLoginData(const std::vector<Acc>& ManagerAcc)
 
     for (Acc m : ManagerAcc)
     {
-        sprintf(num1, "%s,%s\n", m.ID.c_str(), m.PW.c_str());
+        sprintf(num1, "%s,%s", m.ID.c_str(), m.PW.c_str());
         fputs(num1, fd);
     }
 
