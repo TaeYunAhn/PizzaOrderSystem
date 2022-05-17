@@ -15,7 +15,8 @@ Customer::Customer(PizzaStore* Pizza)
 
 Customer::~Customer()
 {
-} 
+}
+ 
 
 void Customer::runCustomer(const string &customer)
 {

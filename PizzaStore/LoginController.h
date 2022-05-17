@@ -69,7 +69,7 @@ public:
    
 private:
 
-    EN_LOGIN_RESULT CustomerLogin(std::string& id);
+    EN_LOGIN_RESULT Login(std::string& id, EN_LOGIN_TYPE type);
     bool Signup();
     
 

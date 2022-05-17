@@ -37,7 +37,7 @@ EN_LOGIN_RESULT LoginController::login(string& __id)
         switch (res)
         {
         case EN_LOGIN:  
-            return CustomerLogin(__id);
+            return Login(__id, CUSTOMER);
         case EN_SIGNUP:
             Signup();
             break;
@@ -53,7 +53,7 @@ EN_LOGIN_RESULT LoginController::login(string& __id)
     }
 }
 
-EN_LOGIN_RESULT LoginController::CustomerLogin(std::string& __id)
+EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
 
@@ -74,7 +74,7 @@ EN_LOGIN_RESULT LoginController::CustomerLogin(std::string& __id)
 
         for (int i = 0; i != accounts.size(); i++)
         {
-            if (accounts[i].type != CUSTOMER)
+            if (accounts[i].type != type)
                 continue;
 
             if (accounts[i].ID == id && accounts[i].PW == pw)
@@ -89,19 +89,14 @@ EN_LOGIN_RESULT LoginController::CustomerLogin(std::string& __id)
                 LoginAlarm(EN_WRONG_PW);
                 Sleep(500);
                 system("CLS");
-                
                 //TODO: fix 
-                bool ret = retry();
-                if (ret == true)
-                    continue;
-                else
-                    return EN_PW_FAIL;
+                break;
+                
             }
         }
 
         LoginAlarm(EN_NOT_EXIST_ACC);
-        //Sleep(500);
-        //system("CLS");
+        
         bool ret = retry();
         if (ret == true)
             continue;
@@ -109,7 +104,7 @@ EN_LOGIN_RESULT LoginController::CustomerLogin(std::string& __id)
             return EN_PW_FAIL;
 
     }
-    return EN_SHUTDOWN;;
+    return EN_SHUTDOWN;
 }
 
 EN_LOGIN_RESULT LoginController::PizzaLogin()
