@@ -18,7 +18,7 @@ IngredientStore::IngredientStore()
 
 IngredientStore::~IngredientStore()
 {
-
+    
 }
 
 EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
@@ -34,9 +34,12 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
             {
                 stock--;
                 cost = pairElem.first.price;
+                FileSave::saveIngredient(ingredientStockMap);
+
                 return CONFIRM;
             }
         }
+
     }
     return WRONG_NAME;
 }
@@ -120,8 +123,10 @@ void IngredientStore::deleteIngredient()
 
 
     ingredientStockMap.erase(Ingredient(name, 0));
+    FileSave::saveIngredient(ingredientStockMap);
     cout << "삭제되었습니다." << endl << endl;
 	Sleep(500);
+
 }
 
 

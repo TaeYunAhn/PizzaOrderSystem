@@ -57,6 +57,14 @@ struct Acc
     EN_LOGIN_TYPE type;
 };
 
+struct Info
+{
+    Info() {}
+    Info(std::string _ID, int _Balance) : ID(_ID), Balance(_Balance) {}
+    std::string ID;
+    int Balance;
+};
+
 
 class LoginController
 {
@@ -64,8 +72,8 @@ public:
     LoginController();
     ~LoginController();
     EN_LOGIN_RESULT login(std::string& __id);
-    EN_LOGIN_RESULT PizzaLogin();
-    EN_LOGIN_RESULT IngreLogin();
+    //EN_LOGIN_RESULT PizzaLogin();
+    //EN_LOGIN_RESULT IngreLogin();
    
 private:
 
@@ -79,6 +87,7 @@ private:
     //std::vector<Acc> _GenAcc;
     //std::vector<Acc> _ManagerAcc;
     std::vector<Acc> accounts;
+    std::vector<Info> accountsInfo;
 
 };
 

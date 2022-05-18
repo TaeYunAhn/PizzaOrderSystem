@@ -115,7 +115,61 @@ bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
     return true;
 }
 
-bool FileSave::readManagerLoginData(std::vector<Acc>& ManagerAcc)
+
+bool FileSave::readAccountInfo(vector<Info>& accountsInfo)
+{
+    accountsInfo.clear();
+    FILE* fd = fopen("accountsInfo.csv", "r");
+
+    if (!fd)
+        return false;
+
+    char line[512];
+    char* pLine;
+    while (!feof(fd))
+    {
+        pLine = fgets(line, 512, fd);
+        if (!pLine)
+            continue;
+
+        Info info;
+        char* ptr = strtok(pLine, ",");
+        info.ID = ptr;
+
+        ptr = strtok(NULL, ",");
+        if (!ptr)  continue;
+        else info.Balance = atoi(ptr);
+
+        
+        if (!info.ID.empty() && !info.Balance)
+            accountsInfo.push_back(info);
+    }
+    fclose(fd);
+    return true;
+}
+
+bool FileSave::saveAccountInfo(const vector<Info>& accountsInfo)
+{
+    FILE* fd = fopen("accountsInfo.csv", "w");
+
+    if (!fd)
+        return false;
+
+    char num1[256];
+    memset(num1, 0, sizeof(num1));
+
+    for (Info i : accountsInfo )
+    {   
+        sprintf(num1, "%s,%d", i.ID.c_str(), i.Balance);
+        fputs(num1, fd);
+    }
+
+    fclose(fd);
+    return true;
+}
+
+
+/*bool FileSave::readManagerLoginData(std::vector<Acc>& ManagerAcc)
 {
     ManagerAcc.clear();
     FILE* fd = fopen("ManagerLoginController.csv", "r");
@@ -164,7 +218,7 @@ bool FileSave::saveManagerLoginData(const std::vector<Acc>& ManagerAcc)
 
     fclose(fd);
     return true;
-}
+}*/
 
 
 

@@ -42,9 +42,9 @@ EN_LOGIN_RESULT LoginController::login(string& __id)
             Signup();
             break;
         case EN_PIZZA_LOGIN: 
-            return PizzaLogin();
+            return Login(__id, PIZZA);
         case EN_INGRE_LOGIN: 
-            return IngreLogin();
+            return Login(__id, INGREDIENT);
         case EN_SHUT_DOWN: 
             return EN_SHUTDOWN;
         default:
@@ -82,7 +82,14 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
                 LoginAlarm(EN_LOGIN_SUCCESS);
                 __id = id;
                 Sleep(500);
-                return EN_CUSTOMER_SUC;
+                
+                if (accounts[i].type == CUSTOMER)
+                    return EN_CUSTOMER_SUC;
+                else if (accounts[i].type == PIZZA)
+                    return EN_PIZZA_STORE_SUC;
+                if (accounts[i].type == INGREDIENT)
+                    return EN_INGREDIENT_SUC;
+
             }
             else if (accounts[i].ID == id && accounts[i].PW != pw)
             {
@@ -91,23 +98,21 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
                 system("CLS");
                 //TODO: fix 
                 break;
-                
             }
         }
-
-        LoginAlarm(EN_NOT_EXIST_ACC);
+        // TODO: fix
+        //LoginAlarm(EN_NOT_EXIST_ACC);
         
         bool ret = retry();
         if (ret == true)
             continue;
         else
             return EN_PW_FAIL;
-
     }
     return EN_SHUTDOWN;
 }
 
-EN_LOGIN_RESULT LoginController::PizzaLogin()
+/*EN_LOGIN_RESULT LoginController::PizzaLogin()
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PizzaStoreLogin Start");
 
@@ -204,18 +209,21 @@ EN_LOGIN_RESULT LoginController::IngreLogin()
         else
             return EN_PW_FAIL;
     }
-}
+}*/
 
 bool LoginController::Signup()
 {
 	system("CLS");
 	string id, pw;
+    int balance;
     cout << "  << 회원가입 >>  "<<endl;
     cout << "ID : ";
     cin >> id;
-
     cout << "PW : ";
     cin >> pw;
+    cout << "balcane : ";
+    cin >> balance;
+
 
     for (int i = 0; i != accounts.size(); i++)
     {
@@ -228,9 +236,12 @@ bool LoginController::Signup()
     }
 
     Acc acc(id, pw, CUSTOMER);
-    accounts.push_back(acc);
+    Info info(id, balance);
+    accounts.push_back(acc); //insert(pair(id, balance))
+    accountsInfo.push_back(info);
     LoginAlarm(EN_SIGNUP_SUCCESS);
     FileSave::saveLoginData(accounts);
+    FileSave::saveAccountInfo(accountsInfo);
 	Sleep(500);
     return true;
 }
@@ -267,6 +278,4 @@ bool LoginController::retry()
         else
             continue;
     }
-    
-
 }

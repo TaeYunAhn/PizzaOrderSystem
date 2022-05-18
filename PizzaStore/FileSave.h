@@ -12,7 +12,7 @@ public:
     static bool readLoginData(std::vector<Acc>& GenAcc);
     static bool saveLoginData(const std::vector<Acc>& GenAcc);
 
-    static bool readManagerLoginData(std::vector<Acc>& ManagerAcc);
-    static bool saveManagerLoginData(const std::vector<Acc>& ManagerAcc);
+    static bool readAccountInfo(std::vector<Info>& accountsInfo);
+    static bool saveAccountInfo(const std::vector<Info>& accountsInfo);
 };
 

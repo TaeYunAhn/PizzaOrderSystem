@@ -80,15 +80,11 @@ bool Customer::goBack()
 	{
 		string answer;
 
-		cout << "이전 메뉴로 돌아가시겠습니까? [y/n]" << endl;
+		cout << "이전 메뉴로 돌아가시려면 아무 키나 입력해 주세요" << endl;
 		cin >> answer;
-		if (answer == "y")
-			return true;
-		else if (answer == "n")
-			return false;
-		else
-			continue;
+		return true;
 	}
+	
 }
 
 

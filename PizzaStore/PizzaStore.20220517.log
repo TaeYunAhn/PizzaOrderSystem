@@ -1,0 +1,106 @@
+[INFO]	2022.05.17 19:56:46.615  main()[10] Main Start
+[INFO]	2022.05.17 19:56:48.671  LoginController::Login()[58] GeneralLogin Start
+[INFO]	2022.05.17 19:56:56.973  PizzaStore::ProcessOrder()[88] START, menu: 1
+[INFO]	2022.05.17 19:58:32.158  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 19:58:49.212  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 19:58:54.091  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 19:58:58.655  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: pineapple, partialCost: 0
+[INFO]	2022.05.17 19:59:04.663  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: pork, partialCost: 0
+[INFO]	2022.05.17 19:59:07.951  PizzaStore::ProcessOrder()[106] Total cost: 1800
+[INFO]	2022.05.17 19:59:26.118  PizzaStore::ProcessOrder()[117] balance: 114200
+[INFO]	2022.05.17 19:59:32.628  PizzaStore::ProcessOrder()[129] Pizza Sales(1, 16000)
+[INFO]	2022.05.17 19:59:33.988  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:00:20.203  main()[17] Main End
+[INFO]	2022.05.17 20:05:09.679  main()[10] Main Start
+[INFO]	2022.05.17 20:05:13.536  LoginController::Login()[58] GeneralLogin Start
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[88] START, menu: 5
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: potato, partialCost: 220
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: pasli, partialCost: 50
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[106] Total cost: 2070
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[117] balance: 115930
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[129] Pizza Sales(5, 18000)
+[INFO]	2022.05.17 20:05:18.336  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[88] START, menu: 4
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: bulgogi, partialCost: 330
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: onion, partialCost: 220
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[106] Total cost: 2350
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[117] balance: 133580
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[129] Pizza Sales(4, 20000)
+[INFO]	2022.05.17 20:05:20.376  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[88] START, menu: 3
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[102] Pizza type: 3, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[102] Pizza type: 3, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[102] Pizza type: 3, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[102] Pizza type: 3, ingre_name: ham, partialCost: 500
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[102] Pizza type: 3, ingre_name: salami, partialCost: 340
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[106] Total cost: 2640
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[117] balance: 152940
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[129] Pizza Sales(3, 22000)
+[INFO]	2022.05.17 20:05:21.726  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[88] START, menu: 4
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: bulgogi, partialCost: 330
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: onion, partialCost: 220
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[106] Total cost: 2350
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[117] balance: 170590
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[129] Pizza Sales(4, 60000)
+[INFO]	2022.05.17 20:05:22.806  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[88] START, menu: 5
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: potato, partialCost: 220
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: pasli, partialCost: 50
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[106] Total cost: 2070
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[117] balance: 186520
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[129] Pizza Sales(5, 54000)
+[INFO]	2022.05.17 20:05:23.706  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[88] START, menu: 1
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: pineapple, partialCost: 450
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[102] Pizza type: 1, ingre_name: pork, partialCost: 500
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[106] Total cost: 2750
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[117] balance: 199770
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[129] Pizza Sales(1, 16000)
+[INFO]	2022.05.17 20:05:25.416  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[88] START, menu: 4
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: bulgogi, partialCost: 330
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: onion, partialCost: 220
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[106] Total cost: 2350
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[117] balance: 217420
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[129] Pizza Sales(4, 100000)
+[INFO]	2022.05.17 20:05:26.226  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[88] START, menu: 5
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: potato, partialCost: 220
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[102] Pizza type: 5, ingre_name: pasli, partialCost: 50
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[106] Total cost: 2070
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[117] balance: 233350
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[129] Pizza Sales(5, 90000)
+[INFO]	2022.05.17 20:05:27.066  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[88] START, menu: 4
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: dough, partialCost: 600
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: tomato, partialCost: 700
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: cheese, partialCost: 500
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: bulgogi, partialCost: 330
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[102] Pizza type: 4, ingre_name: onion, partialCost: 220
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[106] Total cost: 2350
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[117] balance: 251000
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[129] Pizza Sales(4, 140000)
+[INFO]	2022.05.17 20:05:28.086  PizzaStore::ProcessOrder()[131] END
+[INFO]	2022.05.17 20:05:38.826  main()[17] Main End
