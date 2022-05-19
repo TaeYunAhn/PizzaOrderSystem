@@ -29,7 +29,7 @@ bool MainController::run()
         case EN_CUSTOMER_SUC:
         {   
             Customer customer(&Pizza);
-            customer.runCustomer(id);
+            customer.runCustomer(id/*, info.balance*/);
             continue;
         }
         case EN_SHUTDOWN: return false;

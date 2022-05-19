@@ -18,7 +18,7 @@ Customer::~Customer()
 }
  
 
-void Customer::runCustomer(const string &customer)
+void Customer::runCustomer(const string &customer/*, int balance*/)
 {
     while (true)
     {
@@ -27,8 +27,10 @@ void Customer::runCustomer(const string &customer)
         cout << "  << " << customer << "의" << " 메뉴 >> " << endl;
         cout << "1. 주문" << endl;
         cout << "2. 주문 이력 확인" << endl;
-        cout << "3. 로그아웃" << endl;
-        
+		//cout << "3. 잔액" << endl;
+		// 실시간으로 잔액 나타내게 하고 싶은데 고민좀 해보겠습니다.. 
+		cout << "3. 로그아웃" << endl;
+
         cout << "선택 : ";
         cin >> res;
 
