@@ -14,6 +14,7 @@ bool MainController::run()
     LoginController loginController;
     IngredientStore ingredient;
     PizzaStore Pizza(&ingredient);
+    Customer customer(&Pizza);
 
     while (true)
     {
@@ -28,7 +29,6 @@ bool MainController::run()
 			break;
         case EN_CUSTOMER_SUC:
         {   
-            Customer customer(&Pizza);
             customer.runCustomer(id/*, info.balance*/);
             continue;
         }

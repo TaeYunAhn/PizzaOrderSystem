@@ -86,11 +86,26 @@ bool FileSave::readLoginData(std::vector<Acc>& GenAcc)
 
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
-        else acc.type = (EN_LOGIN_TYPE)atoi(ptr);
+        acc.type = (EN_LOGIN_TYPE)atoi(ptr);
+
+        //if (strcmp(ptr, "PIZZA\n") == 0)
+        
+        //if ( !strstr(ptr, "PIZZA") )
+
+        /*string temp = ptr;
+        if ( temp == "PIZZA\n")*/
+
+        /*if (ptr == "PIZZA\n")
+            acc.type = PIZZA;
+        else if (ptr == "INGREDIENT\n")
+            acc.type = INGREDIENT;
+        else if(ptr == "CUSTOMER\n")
+            acc.type = CUSTOMER;*/
 
         if (!acc.ID.empty() && !acc.PW.empty())
             GenAcc.push_back(acc);
     }
+
     fclose(fd);
     return true;
 }
@@ -113,7 +128,7 @@ bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
         if (m.type == CUSTOMER)
             typeName = "CUSTOMER";
 
-        sprintf(num1, "%s,%s,%s\n", m.ID.c_str(), m.PW.c_str(), typeName.c_str());
+        sprintf(num1, "%s,%s,%d\n", m.ID.c_str(), m.PW.c_str(), (int)m.type);
         fputs(num1, fd);
     }
 
@@ -207,6 +222,7 @@ bool FileSave::readOrderList(std::map<enPizzaMenu, int>& pizzaCount)
     fclose(fd);
     return true;
 }
+
 bool FileSave::saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount)
 {
     FILE* fd = fopen("pizzaCount.csv", "w");
@@ -219,11 +235,11 @@ bool FileSave::saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount)
 
     // map 안의 enum 순회가 안됩니다 ㅠㅠ
     // enum to int 를 해야할거 같은데 switch 말고 더 깔끔한 방법 없을까요? 
-    //for (map<enPizzaMenu, int>::iterator itr = pizzaCount.begin(); itr != pizzaCount.end(); itr++)
-    //{
-    //    sprintf(num1, "%s,%d\n", getPizzaName(itr->first).c_str(), itr->second);
-    //    fputs(num1, fd);
-    //}
+    for (auto itr = pizzaCount.begin(); itr != pizzaCount.end(); itr++)
+    {
+        sprintf(num1, "%s,%d\n", getPizzaName(itr->first).c_str(), itr->second);
+        fputs(num1, fd);
+    }
 
     fclose(fd); 
     return true;

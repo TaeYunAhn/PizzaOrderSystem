@@ -56,8 +56,6 @@ EN_LOGIN_RESULT LoginController::login(string& __id)
 EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
-
-    //일단 범위기반 for 문을 돌기 위해 _GenAcc에 쓰레기 값을 넣어줘야 할까요.
     
     while ( true )
     {
@@ -69,8 +67,8 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
         cout << "PW : ";
         cin >> pw;
 
-        if (accounts.empty())
-            return EN_SHUTDOWN;
+        //if (accounts.empty())
+        //    return EN_SHUTDOWN;
 
         for (int i = 0; i != accounts.size(); i++)
         {
@@ -112,104 +110,7 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
     return EN_SHUTDOWN;
 }
 
-/*EN_LOGIN_RESULT LoginController::PizzaLogin()
-{
-    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "PizzaStoreLogin Start");
 
-    system("CLS");
-
-    while ( true )
-    {
-        string id, pw;
-        cout << "  << PizzaStore Login >>  " << endl;
-        cout << "ID : ";
-        cin >> id;
-        cout << "PW : ";
-        cin >> pw;
-
-        for (int i = 0; i != accounts.size(); i++)
-        {
-            const Acc& account = accounts[i];
-
-            if (accounts[i].type != PIZZA)
-                continue;
-
-            if (account.ID == id && account.PW == pw)
-            {
-                LoginAlarm(EN_LOGIN_SUCCESS);
-                Sleep(500);
-                system("CLS");
-                return EN_PIZZA_STORE_SUC;
-            }
-            else if (account.ID == id && account.PW != pw)
-            {
-                LoginAlarm(EN_WRONG_PW);
-                Sleep(500);
-                system("CLS");
-                return EN_PW_FAIL;
-            }
-        }  
-
-        LoginAlarm(EN_NOT_EXIST_ACC);
-        //Sleep(500);
-        //system("CLS");
-        bool ret = retry();
-        if (ret == true)
-            continue;
-        else
-            return EN_PW_FAIL;
-    }
-}
-
-EN_LOGIN_RESULT LoginController::IngreLogin()
-{
-    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "IngreLogin Start");
-    
-    system("CLS");
-
-    while ( true )
-    {
-        string id, pw;
-        cout << "  << Ingredient Store Login >>  " << endl;
-        cout << "ID : ";
-        cin >> id;
-        cout << "PW : ";
-        cin >> pw;
-
-        for (int i = 0; i != accounts.size(); i++)
-        {
-            const auto& account = accounts[i];
-
-            if (accounts[i].type != PIZZA)
-                continue;
-
-            if (id == account.ID && pw == account.PW)
-            {
-                LoginAlarm(EN_LOGIN_SUCCESS);
-                Sleep(500);
-                system("CLS");
-                return EN_INGREDIENT_SUC;
-            }
-
-            else if (id == account.ID && pw != account.PW)
-            {
-                LoginAlarm(EN_WRONG_PW);
-                Sleep(500);
-                system("CLS");
-                return EN_PW_FAIL;
-            }
-        }
-
-        LoginAlarm(EN_NOT_EXIST_ACC);
-        //Sleep(500);
-        //system("CLS");
-        bool ret = retry();
-        if (ret == true)
-            continue;
-        else
-            return EN_PW_FAIL;
-    }
-}*/
 
 bool LoginController::Signup()
 {
