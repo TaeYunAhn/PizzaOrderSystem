@@ -39,7 +39,6 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
                 return CONFIRM;
             }
         }
-
     }
     return WRONG_NAME;
 }

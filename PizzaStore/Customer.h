@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include <array>
 #include "PizzaDef.h"
 
 
@@ -11,11 +12,10 @@ struct AccountwithPIzza
     ~AccountwithPIzza() {}
     enPizzaMenu type;
     int Count;
-
 };
 
-AccountwithPIzza arr[10];
-array<AccountwithPIzza, 10> a;
+//AccountwithPIzza arr[10];
+//array<AccountwithPIzza, 10> a;
 
 //template<typename T>
 //class A
@@ -45,15 +45,15 @@ public:
     ~Customer();
 
     void runCustomer(const std::string& customer/*, int balance*/);
-	void doOrder();
+	void doOrder(std::string id);
     bool goBack();
-    std::string getPizzaName(enPizzaMenu res);
-    void addPizzaCount(std::string id, enPizzaMenu menu);
+    std::string getPizzaName(std::array<AccountwithPIzza, PIZZA_TOTAL - 1>);
+    int getPizzaCount(std::array<AccountwithPIzza, PIZZA_TOTAL - 1>);
+    void addPizzaCount(std::string id, enPizzaMenu menu, int count);
+
 
 private:
     PizzaStore* PiStore;
-    std::map<string, array<AccountwithPIzza, PIZZA_TOTAL-1>> pizzaCount;
-    
-    
+    std::map<std::string, std::array<AccountwithPIzza, PIZZA_TOTAL-1>> pizzaCount;  
 };
 

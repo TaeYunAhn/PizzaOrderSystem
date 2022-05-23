@@ -87,7 +87,6 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
                     return EN_PIZZA_STORE_SUC;
                 if (accounts[i].type == INGREDIENT)
                     return EN_INGREDIENT_SUC;
-
             }
             else if (accounts[i].ID == id && accounts[i].PW != pw)
             {
