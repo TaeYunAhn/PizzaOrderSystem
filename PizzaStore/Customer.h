@@ -47,8 +47,6 @@ public:
     void runCustomer(const std::string& customer/*, int balance*/);
 	void doOrder(std::string id);
     bool goBack();
-    std::string getPizzaName(std::array<AccountwithPIzza, PIZZA_TOTAL - 1>);
-    int getPizzaCount(std::array<AccountwithPIzza, PIZZA_TOTAL - 1>);
     void addPizzaCount(std::string id, enPizzaMenu menu, int count);
 
 

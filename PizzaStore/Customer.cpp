@@ -18,7 +18,6 @@ Customer::~Customer()
 {
 }
  
-
 void Customer::runCustomer(const string &id/*, int balance*/)
 {
     while (true)
@@ -42,12 +41,26 @@ void Customer::runCustomer(const string &id/*, int balance*/)
 			break;
 		case 2:
 		{
-			for (auto itr = pizzaCount.begin(); itr != pizzaCount.end(); itr++)
+			bool isOrdered = false;
+			for ( const auto& p : pizzaCount)
 			{
-				cout << "피자 종류 : " << getPizzaName(itr->second) << endl;
-				cout << "주문 횟수 : " << getPizzaCount(itr->second) << "번" << endl
-					<< endl;
+				if (p.first != id)
+					continue;
+
+				for (const auto& e : p.second)
+				{
+					if (e.Count == 0)
+						continue;
+
+					cout << "피자 종류 : " << getPizzaName(e.type) << endl;
+					cout << "주문 횟수 : " << e.Count << "번" << endl << endl;
+					isOrdered = true;
+				}
 			}
+
+			if ( !isOrdered )
+				cout << "주문 내역이 없습니다." << endl << endl;
+
 			bool ret = goBack();
 			if (ret == true)
 				continue;
@@ -104,30 +117,6 @@ void Customer::addPizzaCount(string id, enPizzaMenu menu, int count)
 	pizzaCount[id] = a;
 }
 
-string Customer::getPizzaName(array<AccountwithPIzza, PIZZA_TOTAL - 1>)
-{
-	AccountwithPIzza AWP;
-	enPizzaMenu res = AWP.type;
-	switch (res)
-	{
-	case HAWAIIAN_PIZZA: return "HAWAIIAN PIZZA";	
-	case CHEESE_PIZZA: return "CHEESE PIZZA";	
-	case COMBINATION_PIZZA: return "COMBINATION PIZZA";	
-	case BULGOGI_PIZZA: return "BULGOGI PIZZA";	
-	case POTATO_PIZZA:return "POTATO PIZZA";
-	case PIZZA_TOTAL: return "";	
-	default: break;
-	}
-}
-
-int Customer::getPizzaCount(array<AccountwithPIzza, PIZZA_TOTAL - 1>)
-{
-	AccountwithPIzza AWP;
-	int res = AWP.Count;
-	return res;
-}
-
-
 bool Customer::goBack()
 {
 	while (true)
@@ -140,7 +129,6 @@ bool Customer::goBack()
 	}
 	
 }
-
 
 void Customer::doOrder(string id)
 {
