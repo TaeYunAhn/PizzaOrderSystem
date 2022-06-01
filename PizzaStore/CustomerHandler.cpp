@@ -1,4 +1,5 @@
 #include "CustomerHandler.h"
+#include "FileSave.h"
 #include <iostream>
 
 using namespace std;
@@ -11,6 +12,7 @@ CustomerHandler::CustomerHandler()
         //pizzaCount.insert(PizzaCountData.begin(), PizzaCountData.end());
     } 
     // 생성자에서  복사해주고 소멸자에서 다시 데이터 받아서 관리하는쪽으로 하려 했는데 잘 안되네요
+    FileSave::readAccountInfo(accountsInfoData);
 }
 
 CustomerHandler::~CustomerHandler()
@@ -24,9 +26,15 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
     //EN_CUSTOMER_RESULT res = cus.runCustomer(customerId, balance);
     // 케이스 나눠서 이넘으로 에러 메세지 나오게 하는걸 여기서 해야할지, 혹은 customer 의 doOrder에서 해야 할지 모르겠습니다..
 
-	CustomerInfo info;
+	CustomerInfo* info = nullptr;
+    for (auto& a : accountsInfoData)
+    {
+        if (a.ID == customerId)
+            info = &a;
+    }
 
-    auto itr = std::find_if(accountsInfoData.begin(), accountsInfoData.end(), [&customerId] (const CustomerInfo& info) {
+
+    auto itr = std::find_if(accountsInfoData.begin(), accountsInfoData.end(), [&customerId](const CustomerInfo& info) {
         return info.ID == customerId;
     });
 
@@ -34,6 +42,7 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
     {
         accountsInfoData.push_back(CustomerInfo(customerId, 50000));
         itr = accountsInfoData.begin();
+        FileSave::saveAccountInfo(accountsInfoData);
     }
 
 	/*for (auto m : accountsInfoData)
@@ -68,6 +77,7 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
             chargePoint(itr->Balance);
 			break;
 		case 4:
+            FileSave::saveAccountInfo(accountsInfoData);
 			return;
 		default:
 			break;

@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Pizza.h"
 #include "PizzaStore.h"
 #include "Customer.h"
 #include <Windows.h>
@@ -27,7 +28,7 @@ void Customer::addPizzaCount(string id, enPizzaMenu menu, int count)
 	pizzaCount[id] = a;
 }
 
-void Customer::doOrder(string id, int *balance)
+bool Customer::doOrder(string id, int *balance)
 {
 	system("cls");
 	int sel;
@@ -39,15 +40,24 @@ void Customer::doOrder(string id, int *balance)
     if ( sel < HAWAIIAN_PIZZA || sel > POTATO_PIZZA )
     {
         cout << "잘못된 입력입니다." << endl;
-        return;
+		Sleep(500);
+		return false;
     }
 
-	if (PiStore->ProcessOrder((enPizzaMenu)sel) == false)
+	Pizza* pizza = nullptr;
+	if (!PiStore->ProcessOrder((enPizzaMenu)sel, pizza))
 	{
 		cout << "재료 부족으로 주문할 수 없습니다." << endl << endl;
 		Sleep(500);
+		return false;
 	}
-	*balance -= getprice(sel);
+
+	if (pizza)
+	{
+		*balance -= pizza->getPrice();
+		delete pizza;
+	}
+
 	// To Fix
 	// balance 없을때 cout 띄우기?
 	// processorder 의 return 을 enum 으로 바꿔야 할듯 
@@ -65,16 +75,4 @@ void Customer::doOrder(string id, int *balance)
 
 }
 
-int Customer::getprice(int sel)
-{
-	switch (sel)
-	{
-	case 1: return 15000;
-	case 2: return 22000;
-	case 3: return 16000;
-	case 4: return 18000;
-	case 5: return 20000;
-	default:
-		break;
-	}
-}
+

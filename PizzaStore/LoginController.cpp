@@ -1,4 +1,5 @@
 #include "LoginController.h"
+#include <algorithm>
 #include <string>
 #include <iostream>
 #include "PizzaStore.h"

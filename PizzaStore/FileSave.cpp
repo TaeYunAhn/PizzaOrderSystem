@@ -143,7 +143,7 @@ bool FileSave::readAccountInfo(vector<CustomerInfo>& accountsInfoData)
         else info.Balance = atoi(ptr);
 
         
-        if (!info.ID.empty() && !info.Balance)
+        if (!info.ID.empty() && info.Balance > 0)
             accountsInfoData.push_back(info);
     }
     fclose(fd);
