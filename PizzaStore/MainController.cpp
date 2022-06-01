@@ -1,3 +1,5 @@
+#include "Customer.h"
+#include "CustomerHandler.h"
 #include "MainController.h"
 
 MainController::MainController()
@@ -28,10 +30,8 @@ bool MainController::run()
             ingredient.runIngredientStore();
 			break;
         case EN_CUSTOMER_SUC:
-        {   
-            customerHandler.HandleCustomer(userId, &Pizza);
-            continue;
-        }
+            customerHandler.handleCustomer(userId, &Pizza);
+            break;
         case EN_SHUTDOWN: return false;
         default:
             break;

@@ -21,7 +21,7 @@ public:
     CustomerHandler();
     ~CustomerHandler();
 
-    void HandleCustomer(std::string id, PizzaStore* pizzaStore);
+    void handleCustomer(std::string id, PizzaStore* pizzaStore);
 
 private:
     void checkRecord(const std::string& customerId);

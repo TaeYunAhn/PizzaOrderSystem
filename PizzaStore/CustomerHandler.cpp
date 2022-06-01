@@ -18,7 +18,7 @@ CustomerHandler::~CustomerHandler()
 
 }
 
-void CustomerHandler::HandleCustomer(string customerId, PizzaStore* pizzaStore)
+void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
 {
     Customer customer(pizzaStore);
     //EN_CUSTOMER_RESULT res = cus.runCustomer(customerId, balance);
