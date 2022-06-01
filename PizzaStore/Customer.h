@@ -49,7 +49,6 @@ public:
 
     //EN_CUSTOMER_RESULT runCustomer(const std::string& customer, int balance);
 	void doOrder(std::string id, int *balance);
-    bool goBack();
     void addPizzaCount(std::string id, enPizzaMenu menu, int count);
     int getprice(int sel);
 

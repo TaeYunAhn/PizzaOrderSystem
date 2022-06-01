@@ -10,16 +10,15 @@ MainController::~MainController()
 
 bool MainController::run()
 {
-    std::string id;
     LoginController loginController;
     IngredientStore ingredient;
     PizzaStore Pizza(&ingredient);
-    Customer customer(&Pizza);
-    CustomerHandler cHandler;
+    CustomerHandler customerHandler;
 
     while (true)
     {
-        EN_LOGIN_RESULT res = loginController.login(id);
+        std::string userId;
+        EN_LOGIN_RESULT res = loginController.login(userId);
         switch (res)
         {
         case EN_PIZZA_STORE_SUC:
@@ -30,8 +29,7 @@ bool MainController::run()
 			break;
         case EN_CUSTOMER_SUC:
         {   
-            cHandler.run(id);
-            //customer.runCustomer(id/*, info.balance*/);
+            customerHandler.HandleCustomer(userId, &Pizza);
             continue;
         }
         case EN_SHUTDOWN: return false;

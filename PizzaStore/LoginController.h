@@ -33,8 +33,8 @@ enum EN_LOGIN_RESULT
 
 enum EN_LOGIN_MAIN_SEL
 {
-    EN_LOGIN = 1,
-    EN_SIGNUP,
+    EN_SIGNUP = 1,
+    EN_CUSTOMER_LOGIN,
     EN_PIZZA_LOGIN,
     EN_INGRE_LOGIN,
     EN_SHUT_DOWN,
@@ -47,18 +47,15 @@ enum EN_LOGIN_TYPE
     INGREDIENT,
 };
 
-struct Acc
+struct AccInfo
 {
-    Acc() {}
-    Acc(std::string _ID, std::string _PW, EN_LOGIN_TYPE t) : ID(_ID), PW(_PW), type(t) {}
-    ~Acc() {}
-    std::string ID;
-    std::string PW;
-    EN_LOGIN_TYPE type;
+    AccInfo() {}
+    AccInfo(std::string _ID, std::string _PW, EN_LOGIN_TYPE t) : accID(_ID), accPW(_PW), loginType(t) {}
+    ~AccInfo() {}
+    std::string accID;
+    std::string accPW;
+    EN_LOGIN_TYPE loginType;
 };
-
-
-
 
 class LoginController
 {
@@ -78,10 +75,6 @@ private:
     void LoginAlarm(EN_Alarm error);
     bool retry();
     
-    //std::vector<Acc> _GenAcc;
-    //std::vector<Acc> _ManagerAcc;
-    std::vector<Acc> accounts;
-    //std::vector<Info> accountsInfo;
-
+    std::vector<AccInfo> accounts;
 };
 

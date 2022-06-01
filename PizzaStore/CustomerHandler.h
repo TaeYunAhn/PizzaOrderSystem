@@ -6,10 +6,10 @@
 #include <vector>
 
 
-struct Info
+struct CustomerInfo
 {
-    Info() {}
-    Info(std::string _ID, int _Balance) : ID(_ID), Balance(_Balance) {}
+    CustomerInfo() {}
+    CustomerInfo(std::string _ID, int _Balance) : ID(_ID), Balance(_Balance) {}
     std::string ID;
     int Balance;
 };
@@ -21,10 +21,13 @@ public:
     CustomerHandler();
     ~CustomerHandler();
 
-    void run(std::string id);
+    void HandleCustomer(std::string id, PizzaStore* pizzaStore);
 
 private:
-    
+    void checkRecord(const std::string& customerId);
+    bool chargePoint(int& balance);
+
+private:
     std::map<std::string, std::array<AccountwithPIzza, PIZZA_TOTAL - 1>> PizzaCountData; // 피자 카운트
-    std::vector<Info> accountsInfoData; // 커스터머 인포
+    std::vector<CustomerInfo> accountsInfoData; // 커스터머 인포
 };
