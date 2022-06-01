@@ -44,7 +44,7 @@ enum EN_LOGIN_TYPE
 {
     CUSTOMER,
     PIZZA,
-    INGREDIENT
+    INGREDIENT,
 };
 
 struct Acc
@@ -57,13 +57,7 @@ struct Acc
     EN_LOGIN_TYPE type;
 };
 
-struct Info
-{
-    Info() {}
-    Info(std::string _ID, int _Balance) : ID(_ID), Balance(_Balance) {}
-    std::string ID;
-    int Balance;
-};
+
 
 
 class LoginController
@@ -87,7 +81,7 @@ private:
     //std::vector<Acc> _GenAcc;
     //std::vector<Acc> _ManagerAcc;
     std::vector<Acc> accounts;
-    std::vector<Info> accountsInfo;
+    //std::vector<Info> accountsInfo;
 
 };
 

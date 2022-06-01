@@ -1,6 +1,7 @@
 #include <iostream>
 #include "PizzaStore.h"
 #include "Customer.h"
+#include <Windows.h>
 
 using namespace std;
 
@@ -17,8 +18,8 @@ Customer::Customer(PizzaStore* Pizza)
 Customer::~Customer()
 {
 }
- 
-void Customer::runCustomer(const string &id/*, int balance*/)
+/*
+EN_CUSTOMER_RESULT Customer::runCustomer(const string &id, int balance)
 {
     while (true)
     {
@@ -89,8 +90,9 @@ void Customer::runCustomer(const string &id/*, int balance*/)
 	//pizzaCount["TW"].Count++;
 
 	/*A<double> a(5.5);
-	a.power();*/
+	a.power();
 }
+*/
 
 /* 구조 관련..
 * handler 가 있고, 컨트롤러가 있어서 핸들러를 통해서만 컨트롤러가 만들어짐.
@@ -99,7 +101,7 @@ void Customer::runCustomer(const string &id/*, int balance*/)
 * 
 * 또는 fac 구조.. 
 * 
-* 우리가 가진 문제가.. 
+* 이 코드가 가진 문제가.. 
 * 커스터머 별로 무얼 주문했고, 얼마나 주문했는지를 모름
 * 
 * 이 데이터를 커스터머 별로 쓰려고 하니 문제가 생김.
@@ -127,10 +129,9 @@ bool Customer::goBack()
 		cin >> answer;
 		return true;
 	}
-	
 }
 
-void Customer::doOrder(string id)
+void Customer::doOrder(string id, int *balance)
 {
 	system("cls");
 	int sel;
@@ -145,7 +146,17 @@ void Customer::doOrder(string id)
 		return;
 	}*/
 
-	PiStore->ProcessOrder((enPizzaMenu)sel);
+	if (PiStore->ProcessOrder((enPizzaMenu)sel) == false)
+	{
+		cout << "재료 부족으로 주문할 수 없습니다." << endl << endl;
+		Sleep(500);
+	}
+	*balance -= getprice(sel);
+	// To Fix
+	// balance 없을때 cout 띄우기?
+	// processorder 의 return 을 enum 으로 바꿔야 할듯 
+	// 일단 handler 부터 만들고 시작?
+
 	
 	//int count = 0;
 	//AccountwithPIzza AWP((enPizzaMenu)sel, count);
@@ -156,4 +167,18 @@ void Customer::doOrder(string id)
 	//AWP.type = (enPizzaMenu)(sel + 1);
 	//++AWP.Count;
 
+}
+
+int Customer::getprice(int sel)
+{
+	switch (sel)
+	{
+	case 1: return 15000;
+	case 2: return 22000;
+	case 3: return 16000;
+	case 4: return 18000;
+	case 5: return 20000;
+	default:
+		break;
+	}
 }

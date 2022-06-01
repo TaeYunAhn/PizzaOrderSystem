@@ -3,6 +3,7 @@
 #include "IngredientStore.h"
 #include "PizzaStore.h"
 #include "Customer.h"
+#include "CustomerHandler.h"
 
 class MainController
 {
@@ -11,7 +12,7 @@ public:
     ~MainController();
     bool run();
 
-    void init();
+    //void init();
 
 private:
     LoginController loginController;

@@ -15,6 +15,7 @@ bool MainController::run()
     IngredientStore ingredient;
     PizzaStore Pizza(&ingredient);
     Customer customer(&Pizza);
+    CustomerHandler cHandler;
 
     while (true)
     {
@@ -29,7 +30,8 @@ bool MainController::run()
 			break;
         case EN_CUSTOMER_SUC:
         {   
-            customer.runCustomer(id/*, info.balance*/);
+            cHandler.run(id);
+            //customer.runCustomer(id/*, info.balance*/);
             continue;
         }
         case EN_SHUTDOWN: return false;

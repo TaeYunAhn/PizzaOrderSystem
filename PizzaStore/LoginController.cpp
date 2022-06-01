@@ -121,8 +121,8 @@ bool LoginController::Signup()
     cin >> id;
     cout << "PW : ";
     cin >> pw;
-    cout << "balcane : ";
-    cin >> balance;
+    //cout << "balcane : ";
+    //cin >> balance;
 
 
     for (int i = 0; i != accounts.size(); i++)
@@ -136,12 +136,12 @@ bool LoginController::Signup()
     }
 
     Acc acc(id, pw, CUSTOMER);
-    Info info(id, balance);
+    //Info info(id, balance);
     accounts.push_back(acc); //insert(pair(id, balance))
-    accountsInfo.push_back(info);
+    //accountsInfo.push_back(info);
     LoginAlarm(EN_SIGNUP_SUCCESS);
     FileSave::saveLoginData(accounts);
-    FileSave::saveAccountInfo(accountsInfo);
+    //FileSave::saveAccountInfo(accountsInfo);
 	Sleep(500);
     return true;
 }

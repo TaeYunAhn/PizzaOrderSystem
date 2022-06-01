@@ -30,10 +30,13 @@ struct AccountwithPIzza
 //    T a;
 //};
 
-
-
-
-
+enum EN_CUSTOMER_RESULT // 변수명 짓는게 가장 어려운거 같습니다.. 좋은 이름 있으면 추천해주세욥..
+{
+    EN_ORDER_SUC,
+    EN_NOT_ENOUGH_BALANCE,
+    EN_NOT_ENOUGH_INGRE,
+    error,
+};
 
 class PizzaStore;
 class Customer
@@ -44,14 +47,14 @@ public:
     Customer(PizzaStore* Pizza);
     ~Customer();
 
-    void runCustomer(const std::string& customer/*, int balance*/);
-	void doOrder(std::string id);
+    //EN_CUSTOMER_RESULT runCustomer(const std::string& customer, int balance);
+	void doOrder(std::string id, int *balance);
     bool goBack();
     void addPizzaCount(std::string id, enPizzaMenu menu, int count);
-
+    int getprice(int sel);
 
 private:
     PizzaStore* PiStore;
-    std::map<std::string, std::array<AccountwithPIzza, PIZZA_TOTAL-1>> pizzaCount;  
+    std::map<std::string, std::array<AccountwithPIzza, PIZZA_TOTAL-1>> pizzaCount;   
 };
 

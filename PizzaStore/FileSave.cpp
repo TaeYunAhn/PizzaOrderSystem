@@ -137,9 +137,9 @@ bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
 }
 
 
-bool FileSave::readAccountInfo(vector<Info>& accountsInfo)
+bool FileSave::readAccountInfo(vector<Info>& accountsInfoData)
 {
-    accountsInfo.clear();
+    accountsInfoData.clear();
     FILE* fd = fopen("accountsInfo.csv", "r");
 
     if (!fd)
@@ -163,13 +163,13 @@ bool FileSave::readAccountInfo(vector<Info>& accountsInfo)
 
         
         if (!info.ID.empty() && !info.Balance)
-            accountsInfo.push_back(info);
+            accountsInfoData.push_back(info);
     }
     fclose(fd);
     return true;
 }
 
-bool FileSave::saveAccountInfo(const vector<Info>& accountsInfo)
+bool FileSave::saveAccountInfo(const vector<Info>& accountsInfoData)
 {
     FILE* fd = fopen("accountsInfo.csv", "w");
 
@@ -179,7 +179,7 @@ bool FileSave::saveAccountInfo(const vector<Info>& accountsInfo)
     char num1[256];
     memset(num1, 0, sizeof(num1));
 
-    for (Info i : accountsInfo )
+    for (Info i : accountsInfoData)
     {   
         sprintf(num1, "%s,%d\n", i.ID.c_str(), i.Balance);
         fputs(num1, fd);
