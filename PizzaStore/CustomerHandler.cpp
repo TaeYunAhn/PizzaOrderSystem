@@ -32,8 +32,8 @@ void CustomerHandler::HandleCustomer(string customerId, PizzaStore* pizzaStore)
 
     if ( itr == accountsInfoData.end() )
     {
-        cout << "[ERROR] customer 정보를 찾을 수 없습니다.(" << customerId << ")" << endl;
-        return;
+        accountsInfoData.push_back(CustomerInfo(customerId, 50000));
+        itr = accountsInfoData.begin();
     }
 
 	/*for (auto m : accountsInfoData)
