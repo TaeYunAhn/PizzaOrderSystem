@@ -1,10 +1,11 @@
 #include "LoginController.h"
-#include <string>
-#include <iostream>
 #include "PizzaStore.h"
 #include "IngredientStore.h"
 #include "Logger.h"
 #include "FileSave.h"
+#include "Logger.h"
+#include <string>
+#include <iostream>
 #include <Windows.h>
 using namespace std;
 
@@ -21,6 +22,8 @@ LoginController::~LoginController()
 
 EN_LOGIN_RESULT LoginController::login(string& __id)
 {
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Login Controller Start");
+
     while ( true )
     {
 		system("CLS");
@@ -55,7 +58,7 @@ EN_LOGIN_RESULT LoginController::login(string& __id)
 
 EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
 {
-    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "GeneralLogin Start");
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "type %d Login Start", (int)type);
     
     while ( true )
     {
@@ -78,6 +81,8 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
             if (accounts[i].ID == id && accounts[i].PW == pw)
             {
                 LoginAlarm(EN_LOGIN_SUCCESS);
+                CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "type %d Login Success", (int)type);
+
                 __id = id;
                 Sleep(500);
                 
@@ -91,6 +96,7 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
             else if (accounts[i].ID == id && accounts[i].PW != pw)
             {
                 LoginAlarm(EN_WRONG_PW);
+                CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Wrong PassWord");
                 Sleep(500);
                 system("CLS");
                 //TODO: fix 
@@ -102,7 +108,10 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
         
         bool ret = retry();
         if (ret == true)
+        {
             continue;
+            CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Login Retry");
+        }
         else
             return EN_PW_FAIL;
     }
@@ -113,6 +122,8 @@ EN_LOGIN_RESULT LoginController::Login(std::string& __id, EN_LOGIN_TYPE type)
 
 bool LoginController::Signup()
 {
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "START, Signup");
+
 	system("CLS");
 	string id, pw;
     int balance;
@@ -129,6 +140,7 @@ bool LoginController::Signup()
     {
         if (accounts[i].ID == id && accounts[i].type == CUSTOMER)
         {
+            CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Exist ID : %s", id);
             LoginAlarm(EN_EXIST_ALREADY);
 			Sleep(500);
 			return false;
@@ -138,9 +150,13 @@ bool LoginController::Signup()
     Acc acc(id, pw, CUSTOMER);
     //Info info(id, balance);
     accounts.push_back(acc); //insert(pair(id, balance))
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "SignUp and Push_Back Success, id : %s", acc.ID);
+
     //accountsInfo.push_back(info);
     LoginAlarm(EN_SIGNUP_SUCCESS);
+
     FileSave::saveLoginData(accounts);
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Save LoginData, id : %s", acc.ID);
     //FileSave::saveAccountInfo(accountsInfo);
 	Sleep(500);
     return true;

@@ -1,6 +1,12 @@
 #include "FileSave.h"
+#include "IngredientStore.h"
+#include "LoginController.h"
+#include "Customer.h"
+#include "PizzaDef.h"
+#include "CustomerHandler.h"
 #include <fstream>
 #include <iostream>
+
 using namespace std;
 
 bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)

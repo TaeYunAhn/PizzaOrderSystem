@@ -6,11 +6,7 @@ using namespace std;
 
 CustomerHandler::CustomerHandler()
 {
-    if (0 < PizzaCountData.size())
-    {
-        //pizzaCount.insert(PizzaCountData.begin(), PizzaCountData.end());
-    } 
-    // 생성자에서  복사해주고 소멸자에서 다시 데이터 받아서 관리하는쪽으로 하려 했는데 잘 안되네요
+
 }
 
 CustomerHandler::~CustomerHandler()
