@@ -1,6 +1,7 @@
-#include <iostream>
 #include "PizzaStore.h"
 #include "Customer.h"
+#include "Logger.h"
+#include <iostream>
 #include <Windows.h>
 
 using namespace std;
@@ -131,8 +132,10 @@ bool Customer::goBack()
 	}
 }
 
-void Customer::doOrder(string id, int *balance)
+void Customer::doOrder(string userId, int *balance)
 {
+	CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Order START, id : %s, balance : %d", userId, balance); 
+
 	system("cls");
 	int sel;
 	cout << "  <<메뉴 선택>>  " << endl;
@@ -149,9 +152,12 @@ void Customer::doOrder(string id, int *balance)
 	if (PiStore->ProcessOrder((enPizzaMenu)sel) == false)
 	{
 		cout << "재료 부족으로 주문할 수 없습니다." << endl << endl;
+		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough balance : %d", balance); 
 		Sleep(500);
 	}
 	*balance -= getprice(sel);
+	CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "balance : %d",balance); 
+
 	// To Fix
 	// balance 없을때 cout 띄우기?
 	// processorder 의 return 을 enum 으로 바꿔야 할듯 

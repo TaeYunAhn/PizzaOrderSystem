@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include "FileSave.h"
 #include "IngredientStore.h"
+#include "Logger.h"
 using namespace std;
 
 IngredientStore::IngredientStore()
@@ -23,23 +24,30 @@ IngredientStore::~IngredientStore()
 
 EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
 {
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Check Ingredient : %s", ingredients);
+
     for (auto& pairElem : ingredientStockMap)
     {
         if (pairElem.first.name == ingredients)
         {
             int& stock = pairElem.second;
             if (stock <= 0)
+            {
+
+                CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough ingredient");
                 return NOT_ENOUGH;
+            }
             else
             {
                 stock--;
                 cost = pairElem.first.price;
                 FileSave::saveIngredient(ingredientStockMap);
-
+                CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Confirm ingredient Out, stock : %d", stock);
                 return CONFIRM;
             }
         }
     }
+    CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Wrong name ingredient, input name : %s", ingredients);
     return WRONG_NAME;
 }
 
@@ -68,6 +76,7 @@ void IngredientStore::addIngredient()
 	if (ingredientStockMap.count(ingredient) > 0)
 	{
 		cout << "[ERROR] 이미 있는 재료입니다.(" + name + ")" << endl;
+        CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "allready Exist ingredient name, %s", name);
 		Sleep(500);
 		return;
 	}
@@ -75,6 +84,7 @@ void IngredientStore::addIngredient()
     ingredientStockMap[ingredient] = stock;
     FileSave::saveIngredient(ingredientStockMap);
     cout << "추가 되었습니다." << endl << endl;
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Add ingredient, %s, %d, %d", name, price, stock);
     Sleep(500);
 }
 
@@ -96,6 +106,7 @@ void IngredientStore::modifyIngredient()
 	if (ingredientStockMap.count(ingredient) == 0)
 	{
 		cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
+        CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not Exist ingredient name, %s", name);
 		Sleep(500);
 		return;
 	}
@@ -103,6 +114,7 @@ void IngredientStore::modifyIngredient()
     ingredientStockMap[ingredient] = stock;
     FileSave::saveIngredient(ingredientStockMap);
 	cout << "수정 되었습니다." << endl << endl;
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient, %s, %d, %d", name, price, stock);
 	Sleep(500);
 }
 
@@ -116,8 +128,8 @@ void IngredientStore::deleteIngredient()
 	if (ingredientStockMap.count(Ingredient(name, 0)) == 0)
 	{
 		cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
+        CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "not Exist ingredient name, %s", name);
 		Sleep(500);
-		return;
 	}
 
 
@@ -125,12 +137,14 @@ void IngredientStore::deleteIngredient()
     FileSave::saveIngredient(ingredientStockMap);
     cout << "삭제되었습니다." << endl << endl;
 	Sleep(500);
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Delete ingredient, %s", name);
 
 }
 
 
 bool IngredientStore::runIngredientStore()
 {
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Run ingredient store");
     while (true)
     {
         system("cls");

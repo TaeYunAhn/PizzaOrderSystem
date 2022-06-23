@@ -1,4 +1,5 @@
 #include "CustomerHandler.h"
+#include "Logger.h"
 #include <iostream>
 
 using namespace std;
@@ -14,8 +15,10 @@ CustomerHandler::~CustomerHandler()
 
 }
 
-void CustomerHandler::run(string id)
+void CustomerHandler::run(string userId)
 {
+	CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "START, id : %s", userId); // balance 도 같이
+
     int balance = 0;// temp
     Customer cus;
     //EN_CUSTOMER_RESULT res = cus.runCustomer(id, balance);
@@ -24,14 +27,14 @@ void CustomerHandler::run(string id)
 	Info info;
 	for (auto m : accountsInfoData)
 	{
-		if (m.ID == id)
+		if (m.ID == userId)
 			balance = m.Balance;
 	}
   	while (true)
 	{
 		system("cls");
 		int res = 0;
-		cout << "  << " << id << "의" << " 메뉴 >> " << endl;
+		cout << "  << " << userId << "의" << " 메뉴 >> " << endl;
 		cout << "1. 주문" << endl;
 		cout << "2. 주문 이력 확인" << endl;
 		cout << "3. 포인트 충전" << endl;
@@ -44,14 +47,14 @@ void CustomerHandler::run(string id)
 		switch (res)
 		{
 		case 1:
-			cus.doOrder(id, &balance);
+			cus.doOrder(userId, &balance);
 			break;
 		case 2:
 		{
 			bool isOrdered = false;
 			for (const auto& p : PizzaCountData)
 			{
-				if (p.first != id)
+				if (p.first != userId)
 					continue;
 
 				for (const auto& e : p.second)
