@@ -2,8 +2,7 @@
 #include "LoginController.h"
 #include "IngredientStore.h"
 #include "PizzaStore.h"
-#include "Customer.h"
-#include "CustomerHandler.h"
+
 
 class MainController
 {

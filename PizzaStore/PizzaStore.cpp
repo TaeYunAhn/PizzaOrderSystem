@@ -82,7 +82,7 @@ Pizza* PizzaStore::makePizza(enPizzaMenu menu)
 }
 
 
-bool PizzaStore::ProcessOrder(enPizzaMenu menu/*, Pizza* out*/ )
+bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza)
 {
     CLogger* logger = CLogger::getInstance();
     logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);
@@ -129,5 +129,18 @@ bool PizzaStore::ProcessOrder(enPizzaMenu menu/*, Pizza* out*/ )
     logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza Sales(%d, %d)", (int)menu, pizzaSalesMap[menu]);
     pizzaSalesMap[menu] += pizza->getPrice();
     logger->write(enInfo, __LINE__, __FUNCTION__, "END");
+    outPizza = pizza;
     return true;
 }
+
+//int bb = 10;
+//
+//void a(int* val)
+//{
+//    val = &bb;
+//}
+//
+//int aa = 4;
+//a(&aa);
+//aa
+

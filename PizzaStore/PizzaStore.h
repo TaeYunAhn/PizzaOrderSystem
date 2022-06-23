@@ -17,7 +17,7 @@ public:
 
     void runPizzaStore();
     void ShowPizzaList();
-    bool ProcessOrder(enPizzaMenu menu/*, Pizza* out*/);
+    bool ProcessOrder(enPizzaMenu menu, Pizza*& pizza);
 
 private:
     Pizza* makePizza(enPizzaMenu menu);

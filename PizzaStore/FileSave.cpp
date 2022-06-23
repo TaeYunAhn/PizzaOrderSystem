@@ -1,18 +1,13 @@
 #include "FileSave.h"
-#include "IngredientStore.h"
-#include "LoginController.h"
-#include "Customer.h"
-#include "PizzaDef.h"
-#include "CustomerHandler.h"
 #include <fstream>
 #include <iostream>
-
+#include "CustomerHandler.h"
 using namespace std;
 
 bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)
 {
     ingredientStockMap.clear();
-    FILE* fd = fopen("IngredientStore.csv", "r");
+    FILE* fd = fopen("C:\\PSData\\IngredientStore.csv", "r");
 
     if (!fd)
         return false;
@@ -48,7 +43,7 @@ bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)
 
 bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMap)
 {
-    FILE* fd = fopen("IngredientStore.csv", "w");
+    FILE* fd = fopen("C:\\PSData\\IngredientStore.csv", "w");
 
     if (!fd)
         return false;
@@ -66,10 +61,10 @@ bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMa
     return true;
 }
 
-bool FileSave::readLoginData(std::vector<Acc>& GenAcc)
+bool FileSave::readLoginData(std::vector<AccInfo>& GenAcc)
 {
     GenAcc.clear();
-    FILE* fd = fopen("LoginController.csv", "r");
+    FILE* fd = fopen("C:\\PSData\\LoginController.csv", "r");
 
     if (!fd)
         return false;
@@ -82,43 +77,29 @@ bool FileSave::readLoginData(std::vector<Acc>& GenAcc)
         if (!pLine)
             continue;
 
-        Acc acc;
+        AccInfo info;
         char* ptr = strtok(pLine, ",");
-        acc.ID = ptr;
+        info.accID = ptr;
 
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
-        else acc.PW = ptr;
+        else info.accPW = ptr;
 
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
-        acc.type = (EN_LOGIN_TYPE)atoi(ptr);
+        info.loginType = (EN_LOGIN_TYPE)atoi(ptr);
 
-        //if (strcmp(ptr, "PIZZA\n") == 0)
-        
-        //if ( !strstr(ptr, "PIZZA") )
-
-        /*string temp = ptr;
-        if ( temp == "PIZZA\n")*/
-
-        /*if (ptr == "PIZZA\n")
-            acc.type = PIZZA;
-        else if (ptr == "INGREDIENT\n")
-            acc.type = INGREDIENT;
-        else if(ptr == "CUSTOMER\n")
-            acc.type = CUSTOMER;*/
-
-        if (!acc.ID.empty() && !acc.PW.empty())
-            GenAcc.push_back(acc);
+        if (!info.accID.empty() && !info.accPW.empty())
+            GenAcc.push_back(info);
     }
 
     fclose(fd);
     return true;
 }
 
-bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
+bool FileSave::saveLoginData(const std::vector<AccInfo>& GenAcc)
 {
-    FILE* fd = fopen("LoginController.csv", "w");
+    FILE* fd = fopen("C:\\PSData\\LoginController.csv", "w");
 
     if (!fd)
         return false;
@@ -126,15 +107,9 @@ bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
     char num1[256];
     memset(num1, 0, sizeof(num1));
 
-    
-
-    for (Acc m : GenAcc)
+    for (const auto& a : GenAcc)
     {
-        string typeName;
-        if (m.type == CUSTOMER)
-            typeName = "CUSTOMER";
-
-        sprintf(num1, "%s,%s,%d\n", m.ID.c_str(), m.PW.c_str(), (int)m.type);
+        sprintf(num1, "%s,%s,%d\n", a.accID.c_str(), a.accPW.c_str(), (int)a.loginType);
         fputs(num1, fd);
     }
 
@@ -143,10 +118,10 @@ bool FileSave::saveLoginData(const std::vector<Acc>& GenAcc)
 }
 
 
-bool FileSave::readAccountInfo(vector<Info>& accountsInfoData)
+bool FileSave::readAccountInfo(vector<CustomerInfo>& accountsInfoData)
 {
     accountsInfoData.clear();
-    FILE* fd = fopen("accountsInfo.csv", "r");
+    FILE* fd = fopen("C:\\PSData\\accountsInfo.csv", "r");
 
     if (!fd)
         return false;
@@ -159,7 +134,7 @@ bool FileSave::readAccountInfo(vector<Info>& accountsInfoData)
         if (!pLine)
             continue;
 
-        Info info;
+        CustomerInfo info;
         char* ptr = strtok(pLine, ",");
         info.ID = ptr;
 
@@ -168,16 +143,16 @@ bool FileSave::readAccountInfo(vector<Info>& accountsInfoData)
         else info.Balance = atoi(ptr);
 
         
-        if (!info.ID.empty() && !info.Balance)
+        if (!info.ID.empty() && info.Balance > 0)
             accountsInfoData.push_back(info);
     }
     fclose(fd);
     return true;
 }
 
-bool FileSave::saveAccountInfo(const vector<Info>& accountsInfoData)
+bool FileSave::saveAccountInfo(const vector<CustomerInfo>& accountsInfoData)
 {
-    FILE* fd = fopen("accountsInfo.csv", "w");
+    FILE* fd = fopen("C:\\PSData\\accountsInfo.csv", "w");
 
     if (!fd)
         return false;
@@ -185,7 +160,7 @@ bool FileSave::saveAccountInfo(const vector<Info>& accountsInfoData)
     char num1[256];
     memset(num1, 0, sizeof(num1));
 
-    for (Info i : accountsInfoData)
+    for (CustomerInfo i : accountsInfoData)
     {   
         sprintf(num1, "%s,%d\n", i.ID.c_str(), i.Balance);
         fputs(num1, fd);
@@ -199,7 +174,7 @@ bool FileSave::saveAccountInfo(const vector<Info>& accountsInfoData)
 bool FileSave::readOrderList(std::map<enPizzaMenu, int>& pizzaCount)
 {
     pizzaCount.clear();
-    FILE* fd = fopen("pizzaCount.csv", "r");
+    FILE* fd = fopen("C:\\PSData\\pizzaCount.csv", "r");
 
     if (!fd)
         return false;
@@ -231,7 +206,7 @@ bool FileSave::readOrderList(std::map<enPizzaMenu, int>& pizzaCount)
 
 bool FileSave::saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount)
 {
-    FILE* fd = fopen("pizzaCount.csv", "w");
+    FILE* fd = fopen("C:\\PSData\\pizzaCount.csv", "w");
 
     if (!fd)
         return false;
@@ -250,9 +225,6 @@ bool FileSave::saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount)
     fclose(fd); 
     return true;
 }
-
-
-
 
 /*bool FileSave::readManagerLoginData(std::vector<Acc>& ManagerAcc)
 {

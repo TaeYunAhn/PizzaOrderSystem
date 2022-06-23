@@ -1,3 +1,5 @@
+#include <iostream>
+#include "Pizza.h"
 #include "PizzaStore.h"
 #include "Customer.h"
 #include "Logger.h"
@@ -28,58 +30,52 @@ void Customer::addPizzaCount(string id, enPizzaMenu menu, int count)
 	pizzaCount[id] = a;
 }
 
-bool Customer::goBack()
+bool Customer::doOrder(string id, int *balance)
 {
-	while (true)
-	{
-		string answer;
-
-		cout << "이전 메뉴로 돌아가시려면 아무 키나 입력해 주세요" << endl;
-		cin >> answer;
-		return true;
-	}
-}
-
-void Customer::doOrder(string userId, int *balance)
-{
-	CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Order START, id : %s, balance : %d", userId, balance); 
-
 	system("cls");
 	int sel;
 	cout << "  <<메뉴 선택>>  " << endl;
 	PiStore->ShowPizzaList();
 	cout << "피자 선택 : ";
 	cin >> sel;
-	/*const enPizzaMenu pizzaNum = getPizzaNum(name);
-	if (pizzaNum == PIZZA_TOTAL)
-	{
-		cout << "잘못된 입력입니다." << endl;
-		return;
-	}*/
 
-	if (PiStore->ProcessOrder((enPizzaMenu)sel) == false)
+    if ( sel < HAWAIIAN_PIZZA || sel > POTATO_PIZZA )
+    {
+        cout << "잘못된 입력입니다." << endl;
+		Sleep(500);
+		return false;
+    }
+
+	Pizza* pizza = nullptr;
+	if (!PiStore->ProcessOrder((enPizzaMenu)sel, pizza))
 	{
 		cout << "재료 부족으로 주문할 수 없습니다." << endl << endl;
 		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough balance : %d", balance); 
 		Sleep(500);
+		return false;
 	}
-	*balance -= getprice(sel);
-	CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "balance : %d",balance); 
 
-
-
-}
-
-int Customer::getprice(int sel)
-{
-	switch (sel)
+	if (pizza)
 	{
-	case 1: return 15000;
-	case 2: return 22000;
-	case 3: return 16000;
-	case 4: return 18000;
-	case 5: return 20000;
-	default:
-		break;
+		*balance -= pizza->getPrice();
+		delete pizza;
 	}
+
+	// To Fix
+	// balance 없을때 cout 띄우기?
+	// processorder 의 return 을 enum 으로 바꿔야 할듯 
+	// 일단 handler 부터 만들고 시작?
+
+	
+	//int count = 0;
+	//AccountwithPIzza AWP((enPizzaMenu)sel, count);
+	//count = AWP.Count;
+	//addPizzaCount(id, (enPizzaMenu)sel, count);
+	
+	//AccountwithPIzza AWP;
+	//AWP.type = (enPizzaMenu)(sel + 1);
+	//++AWP.Count;
+
 }
+
+
