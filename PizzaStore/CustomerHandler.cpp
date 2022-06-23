@@ -78,12 +78,16 @@ void CustomerHandler::run(string userId)
 		}
 		case 3:
 		{
+			CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Start, Point charge, balance : %d", balance);
+
 			int tmepbalance;
 			cout << "    <<포인트 충전>>    " << endl;
 			cout << "현재 잔액 : " << balance << endl;
 			cout << "얼마 충전하시겠습니까 :";
 			cin >> tmepbalance;
 			balance += tmepbalance;
+			CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Point charge success, balance : %d", balance);
+
 			//To do 
 			//예외처리 할 것.
 			
