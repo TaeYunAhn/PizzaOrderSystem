@@ -26,8 +26,9 @@ public:
 private:
     void checkRecord(const std::string& customerId);
     bool chargePoint(int& balance);
+	void addPizzaCount(const std::string& customerId, const enPizzaMenu menu);
 
 private:
-    std::map<std::string, std::array<AccountwithPIzza, PIZZA_TOTAL - 1>> PizzaCountData; // 피자 카운트
+    std::map<std::string, std::vector<AccountwithPizza>> PizzaCountData; // 피자 카운트
     std::vector<CustomerInfo> accountsInfoData; // 커스터머 인포
 };

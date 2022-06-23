@@ -4,6 +4,8 @@
 #include "Customer.h"
 #include "PizzaDef.h"
 
+const std::string DATA_SOURCE_PATH = "C:\\PSData\\info";
+
 struct CustomerInfo;
 class FileSave
 {
@@ -17,7 +19,7 @@ public:
     static bool readAccountInfo(std::vector<CustomerInfo>& accountsInfoData);
     static bool saveAccountInfo(const std::vector<CustomerInfo>& accountsInfoData);
 
-    static bool readOrderList(std::map<enPizzaMenu, int>& pizzaCount);
-    static bool saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount);
+    static bool readOrderList(std::map<std::string, std::vector<AccountwithPizza>>& orderList);
+    static bool saveOrderList(const std::map<std::string, std::vector<AccountwithPizza>>& orderList);
 };
 

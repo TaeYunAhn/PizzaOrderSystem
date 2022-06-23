@@ -2,12 +2,13 @@
 #include <fstream>
 #include <iostream>
 #include "CustomerHandler.h"
+#include "Logger.h"
 using namespace std;
 
 bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)
 {
     ingredientStockMap.clear();
-    FILE* fd = fopen("C:\\PSData\\IngredientStore.csv", "r");
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\IngredientStore.csv").c_str(), "r");
 
     if (!fd)
         return false;
@@ -43,7 +44,7 @@ bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)
 
 bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMap)
 {
-    FILE* fd = fopen("C:\\PSData\\IngredientStore.csv", "w");
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\IngredientStore.csv").c_str(), "w");
 
     if (!fd)
         return false;
@@ -64,8 +65,8 @@ bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMa
 bool FileSave::readLoginData(std::vector<AccInfo>& GenAcc)
 {
     GenAcc.clear();
-    FILE* fd = fopen("C:\\PSData\\LoginController.csv", "r");
-
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\LoginController.csv").c_str(), "r");
+	
     if (!fd)
         return false;
 
@@ -99,7 +100,7 @@ bool FileSave::readLoginData(std::vector<AccInfo>& GenAcc)
 
 bool FileSave::saveLoginData(const std::vector<AccInfo>& GenAcc)
 {
-    FILE* fd = fopen("C:\\PSData\\LoginController.csv", "w");
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\LoginController.csv").c_str(), "w");
 
     if (!fd)
         return false;
@@ -121,8 +122,8 @@ bool FileSave::saveLoginData(const std::vector<AccInfo>& GenAcc)
 bool FileSave::readAccountInfo(vector<CustomerInfo>& accountsInfoData)
 {
     accountsInfoData.clear();
-    FILE* fd = fopen("C:\\PSData\\accountsInfo.csv", "r");
-
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\accountsInfo.csv").c_str(), "r");
+	
     if (!fd)
         return false;
 
@@ -152,7 +153,7 @@ bool FileSave::readAccountInfo(vector<CustomerInfo>& accountsInfoData)
 
 bool FileSave::saveAccountInfo(const vector<CustomerInfo>& accountsInfoData)
 {
-    FILE* fd = fopen("C:\\PSData\\accountsInfo.csv", "w");
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\accountsInfo.csv").c_str(), "w");
 
     if (!fd)
         return false;
@@ -171,11 +172,11 @@ bool FileSave::saveAccountInfo(const vector<CustomerInfo>& accountsInfoData)
 }
 
 
-bool FileSave::readOrderList(std::map<enPizzaMenu, int>& pizzaCount)
+bool FileSave::readOrderList(std::map<std::string, std::vector<AccountwithPizza>>& orderList)
 {
-    pizzaCount.clear();
-    FILE* fd = fopen("C:\\PSData\\pizzaCount.csv", "r");
-
+	orderList.clear();
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\pizzaCount.csv").c_str(), "r");
+	
     if (!fd)
         return false;
 
@@ -187,26 +188,47 @@ bool FileSave::readOrderList(std::map<enPizzaMenu, int>& pizzaCount)
         if (!pLine)
             continue;
 
-        enPizzaMenu pizzamenu;
+        
         char* ptr = strtok(pLine, ",");
-        pizzamenu = (enPizzaMenu)atoi(ptr);
-
-        int count = 0;
+		const string accountId = ptr;
+        
         ptr = strtok(NULL, ",");
-        if (!ptr)  continue;
-        else count = atoi(ptr);
+        if (!ptr) 
+			continue;
+        
+		const enPizzaMenu type = (enPizzaMenu)atoi(ptr);
 
+		ptr = strtok(NULL, ",");
+		if (!ptr)
+			continue;
 
-        if (!pizzamenu && !count)
-            pizzaCount[pizzamenu] = count;
+		const int count = atoi(ptr);
+
+		if (accountId.empty() || type >= PIZZA_TOTAL || type <= PIZZA_START)
+		{
+			CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "wrong data(id = %s, type = %d)", accountId.c_str(), type);
+			continue;
+		}
+		
+
+		AccountwithPizza accountPizza(type, count);
+		if ( orderList.count(accountId) > 0 )
+			orderList[accountId].push_back(accountPizza);
+		else
+		{
+			vector<AccountwithPizza> vData;
+			vData.push_back(accountPizza);
+			orderList[accountId] = vData;
+		}
+
     }
     fclose(fd);
     return true;
 }
 
-bool FileSave::saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount)
+bool FileSave::saveOrderList(const std::map<std::string, std::vector<AccountwithPizza>>& orderList)
 {
-    FILE* fd = fopen("C:\\PSData\\pizzaCount.csv", "w");
+    FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\pizzaCount.csv").c_str(), "w");
 
     if (!fd)
         return false;
@@ -214,14 +236,12 @@ bool FileSave::saveOrderList(const std::map<enPizzaMenu, int>& pizzaCount)
     char num1[256];
     memset(num1, 0, sizeof(num1));
 
-    // map 안의 enum 순회가 안됩니다 ㅠㅠ
-    // enum to int 를 해야할거 같은데 switch 말고 더 깔끔한 방법 없을까요? 
-    for (auto itr = pizzaCount.begin(); itr != pizzaCount.end(); itr++)
-    {
-        sprintf(num1, "%s,%d\n", getPizzaName(itr->first).c_str(), itr->second);
-        fputs(num1, fd);
-    }
-
+	for (const auto& orderPair : orderList)
+	{
+		for (const auto& accPizza : orderPair.second)
+			sprintf(num1, "%s,%d,%d\n", orderPair.first.c_str(), accPizza.type, accPizza.count);
+	}
+		
     fclose(fd); 
     return true;
 }

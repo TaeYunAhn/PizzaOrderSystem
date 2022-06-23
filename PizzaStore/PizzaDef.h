@@ -3,7 +3,8 @@
 #include <string>
 enum enPizzaMenu
 {
-    HAWAIIAN_PIZZA = 1,
+	PIZZA_START,
+    HAWAIIAN_PIZZA,
     CHEESE_PIZZA,
     COMBINATION_PIZZA,
     BULGOGI_PIZZA,

@@ -90,16 +90,16 @@ bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza)
     int cost = 0;
     Pizza* pizza = makePizza(menu);
 
-    for (const auto& i : pizza->getIngredients())
+    for (const auto& strIngredient : pizza->getIngredients())
     {
         int partialCost = 0;
-        if (!ingreStore->checkIngredients(i, partialCost))
+        if (!ingreStore->checkIngredients(strIngredient, partialCost))
         {
-            logger->write(enError, __LINE__, __FUNCTION__, "Failed to check Ingredients(%s)", i.c_str());
+            logger->write(enError, __LINE__, __FUNCTION__, "Failed to check Ingredients(%s)", strIngredient.c_str());
             return false;
         }
 
-        logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s, partialCost: %d", (int)menu, i.c_str(), partialCost);
+        logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s, partialCost: %d", (int)menu, strIngredient.c_str(), partialCost);
         cost += partialCost;
     }
     

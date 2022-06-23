@@ -5,13 +5,13 @@
 #include "PizzaDef.h"
 
 
-struct AccountwithPIzza
+struct AccountwithPizza
 {
-    AccountwithPIzza() {}
-    AccountwithPIzza(enPizzaMenu p, int count ) : type(p), Count(count){}
-    ~AccountwithPIzza() {}
+	AccountwithPizza() {}
+	AccountwithPizza(enPizzaMenu p, int c) : type(p), count(c){}
+    ~AccountwithPizza() {}
     enPizzaMenu type;
-    int Count;
+    int count;
 };
 
 //AccountwithPIzza arr[10];
@@ -48,11 +48,9 @@ public:
     ~Customer();
 
     //EN_CUSTOMER_RESULT runCustomer(const std::string& customer, int balance);
-	bool doOrder(std::string id, int *balance);
-    void addPizzaCount(std::string id, enPizzaMenu menu, int count);
+	bool doOrder(std::string id, int *balance, enPizzaMenu& menu);
 
 private:
     PizzaStore* PiStore;
-    std::map<std::string, std::array<AccountwithPIzza, PIZZA_TOTAL-1>> pizzaCount;   
 };
 

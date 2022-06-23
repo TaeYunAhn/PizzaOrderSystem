@@ -90,8 +90,8 @@ void CLogger::write(const EN_LOGLEVEL& level, const int& line, const char* func,
 			fd = nullptr;
 		}
 
-		_snprintf_s(tmp, sizeof(tmp) - 1, "PizzaStore.%04d%02d%02d.log",
-			st.wYear, st.wMonth, st.wDay);
+		const string path = LOG_PATH + "\\PizzaStore.%04d%02d%02d.log";
+		_snprintf_s(tmp, sizeof(tmp) - 1, path.c_str(), st.wYear, st.wMonth, st.wDay);
 
 		fd = fopen(tmp, "a");
 	}

@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+const std::string LOG_PATH = "C:\\PSData\\logs";
+
 enum EN_LOGLEVEL
 {
 	enDebug,
@@ -38,5 +40,6 @@ private:
 	std::string fileDate;
 	FILE* fd;
 
+	std::string logPath;
 
 };
