@@ -43,7 +43,8 @@ public:
 private:
     void addIngredient();
     void ShowIngredientList();
-    void modifyIngredient();
+    void modifyIngredientPrice();
+    void modifyIngredientStock();
     void deleteIngredient();
 
 private:

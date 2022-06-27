@@ -50,7 +50,7 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
   	while (true)
 	{
 		system("cls");
-		int res = 0;
+		int count, res = 0;
 		cout << "  << " << customerId << "의" << " 메뉴 >> " << endl;
 		cout << "1. 주문" << endl;
 		cout << "2. 주문 이력 확인" << endl;
@@ -66,9 +66,9 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
 		case 1:
 		{
 			enPizzaMenu menu = PIZZA_START;
-			if (customer.doOrder(customerId, &itr->Balance, menu))
+			if (customer.doOrder(customerId, &itr->Balance, menu, &count))
 			{
-				addPizzaCount(customerId, menu);
+				addPizzaCount(customerId, menu, count);
 				FileSave::saveOrderList(PizzaCountData);
 			}
 		}
@@ -130,26 +130,30 @@ bool CustomerHandler::chargePoint(int& balance)
     //예외처리 할 것.
 }
 
-void CustomerHandler::addPizzaCount(const std::string& customerId, const enPizzaMenu menu)
+void CustomerHandler::addPizzaCount(const std::string& customerId, const enPizzaMenu menu, /*const*/ int count)
 {
-	if (PizzaCountData.count(customerId) > 0)
+	for (int i = 0; i < count; i++)
 	{
-		auto& vData = PizzaCountData[customerId];
-		auto itr = find_if(vData.begin(), vData.end(), [&menu] (const AccountwithPizza& d) 
+		if (PizzaCountData.count(customerId) > 0)
 		{
-			return d.type == menu;
-		});
+			auto& vData = PizzaCountData[customerId];
+			auto itr = find_if(vData.begin(), vData.end(), [&menu](const AccountwithPizza& d)
+				{
+					return d.type == menu;
+				});
 
-		if (itr == vData.end())
-			vData.push_back(AccountwithPizza(menu, 1));
+			if (itr == vData.end())
+				vData.push_back(AccountwithPizza(menu, 1));
+			else
+				itr->count++;
+		}
+
 		else
-			itr->count++;
-	}
-	else
-	{
-		vector<AccountwithPizza> vData;
-		AccountwithPizza accountPizza(menu, 1);
-		vData.push_back(accountPizza);
-		PizzaCountData[customerId] = vData;
+		{
+			vector<AccountwithPizza> vData;
+			AccountwithPizza accountPizza(menu, 1);
+			vData.push_back(accountPizza);
+			PizzaCountData[customerId] = vData;
+		}
 	}
 }

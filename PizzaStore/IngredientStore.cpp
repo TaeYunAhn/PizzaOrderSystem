@@ -88,19 +88,25 @@ void IngredientStore::addIngredient()
     Sleep(500);
 }
 
-void IngredientStore::modifyIngredient()
+void IngredientStore::modifyIngredientPrice()
 {
 	system("cls");
-	cout << "  < 재료 수정 >  " << endl;
+	cout << "  < 재료 가격 수정 >  " << endl;
 	string name;
 	int price = 0;
-	int stock = 0;
+    int tempprice = 0;
+    
+
 	cout << "재료 이름 : ";
 	cin >> name;
-	cout << "재료 가격 : ";
+    for (auto itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    {
+        if (itr->first.name == name)
+            tempprice = itr->first.price;
+    }
+    cout << "현재 가격 : " << tempprice << endl;
+	cout << "수정하려는 가격 : ";
 	cin >> price;
-	cout << "재고 갯수 : ";
-	cin >> stock;
 
 	Ingredient ingredient(name, price);
 	if (ingredientStockMap.count(ingredient) == 0)
@@ -110,12 +116,52 @@ void IngredientStore::modifyIngredient()
 		Sleep(500);
 		return;
 	}
-
-    ingredientStockMap[ingredient] = stock;
+    ingredientStockMap[ingredient] = price;
     FileSave::saveIngredient(ingredientStockMap);
 	cout << "수정 되었습니다." << endl << endl;
-    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient, %s, %d, %d", name, price, stock);
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient price, %s, %d,", name, price);
 	Sleep(500);
+}
+
+void IngredientStore::modifyIngredientStock()
+{
+    system("cls");
+    cout << "  < 재료 재고 수정 >  " << endl;
+    string name;
+    int stock = 0;
+    int tempstock = 0;
+
+
+    cout << "재료 이름 : ";
+    cin >> name;
+    for (auto itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    {
+        if (itr->first.name == name)
+            tempstock = itr->second;
+    }
+    cout << "현재 재고 : " << tempstock << endl;
+    cout << "수정하려는 갯수 : ";
+    cin >> stock;
+
+    Ingredient ingredient(name, stock);
+    if (ingredientStockMap.count(ingredient) == 0)
+    {
+        cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
+        CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not Exist ingredient name, %s", name);
+        Sleep(500);
+        return;
+    }
+
+    for (auto itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    {
+        if (itr->first.name == name)
+            itr->second = stock;
+    }
+    ingredientStockMap[ingredient] = stock;
+    FileSave::saveIngredient(ingredientStockMap);
+    cout << "수정 되었습니다." << endl << endl;
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient stock, %s, %d,", name, stock);
+    Sleep(500);
 }
 
 void IngredientStore::deleteIngredient()
@@ -152,10 +198,11 @@ bool IngredientStore::runIngredientStore()
         int sel = 0;
         cout << "  << 재료가게 >>  " << endl;
         cout << "1. 재료 추가" << endl;
-        cout << "2. 재료 수정" << endl;
-        cout << "3. 재료 삭제" << endl;
-        cout << "4. 재고 확인" << endl;
-        cout << "5. 이전 메뉴" << endl;
+        cout << "2. 재료 가격 수정" << endl;
+        cout << "3. 재료 재고 수정" << endl;
+        cout << "4. 재료 삭제" << endl;
+        cout << "5. 재고 확인" << endl;
+        cout << "6. 이전 메뉴" << endl;
         cout << "선택 : ";
         cin >> sel;
         cout << "\n";
@@ -165,16 +212,20 @@ bool IngredientStore::runIngredientStore()
         case 1:
             system("cls");
             addIngredient();
-        break;
+            break;
         case 2:
             system("cls");
-            modifyIngredient();
-        break;
+            modifyIngredientPrice();
+            break;
         case 3:
+            system("cls");
+            modifyIngredientStock();
+        break;
+        case 4:
             system("cls");
             deleteIngredient();
         break;
-        case 4:
+        case 5:
         {
             string anykey;
             system("cls");
@@ -185,7 +236,7 @@ bool IngredientStore::runIngredientStore()
             cin >> anykey;
         }
         break;
-        case 5:
+        case 6:
             return true;
         default:
             break;

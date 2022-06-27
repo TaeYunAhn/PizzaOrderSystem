@@ -82,7 +82,7 @@ Pizza* PizzaStore::makePizza(enPizzaMenu menu)
 }
 
 
-bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza)
+bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza, string &NoStockIngre)
 {
     CLogger* logger = CLogger::getInstance();
     logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);

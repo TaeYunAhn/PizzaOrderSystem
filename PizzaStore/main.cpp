@@ -22,9 +22,6 @@ int main()
 
     //PizzaStore a;
     //a.MainUI();
-
-
-
     //PizzaStore p;
     //p.getIngFromIngStore(TYPE_GORGONZOLA, ingre);
 }

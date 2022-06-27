@@ -190,7 +190,7 @@ bool FileSave::readOrderList(std::map<std::string, std::vector<AccountwithPizza>
 
         
         char* ptr = strtok(pLine, ",");
-		const string accountId = ptr;
+		const string customerId = ptr;
         
         ptr = strtok(NULL, ",");
         if (!ptr) 
@@ -204,21 +204,21 @@ bool FileSave::readOrderList(std::map<std::string, std::vector<AccountwithPizza>
 
 		const int count = atoi(ptr);
 
-		if (accountId.empty() || type >= PIZZA_TOTAL || type <= PIZZA_START)
+		if (customerId.empty() || type >= PIZZA_TOTAL || type <= PIZZA_START)
 		{
-			CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "wrong data(id = %s, type = %d)", accountId.c_str(), type);
+			CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "wrong data(id = %s, type = %d)", customerId.c_str(), type);
 			continue;
 		}
 		
 
 		AccountwithPizza accountPizza(type, count);
-		if ( orderList.count(accountId) > 0 )
-			orderList[accountId].push_back(accountPizza);
+		if ( orderList.count(customerId) > 0 )
+			orderList[customerId].push_back(accountPizza);
 		else
 		{
 			vector<AccountwithPizza> vData;
 			vData.push_back(accountPizza);
-			orderList[accountId] = vData;
+			orderList[customerId] = vData;
 		}
 
     }
