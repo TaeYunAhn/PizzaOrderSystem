@@ -22,7 +22,7 @@ IngredientStore::~IngredientStore()
     
 }
 
-EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
+EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost, string &emptyIngredient)
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Check Ingredient : %s", ingredients);
 
@@ -33,8 +33,8 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost)
             int& stock = pairElem.second;
             if (stock <= 0)
             {
-
-                CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough ingredient");
+                emptyIngredient = ingredients;
+                CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough ingredient ingredient Name : %s", ingredients);
                 return NOT_ENOUGH;
             }
             else

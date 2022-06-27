@@ -37,7 +37,7 @@ public:
     ~IngredientStore();
 
     bool runIngredientStore();
-    EN_STOCK_CHECK checkIngredients(std::string ingredients, int &cost);
+    EN_STOCK_CHECK checkIngredients(std::string ingredients, int &cost, std::string &emptyIngredient);
     
 
 private:

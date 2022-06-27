@@ -82,23 +82,24 @@ Pizza* PizzaStore::makePizza(enPizzaMenu menu)
 }
 
 
-bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza, string &NoStockIngre)
+bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza, string& Ingredient)
 {
     CLogger* logger = CLogger::getInstance();
     logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);
-    
+    string emptyIngredient;
     int cost = 0;
     Pizza* pizza = makePizza(menu);
 
     for (const auto& strIngredient : pizza->getIngredients())
     {
         int partialCost = 0;
-        if (!ingreStore->checkIngredients(strIngredient, partialCost))
+        if (!ingreStore->checkIngredients(strIngredient, partialCost, emptyIngredient))
         {
+            Ingredient = emptyIngredient;
             logger->write(enError, __LINE__, __FUNCTION__, "Failed to check Ingredients(%s)", strIngredient.c_str());
             return false;
         }
-
+        Ingredient = emptyIngredient;
         logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s, partialCost: %d", (int)menu, strIngredient.c_str(), partialCost);
         cost += partialCost;
     }

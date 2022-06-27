@@ -42,17 +42,12 @@ bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *count)
     }
 
 	const auto selMenu = (enPizzaMenu)sel;
+	string emptyIngredient;
 	Pizza* pizza = nullptr;
-	bool isOrderSuccess = false;
-	string noStockIngre;
-	for (int i = 0; i < num; i++)
-		isOrderSuccess = PiStore->ProcessOrder(selMenu, pizza, noStockIngre);
-
-	if (isOrderSuccess == false)
+	if (!PiStore->ProcessOrder(selMenu, pizza, emptyIngredient))
 	{
-		cout << "";
-		cout << "재료 부족으로 주문할 수 없습니다." << endl << endl;
-		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough balance : %d", balance); 
+		cout << emptyIngredient << " 부족으로 주문할 수 없습니다." << endl << endl;
+		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough Ingredient : %s", emptyIngredient);
 		Sleep(500);
 		return false;
 	}

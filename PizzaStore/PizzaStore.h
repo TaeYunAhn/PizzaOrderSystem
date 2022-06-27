@@ -17,7 +17,7 @@ public:
 
     void runPizzaStore();
     void ShowPizzaList();
-    bool ProcessOrder(enPizzaMenu menu, Pizza*& pizza, std::string& NoStockIngre);
+    bool ProcessOrder(enPizzaMenu menu, Pizza*& pizza, std::string& Ingredient);
 
 private:
     Pizza* makePizza(enPizzaMenu menu);
