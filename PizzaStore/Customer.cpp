@@ -44,24 +44,32 @@ bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *count)
 	const auto selMenu = (enPizzaMenu)sel;
 	string emptyIngredient;
 	Pizza* pizza = nullptr;
-	if (!PiStore->ProcessOrder(selMenu, pizza, emptyIngredient))
+	if (!PiStore->ProcessOrder(make_pair(selMenu, num), pizza, emptyIngredient))
 	{
 		cout << emptyIngredient << " 부족으로 주문할 수 없습니다." << endl << endl;
-		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough Ingredient : %s", emptyIngredient);
+		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough Ingredient : %s", emptyIngredient.c_str());
+		Sleep(500);
+		return false;
+	}
+
+
+	const int totalPrice = pizza->getPrice() * num;
+	if (*balance < totalPrice)
+	{
+		cout << "잔액이 부족합니다." << endl << endl;
+		CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough Customer's balance : %d, totalPrice : %d", *balance, totalPrice);
+
+		if (pizza)
+			delete pizza;
+
 		Sleep(500);
 		return false;
 	}
 
 	if (pizza)
-	{
-		for (int i = 0; i < num; i++)
-		{
-			// To Fix : 피자 주문 갯수가 2 이상이 되면 엑세스 위반 이라고 뜹니다.. *balance 쪽 문제인것 같아요 
-			*balance -= pizza->getPrice();
-			delete pizza;
-		}
-	}
+		delete pizza;
 
+	*balance -= totalPrice;
 	menu = selMenu;
 	cout << "주문 접수되었습니다." << endl << endl;
 	//To Fix : 널 포인터에 쓰는것(엑세스 위반) 에러 잘 모르겠습니다. 

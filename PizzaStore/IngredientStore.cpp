@@ -22,33 +22,58 @@ IngredientStore::~IngredientStore()
     
 }
 
-EN_STOCK_CHECK IngredientStore::checkIngredients(string ingredients, int& cost, string &emptyIngredient)
+EN_STOCK_CHECK IngredientStore::checkIngredients(const std::pair<std::string, unsigned int>& pairIngre, string &emptyIngredient, int &cost)
 {
-    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Check Ingredient : %s", ingredients);
+    CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Check Ingredient : %s", pairIngre.first.c_str());
 
     for (auto& pairElem : ingredientStockMap)
     {
-        if (pairElem.first.name == ingredients)
+        if (pairElem.first.name == pairIngre.first)
         {
-            int& stock = pairElem.second;
-            if (stock <= 0)
+            const int& stock = pairElem.second;
+            if (stock < pairIngre.second)
             {
-                emptyIngredient = ingredients;
-                CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not enough ingredient ingredient Name : %s", ingredients);
+                emptyIngredient = pairIngre.first;
+                CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, 
+									"Not enough ingredient, Name : %s count : %u", pairIngre.first.c_str(), pairIngre.second);
                 return NOT_ENOUGH;
             }
             else
             {
-                stock--;
-                cost = pairElem.first.price;
-                FileSave::saveIngredient(ingredientStockMap);
-                CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Confirm ingredient Out, stock : %d", stock);
+				cost = pairElem.first.price;
+                CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Confirm ingredient Out, stock(%s) : %d", pairElem.first.name.c_str(), stock);
                 return CONFIRM;
             }
         }
     }
-    CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Wrong name ingredient, input name : %s", ingredients);
+    CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Wrong name ingredient, input name : %s", pairIngre.first.c_str());
     return WRONG_NAME;
+}
+
+bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>& pairIngre)
+{
+	for (auto& pairElem : ingredientStockMap)
+	{
+		if (pairElem.first.name == pairIngre.first)
+		{
+			int& stock = pairElem.second;
+			if (stock < pairIngre.second)
+			{
+				CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__,
+					"Not enough ingredient, Name : %s count : %u", pairIngre.first.c_str(), pairIngre.second);
+				
+				return false;
+			}
+			else
+			{
+				stock -= pairIngre.second;
+				FileSave::saveIngredient(ingredientStockMap);
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void IngredientStore::ShowIngredientList()

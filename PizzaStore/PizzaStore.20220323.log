@@ -1,6 +1,0 @@
-[INFO]	2022.03.23 23:31:42.946  main()[8] Main Start
-[INFO]	2022.03.23 23:31:43.714  LoginController::PartnerLogin()[102] PartnerLogin Start
-[INFO]	2022.03.23 23:31:50.655  PizzaStore::addMenu()[85] addMenu => name(qwd) Ingre(efw), Price(3)
-[INFO]	2022.03.23 23:31:59.104  PizzaStore::modifyMenu()[130] addMenu => name(gtggre) Ingre(greg), Price(2)
-[INFO]	2022.03.23 23:32:09.289  PizzaStore::deleteMenu()[155] delMenu => 1
-[INFO]	2022.03.23 23:32:14.160  main()[13] Main End

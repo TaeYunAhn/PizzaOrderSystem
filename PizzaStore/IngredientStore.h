@@ -37,7 +37,8 @@ public:
     ~IngredientStore();
 
     bool runIngredientStore();
-    EN_STOCK_CHECK checkIngredients(std::string ingredients, int &cost, std::string &emptyIngredient);
+	EN_STOCK_CHECK checkIngredients(const std::pair<std::string, unsigned int>& pairIngre, std::string &emptyIngredient, int &cost);
+	bool grepIngredients(const std::pair<std::string, unsigned int>& pairIngre);
     
 
 private:

@@ -82,53 +82,68 @@ Pizza* PizzaStore::makePizza(enPizzaMenu menu)
 }
 
 
-bool PizzaStore::ProcessOrder(enPizzaMenu menu, Pizza*& outPizza, string& Ingredient)
+bool PizzaStore::ProcessOrder(const pair<enPizzaMenu, unsigned int>& menu, Pizza*& outPizza, string& Ingredient)
 {
+	Ingredient.clear();
     CLogger* logger = CLogger::getInstance();
-    logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu);
+    logger->write(enInfo, __LINE__, __FUNCTION__, "START, menu: %d", (int)menu.first);
     string emptyIngredient;
     int cost = 0;
-    Pizza* pizza = makePizza(menu);
+    Pizza* pizza = makePizza(menu.first);
 
+	bool bFailed = false;
     for (const auto& strIngredient : pizza->getIngredients())
     {
-        int partialCost = 0;
-        if (!ingreStore->checkIngredients(strIngredient, partialCost, emptyIngredient))
+		int partialCost = 0;
+		if (!ingreStore->checkIngredients(make_pair(strIngredient, menu.second), emptyIngredient, partialCost))
         {
-            Ingredient = emptyIngredient;
-            logger->write(enError, __LINE__, __FUNCTION__, "Failed to check Ingredients(%s)", strIngredient.c_str());
-            return false;
+            Ingredient += Ingredient.empty() ? emptyIngredient : (", " + emptyIngredient);
+			bFailed = true;
+			continue;
         }
-        Ingredient = emptyIngredient;
-        logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s, partialCost: %d", (int)menu, strIngredient.c_str(), partialCost);
-        cost += partialCost;
+        
+		cost += partialCost;
+		logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s", (int)menu.first, strIngredient.c_str());
     }
     
-    logger->write(enInfo, __LINE__, __FUNCTION__, "Total cost: %d", cost);
+	if (bFailed)
+	{
+		logger->write(enError, __LINE__, __FUNCTION__, "Failed to check Ingredients(%s)", Ingredient.c_str());
+		return false;
+	}
 
 	if (balance < cost)
 	{
-		logger->write(enError, __LINE__, __FUNCTION__, "not enough money(balance = %d, cost = %d)", balance, cost);
+		logger->write(enError, __LINE__, __FUNCTION__, "not enough pizza store's money(balance = %d, cost = %d)", balance, cost);
 		return false;
 	}
+
+	// CHECKING INGREDIENT IS SUCCESS
+	for (const auto& strIngredient : pizza->getIngredients())
+	{
+		ingreStore->grepIngredients(make_pair(strIngredient, menu.second));
+		logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza type: %d, ingre_name: %s", (int)menu.first, strIngredient.c_str());
+	}
+
+    logger->write(enInfo, __LINE__, __FUNCTION__, "Total cost: %d", cost);
 
     balance -= cost;
     balance += pizza->getPrice();
 
     logger->write(enInfo, __LINE__, __FUNCTION__, "balance: %d", balance);
 
-    auto itr = pizzaSalesMap.find(menu);
+    auto itr = pizzaSalesMap.find(menu.first);
     if (itr == pizzaSalesMap.end())
     {
-        pizzaSalesMap.insert(make_pair(menu, pizza->getPrice()));
+        pizzaSalesMap.insert(make_pair(menu.first, pizza->getPrice()));
     }
     else
     {
-       itr->second += pizza->getPrice();
+       itr->second += ( pizza->getPrice() * menu.second );
     }
 
-    logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza Sales(%d, %d)", (int)menu, pizzaSalesMap[menu]);
-    pizzaSalesMap[menu] += pizza->getPrice();
+    logger->write(enInfo, __LINE__, __FUNCTION__, "Pizza Sales(%d, %d)", (int)menu.first, pizzaSalesMap[menu.first]);
+    pizzaSalesMap[menu.first] += pizza->getPrice();
     logger->write(enInfo, __LINE__, __FUNCTION__, "END");
     outPizza = pizza;
     return true;
