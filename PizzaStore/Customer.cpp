@@ -22,7 +22,7 @@ Customer::~Customer()
 {
 }
 
-bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *count)
+bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *&count)
 {
 	system("cls");
 	int sel, num;

@@ -50,7 +50,7 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
   	while (true)
 	{
 		system("cls");
-		int count, res = 0;
+		int *count, res = 0;
 		cout << "  << " << customerId << "의" << " 메뉴 >> " << endl;
 		cout << "1. 주문" << endl;
 		cout << "2. 주문 이력 확인" << endl;
@@ -66,9 +66,9 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
 		case 1:
 		{
 			enPizzaMenu menu = PIZZA_START;
-			if (customer.doOrder(customerId, &itr->Balance, menu, &count))
+			if (customer.doOrder(customerId, &itr->Balance, menu, count))
 			{
-				addPizzaCount(customerId, menu, count);
+				addPizzaCount(customerId, menu, *count);
 				FileSave::saveOrderList(PizzaCountData);
 			}
 		}
