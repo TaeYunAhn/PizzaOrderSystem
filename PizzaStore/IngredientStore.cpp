@@ -142,8 +142,10 @@ void IngredientStore::modifyIngredientPrice()
     cout << "현재 가격 : " << tempprice << endl;
 	cout << "수정하려는 가격 : ";
 	cin >> price;
+    ingredientStockMap.erase(Ingredient(name, 0));
+    FileSave::saveIngredient(ingredientStockMap);
     Ingredient ingredient(name, price);
-    ingredientStockMap[ingredient];
+    ingredientStockMap[ingredient] = stock;
     FileSave::saveIngredient(ingredientStockMap);
 	cout << "수정 되었습니다." << endl << endl;
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient price, %s, %d,", name, price);
@@ -209,7 +211,6 @@ void IngredientStore::deleteIngredient()
 	Sleep(500);
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Delete ingredient, %s", name);
 }
-
 
 bool IngredientStore::runIngredientStore()
 {
