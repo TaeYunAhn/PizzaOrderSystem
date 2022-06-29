@@ -1,11 +1,10 @@
-#include <iostream>
 #include "Pizza.h"
 #include "PizzaStore.h"
 #include "Customer.h"
 #include "Logger.h"
 #include <iostream>
+#include <iostream>
 #include <Windows.h>
-
 using namespace std;
 
 Customer::Customer()
@@ -20,6 +19,7 @@ Customer::Customer(PizzaStore* Pizza)
 
 Customer::~Customer()
 {
+
 }
 
 bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *&count)

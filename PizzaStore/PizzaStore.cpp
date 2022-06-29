@@ -45,8 +45,15 @@ void PizzaStore::runPizzaStore()
 			Sleep(500);
 			break;
 		case 4:
-			ShowPizzaList();
-			break;
+        {
+            string anykey;
+            system("cls");
+            cout << "  < 재고 확인 >  " << endl;
+            ShowPizzaList();
+
+            cout << "메인 매뉴로 돌아가려면 아무키나 입력해주세요";
+            cin >> anykey;
+        }
 		case 5:
 			return;
 		default:
@@ -64,6 +71,7 @@ void PizzaStore::ShowPizzaList()
     {
         cout << i << ". " << pizzaName[i]<< endl;
     }
+    
 }
 
 Pizza* PizzaStore::makePizza(enPizzaMenu menu)
