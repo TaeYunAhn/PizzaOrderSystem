@@ -5,9 +5,9 @@
 #include "Logger.h"
 using namespace std;
 
-bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)
+bool FileSave::readIngredient(std::map<std::string, IngredientInfo>& ingredientMap)
 {
-    ingredientStockMap.clear();
+    ingredientMap.clear();
     FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\IngredientStore.csv").c_str(), "r");
 
     if (!fd)
@@ -21,28 +21,29 @@ bool FileSave::readIngredient(std::map<Ingredient, int>& ingredientStockMap)
         if (!pLine)
             continue;
 
-        Ingredient ingre;
+		string name;
+		int price = 0;
         int stock = 0;
 
         char* ptr = strtok(pLine, ",");
-        ingre.name = ptr;
+        name = ptr;
 
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
-        else ingre.price = atoi(ptr);
+        else price = atoi(ptr);
 
         ptr = strtok(NULL, ",");
         if (!ptr)  continue;
         else stock = atoi(ptr);
 
-        ingredientStockMap[ingre] = stock;
+        ingredientMap[name] = IngredientInfo(Ingredient(name, price), stock);
 
     }
     fclose(fd);
     return true;
 }
 
-bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMap)
+bool FileSave::saveIngredient(const std::map<std::string, IngredientInfo>& ingredientMap)
 {
     FILE* fd = fopen(string(DATA_SOURCE_PATH + "\\IngredientStore.csv").c_str(), "w");
 
@@ -52,9 +53,9 @@ bool FileSave::saveIngredient(const std::map<Ingredient, int>& ingredientStockMa
     char num1[256];
     memset(num1, 0, sizeof(num1));
 
-    for (pair<Ingredient, int> m : ingredientStockMap)
+    for (const auto& m : ingredientMap)
     {
-        sprintf(num1, "%s,%d,%d\n", m.first.name.c_str(), m.first.price, m.second);
+        sprintf(num1, "%s,%d,%d\n", m.first.c_str(), m.second.ingredient.price, m.second.stock);
         fputs(num1, fd);
     }
 

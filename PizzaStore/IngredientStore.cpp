@@ -11,7 +11,7 @@ using namespace std;
 
 IngredientStore::IngredientStore()
 {
-    if (!FileSave::readIngredient(ingredientStockMap))
+    if (!FileSave::readIngredient(ingredientMap))
     {
 		cout << "재료 정보를 가져오는데 실패했습니다." << endl;
     }
@@ -25,11 +25,11 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(const std::pair<std::string, un
 {
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Check Ingredient : %s", pairIngre.first.c_str());
 
-    for (auto& pairElem : ingredientStockMap)
+    for (auto& pairElem : ingredientMap)
     {
-        if (pairElem.first.name == pairIngre.first)
+        if (pairElem.first == pairIngre.first)
         {
-            const int& stock = pairElem.second;
+            const int& stock = pairElem.second.stock;
             if (stock < pairIngre.second)
             {
                 emptyIngredient = pairIngre.first;
@@ -39,8 +39,8 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(const std::pair<std::string, un
             }
             else
             {
-				cost = pairElem.first.price;
-                CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Confirm ingredient Out, stock(%s) : %d", pairElem.first.name.c_str(), stock);
+				cost = pairElem.second.ingredient.price;
+                CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Confirm ingredient Out, stock(%s) : %d", pairElem.first.c_str(), stock);
                 return CONFIRM;
             }
         }
@@ -51,11 +51,11 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(const std::pair<std::string, un
 
 bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>& pairIngre)
 {
-	for (auto& pairElem : ingredientStockMap)
+	for (auto& pairElem : ingredientMap)
 	{
-		if (pairElem.first.name == pairIngre.first)
+		if (pairElem.first == pairIngre.first)
 		{
-			int& stock = pairElem.second;
+			int& stock = pairElem.second.stock;
 			if (stock < pairIngre.second)
 			{
 				CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__,
@@ -66,7 +66,7 @@ bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>
 			else
 			{
 				stock -= pairIngre.second;
-				FileSave::saveIngredient(ingredientStockMap);
+				FileSave::saveIngredient(ingredientMap);
 				return true;
 			}
 		}
@@ -77,8 +77,8 @@ bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>
 void IngredientStore::ShowIngredientList()
 {
     cout << "----재료 리스트---- " << endl;
-    for (map<Ingredient, int>::iterator itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
-        cout << "이름 : " << itr->first.name << ", " << "가격 : " << itr->first.price << ", " << "재고 : " << itr->second << endl;
+    for (map<string, IngredientInfo>::iterator itr = ingredientMap.begin(); itr != ingredientMap.end(); itr++)
+        cout << "이름 : " << itr->first << ", " << "가격 : " << itr->second.ingredient.price << ", " << "재고 : " << itr->second.stock << endl;
 }
 
 void IngredientStore::addIngredient()
@@ -95,8 +95,7 @@ void IngredientStore::addIngredient()
 	cout << "재고 갯수 : ";
 	cin >> stock;
 
-	Ingredient ingredient(name, price);
-	if (ingredientStockMap.count(ingredient) > 0)
+	if (ingredientMap.count(name) > 0)
 	{
 		cout << "[ERROR] 이미 있는 재료입니다.(" + name + ")" << endl;
         CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "allready Exist ingredient name, %s", name);
@@ -104,8 +103,8 @@ void IngredientStore::addIngredient()
 		return;
 	}
 
-    ingredientStockMap[ingredient] = stock;
-    FileSave::saveIngredient(ingredientStockMap);
+    ingredientMap[name] = IngredientInfo(Ingredient(name, price), stock);
+    FileSave::saveIngredient(ingredientMap);
     cout << "추가 되었습니다." << endl << endl;
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Add ingredient, %s, %d, %d", name, price, stock);
     Sleep(500);
@@ -122,16 +121,16 @@ void IngredientStore::modifyIngredientPrice()
 
 	cout << "재료 이름 : ";
 	cin >> name;
-    for (auto itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    for (auto itr = ingredientMap.begin(); itr != ingredientMap.end(); itr++)
     {
-        if (itr->first.name == name)
+        if (itr->first == name)
         {
-            tempprice = itr->first.price;
-            stock = itr->second;
+            tempprice = itr->second.ingredient.price;
+            stock = itr->second.stock;
             continue;
         }
             
-        else if(itr == ingredientStockMap.end())
+        else if(itr == ingredientMap.end())
         {
             cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
             CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not Exist ingredient name, %s", name);
@@ -142,12 +141,12 @@ void IngredientStore::modifyIngredientPrice()
     cout << "현재 가격 : " << tempprice << endl;
 	cout << "수정하려는 가격 : ";
 	cin >> price;
-    ingredientStockMap.erase(Ingredient(name, 0));
-    FileSave::saveIngredient(ingredientStockMap);
-    Ingredient ingredient(name, price);
-    ingredientStockMap[ingredient] = stock;
-    FileSave::saveIngredient(ingredientStockMap);
+
+	ingredientMap[name].ingredient.price = price;
+
+    FileSave::saveIngredient(ingredientMap);
 	cout << "수정 되었습니다." << endl << endl;
+
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient price, %s, %d,", name, price);
 	Sleep(500);
 }
@@ -162,31 +161,32 @@ void IngredientStore::modifyIngredientStock()
 
     cout << "재료 이름 : ";
     cin >> name;
-    Ingredient ingredient(name, stock);
-    if (ingredientStockMap.count(ingredient) == 0)
+    if (ingredientMap.count(name) == 0)
     {
         cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
         CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Not Exist ingredient name, %s", name);
         Sleep(500);
         return;
     }
-    for (auto itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    for (auto itr = ingredientMap.begin(); itr != ingredientMap.end(); itr++)
     {
-        if (itr->first.name == name)
-            tempstock = itr->second;
+        if (itr->first == name)
+            tempstock = itr->second.stock;
     }
     cout << "현재 재고 : " << tempstock << endl;
     cout << "수정하려는 갯수 : ";
     cin >> stock;
 
-    for (auto itr = ingredientStockMap.begin(); itr != ingredientStockMap.end(); itr++)
+    for (auto itr = ingredientMap.begin(); itr != ingredientMap.end(); itr++)
     {
-        if (itr->first.name == name)
-            itr->second = stock;
+        if (itr->first == name)
+            itr->second.stock = stock;
     }
-    ingredientStockMap[ingredient] = stock;
-    FileSave::saveIngredient(ingredientStockMap);
+
+    ingredientMap[name].stock = stock;
+    FileSave::saveIngredient(ingredientMap);
     cout << "수정 되었습니다." << endl << endl;
+
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient stock, %s, %d,", name, stock);
     Sleep(500);
 }
@@ -198,16 +198,19 @@ void IngredientStore::deleteIngredient()
 	string name;
     cout << "재료 이름을 입력하세요 : ";
     cin >> name;
-	if (ingredientStockMap.count(Ingredient(name, 0)) == 0)
+
+	if (ingredientMap.count(name) == 0)
 	{
 		cout << "[ERROR] 없는 재료입니다.(" + name + ")" << endl;
         CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "not Exist ingredient name, %s", name);
 		Sleep(500);
 	}
 
-    ingredientStockMap.erase(Ingredient(name, 0));
-    FileSave::saveIngredient(ingredientStockMap);
+    ingredientMap.erase(name);
+
+    FileSave::saveIngredient(ingredientMap);
     cout << "삭제되었습니다." << endl << endl;
+
 	Sleep(500);
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Delete ingredient, %s", name);
 }
