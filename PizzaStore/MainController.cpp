@@ -1,5 +1,6 @@
 #include "Customer.h"
 #include "CustomerHandler.h"
+#include "DBConnector.h"
 #include "MainController.h"
 
 MainController::MainController()
@@ -12,6 +13,11 @@ MainController::~MainController()
 
 bool MainController::run()
 {
+    if (DBConnector::getInstance()->connectDB())
+    {
+        //TODO Error
+    }
+
     LoginController loginController;
     IngredientStore ingredient;
     PizzaStore Pizza(&ingredient);

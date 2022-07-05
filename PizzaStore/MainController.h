@@ -14,8 +14,8 @@ public:
     //void init();
 
 private:
-    LoginController loginController;
-    IngredientStore ingredient;
-    PizzaStore Pizza;
+    //LoginController loginController;
+    //IngredientStore ingredient;
+    //PizzaStore Pizza;
 };
 

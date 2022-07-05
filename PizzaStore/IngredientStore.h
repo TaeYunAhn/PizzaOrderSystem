@@ -30,6 +30,15 @@ struct Ingredient
     }
 };
 
+struct IngredientInfo
+{
+    Ingredient ingredient;
+    int stock;
+
+    IngredientInfo() {}
+    IngredientInfo(const Ingredient& ing, const int st) : ingredient(ing), stock(st) {}
+};
+
 class IngredientStore
 {
 public:
@@ -49,7 +58,7 @@ private:
     void deleteIngredient();
 
 private:
-    std::map<Ingredient, int> ingredientStockMap;
+    std::map<std::string, IngredientInfo> ingredientMap;
     //std::map<std::string, std::pair<Ingredient, int>> ingredientStockMap;
 };
 

@@ -6,13 +6,15 @@
 #include "IngredientStore.h"
 #include "Logger.h"
 #include "FileSave.h"
+#include "DBConnector.h"
 #include <Windows.h>
 using namespace std;
 
 
 LoginController::LoginController()
 {
-    FileSave::readLoginData(accounts);
+    //FileSave::readLoginData(accounts);
+    DBConnector::getInstance()->readLoginData(accounts);
 }
 
 LoginController::~LoginController()
