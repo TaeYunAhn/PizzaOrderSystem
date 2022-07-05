@@ -32,19 +32,13 @@ struct Ingredient
 
 struct IngredientInfo
 {
-<<<<<<< HEAD
-    Ingredient ingredient;
-    int stock;
 
-    IngredientInfo() {}
-    IngredientInfo(const Ingredient& ing, const int st) : ingredient(ing), stock(st) {}
-=======
 	Ingredient ingredient;
 	int stock;
 
 	IngredientInfo() {}
 	IngredientInfo(const Ingredient& ing, const int st) : ingredient(ing), stock(st) {}
->>>>>>> 9c097001d049a3154d68183a4b053da6c3345866
+
 };
 
 class IngredientStore
@@ -66,14 +60,9 @@ private:
     void deleteIngredient();
 
 private:
-<<<<<<< HEAD
-    std::map<std::string, IngredientInfo> ingredientMap;
-=======
-	//std::map<Ingredient, int> ingredientStockMap;
+
 	std::map<std::string, IngredientInfo> ingredientMap;
 	
-
->>>>>>> 9c097001d049a3154d68183a4b053da6c3345866
     //std::map<std::string, std::pair<Ingredient, int>> ingredientStockMap;
 };
 

@@ -21,13 +21,10 @@ bool FileSave::readIngredient(std::map<std::string, IngredientInfo>& ingredientM
         if (!pLine)
             continue;
 
-<<<<<<< HEAD
-        string name;
-        int price = 0;
-=======
+
 		string name;
 		int price = 0;
->>>>>>> 9c097001d049a3154d68183a4b053da6c3345866
+
         int stock = 0;
 
         char* ptr = strtok(pLine, ",");
