@@ -1,8 +1,9 @@
 #include "cppconn/resultset.h"
 #include "cppconn/statement.h"
-
 #include "Logger.h"
 #include "LoginController.h"
+#include "CustomerHandler.h"
+#include "IngredientStore.h"
 #include "DBConnector.h"
 
 using namespace std;
@@ -25,7 +26,7 @@ DBConnector::~DBConnector()
 bool DBConnector::connectDB()
 {
     try
-    {
+    { 
         driver = sql::mysql::get_mysql_driver_instance();
         con = driver->connect("localhost:12345", "TaeYun", "aaa5591ahn");
 
@@ -90,6 +91,71 @@ bool DBConnector::readLoginData(std::vector<AccInfo>& GenAcc)
 }
 
 bool DBConnector::saveLoginData(const std::vector<AccInfo>& GenAcc)
+{
+    return false;
+}
+bool DBConnector::readIngredient(std::map<std::string, IngredientInfo>& ingredientMap)
+{
+    ingredientMap.clear();
+    sql::Statement* stmt = nullptr;
+    sql::ResultSet* res = nullptr;
+
+    try
+    {
+        stmt = con->createStatement();
+
+        char buf[256] = { 0, };
+        sprintf_s(buf, 256, "SELECT * FROM pizzaorder.ingredient");
+
+        res = stmt->executeQuery(buf);
+        while (res->next())
+        {
+            const auto name = res->getString("name");
+            const auto price = res->getInt("price");
+            const auto stock = res->getInt("stock");
+
+            cout << "[DBConnector] name = " << name.c_str() << " price = " << price << " stock = " << stock << endl;
+
+            IngredientInfo ingredientInfo(price, stock);
+            ingredientMap[name].push_back(ingredientInfo);
+        }
+
+        res->close();
+        stmt->close();
+
+        delete res;
+        delete stmt;
+
+        return !ingredientMap.empty();
+    }
+    catch (exception e)
+    {
+        res->close();
+        stmt->close();
+
+        if (res)
+            delete res;
+
+        if (stmt)
+            delete stmt;
+
+        return false;
+    }
+}
+bool DBConnector::saveIngredient(const std::map<std::string, IngredientInfo>& ingredientMap);
+{
+    return false;
+}
+
+
+
+
+
+bool DBConnector::readOrderList(std::map<std::string, std::vector<AccountwithPizza>>& orderList)
+{
+    
+}
+bool DBConnector::saveOrderList(const std::map<std::string, std::vector<AccountwithPizza>>& orderList)
 {
     return false;
 }
