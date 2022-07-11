@@ -4,6 +4,7 @@
 #include "mysql_driver.h"
 
 struct AccInfo;
+struct IngredientInfo;
 class DBConnector
 {
 public:
@@ -17,12 +18,12 @@ public:
 
 	bool connectDB();
 
-	bool readLoginData(std::vector<AccInfo>& GenAcc);
-	bool saveLoginData(const std::vector<AccInfo>& GenAcc);
+	bool getAllAccountInfo(std::vector<AccInfo>& GenAcc);
+	bool InsertAccountInfo(const AccInfo& acc);
 	bool readOrderList(std::map<std::string, std::vector<AccountwithPizza>>& orderList);
 	bool saveOrderList(const std::map<std::string, std::vector<AccountwithPizza>>& orderList);
-	bool readIngredient(std::map<std::string, IngredientInfo>& ingredientMap);
-	bool saveIngredient(const std::map<std::string, IngredientInfo>& ingredientMap);
+	bool getAllIngredients(std::map<std::string, IngredientInfo>& ingredientMap);
+	bool insertIngredient(IngredientInfo& ingredientinfo);
 
 
 private:
@@ -30,7 +31,7 @@ private:
 	~DBConnector();
 
 private:
-	sql::mysql::MySQL_Driver* driver;
+	sql::Driver* driver;
 	sql::Connection* con;
 
 	static DBConnector* instance;

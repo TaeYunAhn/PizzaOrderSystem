@@ -7,11 +7,12 @@
 #include "FileSave.h"
 #include "IngredientStore.h"
 #include "Logger.h"
+#include "DBConnector.h"
 using namespace std;
 
 IngredientStore::IngredientStore()
 {
-    if (!FileSave::readIngredient(ingredientMap))
+    if (!DBConnector::getInstance()->getAllIngredients(ingredientMap))
     {
 		cout << "재료 정보를 가져오는데 실패했습니다." << endl;
     }
@@ -66,7 +67,7 @@ bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>
 			else
 			{
 				stock -= pairIngre.second;
-                FileSave::saveIngredient(ingredientMap);
+                DBConnector::getInstance()->insertIngredient(ingredientMap);
 
 				return true;
 			}

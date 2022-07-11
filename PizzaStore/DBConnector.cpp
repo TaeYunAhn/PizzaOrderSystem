@@ -1,10 +1,12 @@
 #include "cppconn/resultset.h"
 #include "cppconn/statement.h"
+#include "cppconn/prepared_statement.h"
 #include "Logger.h"
 #include "LoginController.h"
 #include "CustomerHandler.h"
 #include "IngredientStore.h"
 #include "DBConnector.h"
+#include <iostream>
 
 using namespace std;
 
@@ -12,6 +14,8 @@ DBConnector* DBConnector::instance = nullptr;
 
 DBConnector::DBConnector()
 {
+    driver = nullptr;
+    con = nullptr;
 }
 
 DBConnector::~DBConnector()
@@ -26,22 +30,34 @@ DBConnector::~DBConnector()
 bool DBConnector::connectDB()
 {
     try
-    { 
-        driver = sql::mysql::get_mysql_driver_instance();
-        con = driver->connect("localhost:12345", "TaeYun", "aaa5591ahn");
+    {
+        driver = get_driver_instance();
 
-        CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "connected to mysql successfully");
+        /*sql::ConnectOptionsMap optionMap;
+        optionMap["hostName"] = "127.0.0.1:12345";
+        optionMap["userName"] = "TaeYun";
+        optionMap["password"] = "aaa5591ahn";
+        optionMap["schema"] = "pizzaorder";
+        optionMap["OPT_RECONNECT"] = true;
+        optionMap["OPT_CONNECT_TIMEOUT"] = 30;
+
+        con = driver->connect(optionMap);*/
+        con = driver->connect(sql::SQLString("localhost:12345"), sql::SQLString("TaeYun"), sql::SQLString("aaa5591ahn"));
+        con->setSchema("pizzaorder");
+
+        CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "connected to db successfully");
         return true;
     }
     catch (exception e)
     {
         CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "exception = %s", e.what());
+        std::cout << e.what() << std::endl;
         return false;
     }
 }
 
 
-bool DBConnector::readLoginData(std::vector<AccInfo>& GenAcc)
+bool DBConnector::getAllAccountInfo(std::vector<AccInfo>& GenAcc)
 {
     GenAcc.clear();
     sql::Statement* stmt = nullptr;
@@ -52,7 +68,7 @@ bool DBConnector::readLoginData(std::vector<AccInfo>& GenAcc)
         stmt = con->createStatement();
 
         char buf[256] = { 0, };
-        sprintf_s(buf, 256, "SELECT * FROM pizzaorder.accounts");
+        sprintf_s(buf, 256, "SELECT * FROM accounts");
 
         res = stmt->executeQuery(buf);
         while (res->next()) 
@@ -90,11 +106,40 @@ bool DBConnector::readLoginData(std::vector<AccInfo>& GenAcc)
     }
 }
 
-bool DBConnector::saveLoginData(const std::vector<AccInfo>& GenAcc)
+bool DBConnector::InsertAccountInfo(const AccInfo& acc)
 {
-    return false;
+    sql::PreparedStatement* stmt = nullptr;
+
+    try
+    {
+        char sql[256] = { 0, };
+        sprintf_s(sql, 256, "INSERT INTO accounts (account, pw, type, balance) VALUES ('%s', '%s', %d, %d)", 
+                acc.accID.c_str(), acc.accPW.c_str(), acc.loginType, 0);
+
+        stmt = con->prepareStatement(sql);
+        stmt->executeUpdate();
+
+        stmt->close();
+        delete stmt;
+
+        //TODO success logging
+        return true;
+    }
+    catch (exception e)
+    {
+        stmt->close();
+
+        if (stmt)
+            delete stmt;
+
+        //TODO fail logging
+        return false;
+    }
 }
-bool DBConnector::readIngredient(std::map<std::string, IngredientInfo>& ingredientMap)
+
+// CRUD
+
+bool DBConnector::getAllIngredients(std::map<std::string, IngredientInfo>& ingredientMap)
 {
     ingredientMap.clear();
     sql::Statement* stmt = nullptr;
@@ -105,7 +150,7 @@ bool DBConnector::readIngredient(std::map<std::string, IngredientInfo>& ingredie
         stmt = con->createStatement();
 
         char buf[256] = { 0, };
-        sprintf_s(buf, 256, "SELECT * FROM pizzaorder.ingredient");
+        sprintf_s(buf, 256, "SELECT * FROM ingredientstore");
 
         res = stmt->executeQuery(buf);
         while (res->next())
@@ -116,8 +161,8 @@ bool DBConnector::readIngredient(std::map<std::string, IngredientInfo>& ingredie
 
             cout << "[DBConnector] name = " << name.c_str() << " price = " << price << " stock = " << stock << endl;
 
-            IngredientInfo ingredientInfo(price, stock);
-            ingredientMap[name].push_back(ingredientInfo);
+            IngredientInfo ingredientInfo(Ingredient(name, price), stock);
+            ingredientMap[name] = ingredientInfo;
         }
 
         res->close();
@@ -142,19 +187,45 @@ bool DBConnector::readIngredient(std::map<std::string, IngredientInfo>& ingredie
         return false;
     }
 }
-bool DBConnector::saveIngredient(const std::map<std::string, IngredientInfo>& ingredientMap);
+
+bool DBConnector::insertIngredient(IngredientInfo &ingredientinfo)
+{
+    sql::PreparedStatement* stmt = nullptr;
+
+    try
+    {
+        char sql[256] = { 0, };
+        sprintf_s(sql, 256, "INSERT INTO ingredientstore (name, price, stock) VALUES ('%s', %d, %d)",
+            ingredientinfo.ingredient.name.c_str(), ingredientinfo.ingredient.price, ingredientinfo.stock);
+
+        stmt = con->prepareStatement(sql);
+        stmt->executeUpdate();
+
+        stmt->close();
+        delete stmt;
+
+        //TODO success logging
+        return true;
+    }
+    catch (exception e)
+    {
+        stmt->close();
+
+        if (stmt)
+            delete stmt;
+
+        //TODO fail logging
+        return false;
+    }
+
+    return false;
+}
+
+bool DBConnector::readOrderList(std::map<std::string, std::vector<AccountwithPizza>>& orderList)
 {
     return false;
 }
 
-
-
-
-
-bool DBConnector::readOrderList(std::map<std::string, std::vector<AccountwithPizza>>& orderList)
-{
-    
-}
 bool DBConnector::saveOrderList(const std::map<std::string, std::vector<AccountwithPizza>>& orderList)
 {
     return false;

@@ -2,6 +2,7 @@
 #include "CustomerHandler.h"
 #include "DBConnector.h"
 #include "MainController.h"
+#include "Logger.h"
 
 MainController::MainController()
 {
@@ -13,9 +14,13 @@ MainController::~MainController()
 
 bool MainController::run()
 {
-    if (DBConnector::getInstance()->connectDB())
+    if (!DBConnector::getInstance()->connectDB())
     {
-        //TODO Error
+        std::cout << "Failed to connect db" << std::endl;
+        
+        CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__, "Failed to connect db");
+
+        return false;
     }
 
     LoginController loginController;

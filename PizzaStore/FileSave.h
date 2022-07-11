@@ -9,7 +9,7 @@ const std::string DATA_SOURCE_PATH = "C:\\PSData\\info";
 struct CustomerInfo;
 class FileSave
 {
-public:
+//public:
     static bool readIngredient(std::map<std::string, IngredientInfo>& ingredientMap);
     static bool saveIngredient(const std::map<std::string, IngredientInfo>& ingredientMap);
 

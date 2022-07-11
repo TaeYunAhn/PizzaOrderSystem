@@ -14,7 +14,7 @@ using namespace std;
 LoginController::LoginController()
 {
     //FileSave::readLoginData(accounts);
-    DBConnector::getInstance()->readLoginData(accounts);
+    DBConnector::getInstance()->getAllAccountInfo(accounts);
 }
 
 LoginController::~LoginController()
@@ -28,9 +28,9 @@ EN_LOGIN_RESULT LoginController::login(string& userId)
     {
 		system("CLS");
 		int res;
-        cout << "  << 로그인 선택 >>  "<<endl;
-        cout << "1. 회원가입"<<endl;
-        cout << "2. 손님 로그인"<<endl;
+        cout << "  << 로그인 선택 >>  "<< endl;
+        cout << "1. 회원가입"<< endl;
+        cout << "2. 손님 로그인"<< endl;
         cout << "3. 피자가게 로그인" << endl;
         cout << "4. 재료가게 로그인" << endl;
         cout << "5. 프로그램 종료" << endl;
@@ -132,7 +132,7 @@ bool LoginController::Signup()
     accounts.push_back(info);
 
     LoginAlarm(EN_SIGNUP_SUCCESS);
-    FileSave::saveLoginData(accounts);
+    DBConnector::getInstance()->InsertAccountInfo(info);
 	Sleep(500);
 
     return true;
