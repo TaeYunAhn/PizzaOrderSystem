@@ -52,12 +52,14 @@ EN_STOCK_CHECK IngredientStore::checkIngredients(const std::pair<std::string, un
 
 bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>& pairIngre)
 {  
+
 	for (auto& pairElem : ingredientMap)
 	{
+        IngredientInfo ingredientInfo;
 		if (pairElem.first == pairIngre.first)
 		{
-			int& stock = pairElem.second.stock;
-			if (stock < pairIngre.second)
+			ingredientInfo.stock = pairElem.second.stock;
+			if (ingredientInfo.stock < pairIngre.second)
 			{
 				CLogger::getInstance()->write(enError, __LINE__, __FUNCTION__,
 					"Not enough ingredient, Name : %s count : %u", pairIngre.first.c_str(), pairIngre.second);
@@ -66,8 +68,8 @@ bool IngredientStore::grepIngredients(const std::pair<std::string, unsigned int>
 			}
 			else
 			{
-				stock -= pairIngre.second;
-                DBConnector::getInstance()->insertIngredient(ingredientMap);
+                ingredientInfo.stock -= pairIngre.second;
+                DBConnector::getInstance()->updateIngredientStock(ingredientInfo.ingredient.name, ingredientInfo.stock);
 
 				return true;
 			}
@@ -104,9 +106,13 @@ void IngredientStore::addIngredient()
 		Sleep(500);
 		return;
 	}
-
+    IngredientInfo ingredientInfo;
+    ingredientInfo.ingredient.name = name;
+    ingredientInfo.ingredient.price = price;
+    ingredientInfo.stock = stock;
     ingredientMap[name] = IngredientInfo(Ingredient(name, price), stock);
-    FileSave::saveIngredient(ingredientMap);
+    if (!DBConnector::getInstance()->insertIngredient(ingredientInfo))
+        return;
     cout << "추가 되었습니다." << endl << endl;
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Add ingredient, %s, %d, %d", name, price, stock);
     Sleep(500);
@@ -143,9 +149,16 @@ void IngredientStore::modifyIngredientPrice()
     cout << "현재 가격 : " << tempprice << endl;
 	cout << "수정하려는 가격 : ";
 	cin >> price;
-	ingredientMap[name].ingredient.price = price;
 
-    FileSave::saveIngredient(ingredientMap);
+    for (auto itr = ingredientMap.begin(); itr != ingredientMap.end(); itr++)
+    {
+        if (itr->first == name)
+            itr->second.ingredient.price = price;
+    }
+	
+
+    if(!DBConnector::getInstance()->updateIngredientPrice(name, price) == true);
+    
 	cout << "수정 되었습니다." << endl << endl;
 
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient price, %s, %d,", name, price);
@@ -185,8 +198,8 @@ void IngredientStore::modifyIngredientStock()
             itr->second.stock = stock;
     }
 
-    ingredientMap[name].stock = stock;
-    FileSave::saveIngredient(ingredientMap);
+    if (!DBConnector::getInstance()->updateIngredientStock(name, stock) == true)
+        return;
     cout << "수정 되었습니다." << endl << endl;
 
     CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Fix ingredient stock, %s, %d,", name, stock);
@@ -209,8 +222,10 @@ void IngredientStore::deleteIngredient()
 	}
 
     ingredientMap.erase(name);
-
-    FileSave::saveIngredient(ingredientMap);
+    IngredientInfo ingredientInfo;
+    ingredientInfo.ingredient.name = name;
+    if (!DBConnector::getInstance()->deleteIngredient(ingredientInfo))
+        return;
     cout << "삭제되었습니다." << endl << endl;
 
 	Sleep(500);

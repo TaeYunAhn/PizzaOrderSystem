@@ -1,14 +1,18 @@
-#include "CustomerHandler.h"
-#include "FileSave.h"
 #include <iostream>
+#include <vector>
+#include "Windows.h"
+
+#include "FileSave.h"
+#include "DBConnector.h"
+#include "CustomerHandler.h"
+
 
 using namespace std;
 
 
 CustomerHandler::CustomerHandler()
 {
-	FileSave::readOrderList(PizzaCountData);
-	FileSave::readAccountInfo(accountsInfoData);
+	DBConnector::getInstance()->getAllOrderList(PizzaCountData);
 }
 
 CustomerHandler::~CustomerHandler()
@@ -19,27 +23,23 @@ CustomerHandler::~CustomerHandler()
 void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
 {
     Customer customer(pizzaStore);
-    //EN_CUSTOMER_RESULT res = cus.runCustomer(customerId, balance);
-    // 케이스 나눠서 이넘으로 에러 메세지 나오게 하는걸 여기서 해야할지, 혹은 customer 의 doOrder에서 해야 할지 모르겠습니다..
-
-	/*CustomerInfo* info = nullptr;
-    for (auto& a : accountsInfoData)
-    {
-        if (a.ID == customerId)
-            info = &a;
-    }*/
+   
+	int balance = 0;
+	vector<CustomerInfo> customerBalance;
+	DBConnector::getInstance()->getAccountBalance(customerId, &balance);
 
 
-    auto itr = std::find_if(accountsInfoData.begin(), accountsInfoData.end(), [&customerId] (const CustomerInfo& info) {
-        return info.ID == customerId;
-    });
 
-    if ( itr == accountsInfoData.end() )
-    {
-        accountsInfoData.push_back(CustomerInfo(customerId, 50000));
-        itr = accountsInfoData.begin();
-        FileSave::saveAccountInfo(accountsInfoData);
-    }
+    //auto itr = std::find_if(accountsInfoData.begin(), accountsInfoData.end(), [&customerId] (const CustomerInfo& info) {
+    //    return info.ID == customerId;
+    //});
+	// 
+    //if ( itr == accountsInfoData.end() )
+    //{
+    //    accountsInfoData.push_back(CustomerInfo(customerId, 0));
+	//	itr = accountsInfoData.end() - 1;
+	//
+    //}
 
 	/*for (auto m : accountsInfoData)
 	{
@@ -50,13 +50,13 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
   	while (true)
 	{
 		system("cls");
-		int *count, res = 0;
+		int res = 0;
 		cout << "  << " << customerId << "의" << " 메뉴 >> " << endl;
 		cout << "1. 주문" << endl;
 		cout << "2. 주문 이력 확인" << endl;
 		cout << "3. 포인트 충전" << endl;
 		cout << "4. 로그아웃" << endl;
-		cout << "현재 잔액 : " << itr->Balance << "원" << endl << endl;
+		cout << "현재 잔액 : " << balance << "원" << endl << endl;
 
 		cout << "선택 : ";
 		cin >> res;
@@ -66,10 +66,16 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
 		case 1:
 		{
 			enPizzaMenu menu = PIZZA_START;
-			if (customer.doOrder(customerId, &itr->Balance, menu, count))
+			int count = 0;
+			if (customer.doOrder(customerId, &balance, menu, count))
 			{
-				addPizzaCount(customerId, menu, *count);
-				FileSave::saveOrderList(PizzaCountData);
+				addPizzaCount(customerId, menu, count);
+				if (!DBConnector::getInstance()->insertOrderList(customerId, (enPizzaMenu)menu, count))
+				{
+					//TODO: error
+					//cout << ""
+				}
+				// TO FIX 여기서도 INSERT 인지 UPDATE 인지 확인 불가.. 
 			}
 		}
 		break;
@@ -77,11 +83,16 @@ void CustomerHandler::handleCustomer(string customerId, PizzaStore* pizzaStore)
             checkRecord(customerId);
 			break;
 		case 3:
-            chargePoint(itr->Balance);
-			break;
+		{
+			int b;
+			chargePoint(b);
+			DBConnector::getInstance()->updateAccountBalance(customerId, b);
+		}
+		break;
 		case 4:
-            FileSave::saveAccountInfo(accountsInfoData);
-			FileSave::saveOrderList(PizzaCountData);
+		
+        	//DBConnector::getInstance()->saveOrderList(PizzaCountData);
+			// TO FIX 여기서도 INSERT 인지 UPDATE 인지 확인 불가.. 
 			return;
 		default:
 			break;
@@ -117,43 +128,45 @@ void CustomerHandler::checkRecord(const string& customerId)
     cin >> answer;
 }
 
-bool CustomerHandler::chargePoint(int& balance)
+bool CustomerHandler::chargePoint(int& balance) // 현재 잔액 나타내기 위해 인자 받는걸로 수정했습니다. 
 {
-    int tmepbalance;
+    int tempbalance;
     cout << "    <<포인트 충전>>    " << endl;
     cout << "현재 잔액 : " << balance << endl;
     cout << "얼마 충전하시겠습니까 :";
-    cin >> tmepbalance;
-    balance += tmepbalance;
-    return true;
-    //To do 
-    //예외처리 할 것.
+    cin >> tempbalance;
+	if (tempbalance <= 0)
+	{
+		cout << "잘못된 입력입니다." << endl;
+		Sleep(500);
+		return false;
+	}
+	balance += tempbalance;
+	return true;
 }
 
 void CustomerHandler::addPizzaCount(const std::string& customerId, const enPizzaMenu menu, /*const*/ int count)
 {
-	for (int i = 0; i < count; i++)
+	if (PizzaCountData.count(customerId) > 0)
 	{
-		if (PizzaCountData.count(customerId) > 0)
-		{
-			auto& vData = PizzaCountData[customerId];
-			auto itr = find_if(vData.begin(), vData.end(), [&menu](const AccountwithPizza& d)
-				{
-					return d.type == menu;
-				});
+		auto& vData = PizzaCountData[customerId];
+		auto itr = find_if(vData.begin(), vData.end(), [&menu](const AccountwithPizza& d)
+			{
+				return d.type == menu;
+			});
 
-			if (itr == vData.end())
-				vData.push_back(AccountwithPizza(menu, 1));
-			else
-				itr->count++;
-		}
-
+		if (itr == vData.end())
+			vData.push_back(AccountwithPizza(menu, count));
+		//insert
 		else
-		{
-			vector<AccountwithPizza> vData;
-			AccountwithPizza accountPizza(menu, 1);
-			vData.push_back(accountPizza);
-			PizzaCountData[customerId] = vData;
-		}
+			itr->count += count;
+		// count += count 
+	}
+	else
+	{
+		vector<AccountwithPizza> vData;
+		AccountwithPizza accountPizza(menu, count);
+		vData.push_back(accountPizza);
+		PizzaCountData[customerId] = vData;
 	}
 }

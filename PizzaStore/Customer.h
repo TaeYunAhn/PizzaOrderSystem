@@ -48,7 +48,7 @@ public:
     ~Customer();
 
     //EN_CUSTOMER_RESULT runCustomer(const std::string& customer, int balance);
-	bool doOrder(std::string id, int *balance, enPizzaMenu& menu, int*& count);
+	bool doOrder(std::string id, int *balance, enPizzaMenu& menu, int& count);
 
 private:
     PizzaStore* PiStore;

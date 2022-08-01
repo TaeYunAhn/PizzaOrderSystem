@@ -22,7 +22,7 @@ Customer::~Customer()
 
 }
 
-bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *&count)
+bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int& count)
 {
 	system("cls");
 	int sel, num;
@@ -33,7 +33,7 @@ bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *&count)
 	cout << "갯수 입력 : ";
 	cin >> num;
 
-	count = &num;
+	count = num;
     if ( sel < HAWAIIAN_PIZZA || sel > POTATO_PIZZA || num <= 0)
     {
         cout << "잘못된 입력입니다." << endl;
@@ -68,11 +68,12 @@ bool Customer::doOrder(string id, int *balance, enPizzaMenu& menu, int *&count)
 
 	if (pizza)
 		delete pizza;
-
+	//
 	*balance -= totalPrice;
+	//DB->updateBalance(id, balance -= totalPrice);
 	menu = selMenu;
 	cout << "주문 접수되었습니다." << endl << endl;
-	//To Fix : 널 포인터에 쓰는것(엑세스 위반) 에러 잘 모르겠습니다. 
+	 
 	//CLogger::getInstance()->write(enInfo, __LINE__, __FUNCTION__, "Order Success menu : %s, count : %d", selMenu, num);
 	Sleep(500);
 	

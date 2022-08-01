@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 #include <string>
 
 const std::string LOG_PATH = "C:\\PSData\\logs";
@@ -38,7 +39,8 @@ public:
 private:
 	EN_LOGLEVEL logLevel;
 	std::string fileDate;
-	FILE* fd;
+	
+	std::ofstream logFile;
 
 	std::string logPath;
 

@@ -20,10 +20,10 @@ CLogger::CLogger()
 
 CLogger::~CLogger()
 {
-	if (fd)
+	if (logFile.is_open())
 	{
-		fclose(fd);
-		fd = nullptr;
+		logFile.flush();
+		logFile.close();
 	}
 }
 
@@ -72,7 +72,7 @@ void CLogger::write(const EN_LOGLEVEL& level, const int& line, const char* func,
 	sprintf_s(currentDate, "%04d%02d%02d", st.wYear, st.wMonth, st.wDay);
 
 	char strOutBuf[SHRT_MAX];
-	sprintf_s(strOutBuf, "%s\t%04d.%02d.%02d %02d:%02d:%02d.%03d  %s()[%d] %s\n",
+	sprintf_s(strOutBuf, "%s\t%04d.%02d.%02d %02d:%02d:%02d.%03d  %s()[%d] %s",
 		logLevelHeader.c_str(), st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds, func, line, strBuf);
 
 
@@ -84,21 +84,19 @@ void CLogger::write(const EN_LOGLEVEL& level, const int& line, const char* func,
 		char tmp[1024];
 		memset(tmp, 0, sizeof(tmp));
 
-		if (fd)
-		{
-			fclose(fd);
-			fd = nullptr;
-		}
+		if (logFile.is_open())
+			logFile.close();
 
 		const string path = LOG_PATH + "\\PizzaStore.%04d%02d%02d.log";
 		_snprintf_s(tmp, sizeof(tmp) - 1, path.c_str(), st.wYear, st.wMonth, st.wDay);
 
-		fd = fopen(tmp, "a");
+		logFile.open(tmp, std::ofstream::out | std::ofstream::app);
 	}
 
-	if (fd)
+	if (logFile.is_open())
 	{
-		fprintf(fd, strOutBuf);
+		logFile << strOutBuf << endl;
+		logFile.flush();
 	}
 
 }

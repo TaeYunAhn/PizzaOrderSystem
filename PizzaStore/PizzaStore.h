@@ -25,5 +25,7 @@ private:
 
     IngredientStore *ingreStore;
     std::map<enPizzaMenu, int> pizzaSalesMap;
+
+    std::map<std::string, int> pizzaDef;
 };
 

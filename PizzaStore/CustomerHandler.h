@@ -30,5 +30,5 @@ private:
 
 private:
     std::map<std::string, std::vector<AccountwithPizza>> PizzaCountData; // 피자 카운트
-    std::vector<CustomerInfo> accountsInfoData; // 커스터머 인포
+    //std::vector<CustomerInfo> accountsInfoData; // 커스터머 인포
 };

@@ -132,7 +132,7 @@ bool LoginController::Signup()
     accounts.push_back(info);
 
     LoginAlarm(EN_SIGNUP_SUCCESS);
-    DBConnector::getInstance()->InsertAccountInfo(info);
+    DBConnector::getInstance()->insertAccountInfo(info);
 	Sleep(500);
 
     return true;

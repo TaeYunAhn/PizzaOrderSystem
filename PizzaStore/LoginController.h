@@ -50,11 +50,12 @@ enum EN_LOGIN_TYPE
 struct AccInfo
 {
     AccInfo() {}
-    AccInfo(std::string _ID, std::string _PW, EN_LOGIN_TYPE t) : accID(_ID), accPW(_PW), loginType(t) {}
+    AccInfo(std::string _ID, std::string _PW, EN_LOGIN_TYPE t, int b = 0) : accID(_ID), accPW(_PW), loginType(t), balance(b) {}
     ~AccInfo() {}
     std::string accID;
     std::string accPW;
     EN_LOGIN_TYPE loginType;
+    int balance;
 };
 
 class LoginController
